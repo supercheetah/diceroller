@@ -2,7 +2,7 @@ from simpleparse.common import numbers,strings,comments
 from simpleparse.parser import Parser
 #from simpleparse.error import ParserSyntaxError
 from dispexcept import VarNestedException, VarMultipleException
-
+import logging
 import dispatcher
 
 declaration = r''' #this defines the language, of course
@@ -46,7 +46,9 @@ def space_carot( num_spaces ):
 def solve_roll( roll_str ):
     resolution = None
     try:
-        result = rollparser.parse( roll_str, processor=dispatcher.RollDispatcher() )
+        success, children, nextchar = rollparser.parse( roll_str, processor=dispatcher.RollDispatcher() )
+        if not (success and len(roll_str)==nextchar):
+            raise Exception(roll_str+'\n'+space_carot(nextchar)+"\nI'm sorry, but I don't understand that.")
     except SyntaxError, se:
         raise Exception(roll_str+'\n'+space_carot(se.position)+"\nThis doesn't look right.")
     except VarNestedException, nest_e:
