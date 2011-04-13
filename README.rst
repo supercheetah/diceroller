@@ -154,6 +154,11 @@ rolls.
 Dependencies
 ============
 
+Python
+------
+
+Umm, right, this requires Python.  <http://python.org>
+
 enum.py
 -------
 
