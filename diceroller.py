@@ -17,7 +17,7 @@ def main():
         if '' == eqn_str:
             continue
 
-        if 'q' == eqn_str[0] or :
+        if 'q' == eqn_str[0]:
             break
 
         try:
