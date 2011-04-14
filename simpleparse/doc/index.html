@@ -1,0 +1,346 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+                                                                        
+                                   
+  <meta http-equiv="Content-Language" content="en-us">
+                                                                        
+                                   
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=windows-1252">
+                                                                        
+                                   
+  <meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+                                                                        
+                                   
+  <meta name="ProgId" content="FrontPage.Editor.Document">
+  <title>SimpleParse 2.0</title>
+                                                                        
+                                                                        
+  <link rel="stylesheet" type="text/css" href="sitestyle.css">
+                                                                       
+  <meta name="author" content="Mike C. Fletcher">
+</head>
+  <body>
+                                                        
+<h1>SimpleParse <font size="-2">A Parser Generator for mxTextTools v2.0.0</font></h1>
+                                                       
+<p>SimpleParse is a <a href="#License">BSD-licensed</a> Python package providing 
+     a simple parser         generator for use with the <a
+ href="http://www.lemburg.com/files/python/mxTextTools.html">mxTextTools</a> 
+             text-tagging engine.  SimpleParse allows you to generate tagging 
+    tables       for  use with the text-tagging engine directly from your 
+EBNF    grammar.<br>
+                   </p>
+                                     
+<p>Unlike    most parser generators, SimpleParse generates single-pass parsers 
+         (there   is no distinct tokenization stage), an approach taken from 
+   the    predecessor     project (mcf.pars) which attempted to create "autonomously 
+       parsing regex    objects".  The resulting parsers are not as generalized 
+      as those created by, for instance, the Earley algorithm, but they  
+do   tend to be useful   for the parsing of computer file formats and the 
+like    (as distinct  from natural  language and similar "hard" parsing problems).<br>
+                           </p>
+                                                     
+<p>In addition to the parser generator, the <a
+ href="http://sourceforge.net/projects/simpleparse/"> SimpleParse project</a> 
+             includes a sub-project to create a   modified    version of the
+     mxTextTools  engine which reorganizes the code to allow    for certain 
+  common    EBNF constructs.<br>
+                           </p>
+                                                     
+<p>For those interested in working on the project, I'm actively interested 
+             in welcoming and supporting both new developers and new users. 
+   Feel     free     to <a href="mailto:mcfletch@users.sourceforge.net">contact 
+   me</a>.</p>
+                                                     
+<h2>Documentation</h2>
+                                             
+<ul>
+                         <li><a href="scanning_with_simpleparse.html">Scanning
+   with   SimpleParse</a>     -- describes the process of creating   a Parser
+   object   with your EBNF grammar,    and using that parser to scan input
+   texts</li>
+                         <li><a href="simpleparse_grammars.html">SimpleParse
+  Grammars</a>       --  reference to the various features of the  default
+  SimpleParse EBNF     grammar   variant</li>
+                         <li><a href="processing_result_trees.html">Processing
+   Result    Trees</a>    -- brief description of the results of the   tagging/scanning 
+      process and    the features available for processing (and altering) 
+ those     results</li>
+                         <li><a href="common_problems.html">Common Problems</a> 
+   --  description     of a number of common bugs, errors,   pitfalls and 
+anti-patterns    when using    the engine.</li>
+             <li><a
+ href="http://www.ibm.com/developerworks/linux/library/l-simple.html">IBM 
+     DeveloperWorks Article</a> by Dr. David Mertz -- discusses (and teaches 
+   the  use of) SimpleParse 1.0, contrasting the EBNF-based parser with tools 
+   such  as regexen for text-processing tasks.  Watch also for Dr. Mertz' 
+upcoming     book Text Processing with Python</li>
+             <li><a
+ href="http://www.lemburg.com/files/python/mxTextTools.html">mxTextTools</a> 
+     documentation -- documents the underlying mxTextTools engine.  Hopefully 
+    most users of SimpleParse who aren't actually creating custom/prebuilt 
+ parsing    elements shouldn't need this link.<br>
+             </li>
+                        <li><a href="pydoc/simpleparse.html">PyDoc references</a> 
+    --  automatically     generated  documentation on the various elements 
+ within    the package.  Of   particular interest are the library of reusable 
+ structures    (<a href="pydoc/simpleparse.common.html">simpleparse.common</a>) 
+ and the       <a href="pydoc/simpleparse.parser.html">Parser class</a>, which
+ is the    primary    interface for the parsing system.<br>
+                        </li>
+                                             
+</ul>
+                                             
+<h2>Acquisition and Installation</h2>
+                           
+<p>              You will need a copy of Python with <a
+ href="http://www.python.org/sigs/distutils-sig/download.html">distutils</a> 
+             support (Python versions 2.0 and above include this).  If   you
+want to build the non-recursive TextTools engine,  you'll      also  need
+ a C compiler compatible with your Python build and understood    by   distutils.</p>
+                                          
+<p>To install the base SimpleParse engine, <a
+ href="http://sourceforge.net/project/showfiles.php?group_id=55673">download 
+             the latest version</a> in your preferred format.  If you are 
+using      the    Win32   installer, simply run the executable.  If you are 
+using   one   of the   source   distributions, unpack the distribution into 
+a temporary      directory    (maintaining   the directory structure) then 
+run:         </p>
+                           
+<pre>setup.py install</pre>
+                           
+<p>              in the top directory created by the expansion process.</p>
+                           
+<p>              </p>
+                           
+<p>              You will want the <a
+ href="http://www.lemburg.com/files/python/mxExtensions.html#mxTextTools">mxBase 
+             2.1.0</a> distribution to run SimpleParse.  This package should 
+   be    available   in all the standard formats, follow the same instructions
+      as  for the SimpleParse   package to install.  If you want to use the
+  non-recursive   implementation, you will need to get the source archive.
+  It is possible  to use mxBase 2.0.3 with SimpleParse, but not to use it
+for building the non-recursive TextTools engine.  Note: without the non-recursive
+  rewrite of 2.1.0, the test suite will not pass all tests.  A single test
+(which is tested with a number of different versions of the simpleparse grammar)
+will fail.  I'm not sure why it fails with the recursive version, but it
+does argue for using the non-recursive rewrite.</p>
+                           
+<p>              </p>
+                           
+<p>To build the non-recursive TextTools engine,    you'll    need to get
+the source distribution for the non-recursive implementation       from the
+<a href="http://sourceforge.net/project/showfiles.php?group_id=55673">SimpleParse 
+             file repository</a>.  This archive is intended to be expanded 
+ over     the    mxBase source archive from the top-level directory (it was 
+ created   with the 2.1.0 beta1 distribution      specifically),   replacing 
+ one file   and adding four others.<br>
+          </p>
+                   
+<pre>cd egenix-mx-base-2.1.0<br>gunzip non-recursive-1.0.0b1.tar.gz<br>tar -xvf non-recursive-1.0.0b1.tar<br></pre>
+                   
+<p>(Or use WinZip on Windows). When you  have    completed that,   run:</p>
+                                   
+<pre>setup.py build --force install<br></pre>
+                           
+<p>   in the top directory of the eGenix-mx-base source tree.  It is hoped
+     that eventually the non-recursive rewrite will be folded into the eGenix-mx-base
+     distribution so this extra step won't be necessary.      </p>
+                           
+<h2>Features</h2>
+                         
+<p>      New in 2.0:</p>
+                                     
+<ul>
+                     <li>New, refactored and simplified API.  Most of the 
+time   you   only    need    to deal with a single class for all your interactions
+   with   the parser system (<a href="pydoc/simpleparse.parser.html">simpleparse.parser</a>.Parser),
+ and one module if you decide to use the provided                   post-processing
+ mechanism (<a href="pydoc/simpleparse.dispatchprocessor.html">simpleparse.dispatchprocessor</a>).</li>
+                     <li>"Expanded Productions" -- allow you to define productions
+     whose    children  are reported as if the enclosing production did not
+  exist   (allows    you to use productions for organisational as well as
+reporting     purposes)</li>
+                     <li>Exposure of <a
+ href="processing_result_trees.html#nonstandardresulttrees">callout mechanism</a>
+in mxTextTools</li>
+        <li>Exposure of "LookAhead" mechanism in mxTextTools (allows you
+to  spell  "is followed by", "is not followed by", or "matches x but doesn't 
+match y"  in SimpleParse EBNF grammars).  Specified with the prefix ?, as 
+in ?-"this" which matches iff "this" is not the next item, but on matching 
+doesn't move the read-head forward (more precisely, it causes the engine to
+continue processing at the previous position).</li>
+      <li>"Error on fail" error-reporting facility, allows you to raise Parser
+  Syntax Errors when particular productions (or element tokens) fail to match.
+   Allow for fairly flexible error  reporting.  To specify, just add a '!'
+ character after the element token that must match, or include it as a stand-alone
+ token in a sequential group to specify that all subsequent items must succeed. 
+ You can specify an error message format by using a string literal after the
+! character.</li>
+   <li>Library of common constructs (<a
+ href="pydoc/simpleparse.common.html">simpleparse.common</a> package) which 
+are easily included in your grammars<br>
+   </li>
+       <li>Hexidecimal escapes for string and character ranges</li>
+    <li>Rewritten generators -- the generator interface has  been   seperated
+      from the parser interfaces, this makes it possible to write   grammars
+ directly     using generator objects if desired, and allows defining   the
+ EBNF grammar    using the same tools as generate derived parsers</li>
+    <li>An XML-Parser (including DTD parsing) based  on the XML specification's 
+EBNF (this is not a production parser, merely  an example for parsing a complex 
+file format, and is not yet Unicode capable)</li>
+    <li>Example VRML97 and LISP parsers<br>
+    </li>
+                     <li>Compatability API for SimpleParse 1.0 applications<br>
+                     </li>
+    <li>With the non-recursive mxTextTools, can process (albeit    inefficiently)
+      recursion-as-repetition grammars               </li>
+                                             <li>Non-recursive rewrite of 
+mxTextTools   now ~95% of the speed of                 the recursive version 
+              </li>
+                                     
+</ul>
+                         
+<p>      General</p>
+                                                     
+<ul>
+                            <li>Simple-to-use interface, define an EBNF and 
+ start    parsing</li>
+                     <li>Fast for small files -- this is primarily a feature
+  of  the   underlying  TextTools engine, rather than a particular feature
+ of the  parser   generator.</li>
+                     <li>Allows pre-built and external parsing functions, 
+which    allows    you   to define Python methods to handle tricky parsing 
+tasks</li>
+                                     
+</ul>
+ 
+<h3>"Class" of Parsers Generated</h3>
+ 
+<p>Our (current) parsers are top-down, in that they work from the top of
+the parsing graph (the root production). They are not, however, tokenising
+parsers, so there is no appropriate LL(x) designation as far as I can see,
+and there is an arbitrary lookahead mechanism that could theoretically parse
+the entire rest of the file just to see if a particular character matches).
+ I would hazard a guess that they are theoretically closest to a deterministic
+recursive-descent parser.<br>
+ </p>
+ 
+<p>There are no backtracking facilities, so any ambiguity is handled by choosing 
+the first successful match of a grammar (not the longest, as in most top-down 
+parsers, mostly because without tokenisation, it would be expensive to do 
+checks for each possible match's length).  As a result of this, the parsers 
+are entirely deterministic.<br>
+ </p>
+ 
+<p>The time/memory characteristics are such that, in general, the time to 
+parse an input text varies with the amount of text to parse. There are two 
+major factors, the time to do the actual parsing (which, for simple deterministic 
+grammars should be close to linear with the length of the text, though a pathalogical
+grammar might have radically different operating characteristics) and the
+time to build the results tree (which depends on the memory architecture of
+the machine, the currently free memory, and the phase of the moon).  As a
+rule, SimpleParse parsers will be faster (for suitably limited grammars) than
+anything you can code directly in Python.  They will not generally outperform 
+grammar-specific parsers written in C.<br>
+ </p>
+                                     
+<h2>Missing Features<br>
+                   </h2>
+                                     
+<ul>
+                     <li>SimpleParse does not current use an Earley or similar
+   highly    generalised    parser, instead, it uses a simple deterministic
+  parsing algorithm   which,   though fast for certain classes of problems,
+  is incapable of dealing   with   ambiguity, backtracking or cross-references</li>
+   <li>The library of common patterns is extremely sparse</li>
+                     <li>No case-insensitive matching commands available
+              </li>
+                     <li>Unicode support</li>
+   <li>There is no analysis or (significant) reduction done on the grammar. 
+ Having now read most of <a
+ href="http://www.cs.vu.nl/%7Edick/PTAPG.html">Parsing Techniques - A Practical 
+Guide</a>, I can see how some fairly significant changes will be required 
+to support such operations (and thereby the more common parsing techniques).<br>
+  </li>
+ 
+</ul>
+                                     
+<h2>Possible Future Directions</h2>
+                                                       
+<ul>
+                              <li>Alternative parsing back-ends -- the new
+ objectgenerator         module is fairly well isolated from the rest of
+the  system, and encompasses         most of the dependencies on the mxTextTools
+ engine.  Adding an optional       Earley  or similar back-end should be
+possible  with minimal upset to  the    project.  A backend using re objects
+is another  possibility (my precursor      mcf.pars engine was written to
+use regexen  for parsing, and was an acceptable      (though not stellar)
+performer).</li>
+                     <li>Alternative EBNF grammars -- SimpleParse's EBNF, 
+though    fairly readily understood,   is not by any means the only EBNF variant,
+providing    support   for a number   of EBNF variants would ease the job
+of porting  grammars  to   the system.</li>
+                     <li>More common/library code -- common data formats, 
+HTML   and/or SGML parsers</li>
+                                                                  
+</ul>
+                         
+<p>      mxTextTools Rewrite Enhancements</p>
+                                     
+<ul>
+                     <li>Case-insensitive matching commands?            
+    </li>
+                     <li>Backtracking support?</li>
+                                                                      
+</ul>
+       
+<p>Alternate C Back-end?<br>
+    </p>
+       
+<ul>
+      <li>Given the amount of effort poured into the mxTextTools engine,
+this   may seem silly, but it would be nice to implement a more advanced
+parsing   algorithm directly in C, without going through the assembly-like
+interface   of mxTextTools.  Given that Marc-André isn't interested in adopting
+the non-recursive  codebase, there's not much point retaining compatability
+with mxTextTools,  so moving to a more parser-friendly engine might be the
+best approach.<br>
+      </li>
+       
+</ul>
+                                                       
+<h2><a name="License"></a>Copyright, License &amp; Disclaimer</h2>
+                                                          
+<p>© 1998-2002, Copyright by Mike C. Fletcher; All Rights Reserved.<br>
+                  mailto:       <a
+ href="mailto:mcfletch@users.sourceforge.net">mcfletch@users.sourceforge.net</a>
+                </p>
+                                                                       
+<p>Permission to use, copy, modify, and distribute this software and its
+     documentation for any purpose and without fee or royalty is hereby granted,
+              provided that the above copyright notice appear in all copies
+  and    that     both  the copyright notice and this permission notice appear
+  in   supporting     documentation   or portions thereof, including modifications,
+     that you  make.     </p>
+                                                                       
+<p>THE AUTHOR MIKE C. FLETCHER DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS
+         SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ FITNESS,            IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL,
+ INDIRECT   OR   CONSEQUENTIAL      DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING
+ FROM  LOSS  OF USE, DATA OR  PROFITS,    WHETHER IN AN ACTION OF CONTRACT,
+ NEGLIGENCE     OR OTHER TORTIOUS  ACTION, ARISING   OUT OF OR IN CONNECTION
+ WITH THE USE    OR PERFORMANCE OF THIS SOFTWARE!<br>
+                     </p>
+                                           
+<p align="center">A <a href="http://sourceforge.net"> <img
+ src="http://sourceforge.net/sflogo.php?group_id=55673&amp;type=5"
+ width="210" height="62" border="0" alt="SourceForge Logo">
+</a><br>
+                    Open Source <a
+ href="http://simpleparse.sourceforge.net/">project</a><br>
+</p>
+</body>
+</html>

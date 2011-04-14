@@ -1,0 +1,292 @@
+
+<!doctype html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module simpleparse.common.calendar_names</title>
+<style type="text/css"><!--
+TT { font-family: lucidatypewriter, lucida console, courier }
+--></style></head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="simpleparse.html"><font color="#ffffff">simpleparse</font></a>.<a href="simpleparse.common.html"><font color="#ffffff">common</font></a>.calendar_names</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///S|/sp/simpleparse/common/calendar_names.py">s:\sp\simpleparse\common\calendar_names.py</a></font></td></tr></table>
+    <p><tt>Locale-specific&nbsp;calendar&nbsp;names&nbsp;(day-of-week&nbsp;and&nbsp;month-of-year)<br>
+&nbsp;<br>
+These&nbsp;values&nbsp;are&nbsp;those&nbsp;returned&nbsp;by&nbsp;the&nbsp;calendar&nbsp;module.&nbsp;&nbsp;Available<br>
+productions:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locale_day_names<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locale_day_names_uc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locale_day_names_lc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Names&nbsp;for&nbsp;the&nbsp;days&nbsp;of&nbsp;the&nbsp;week<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locale_day_abbrs<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locale_day_abbrs_uc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locale_day_abbrs_lc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Short-forms&nbsp;(3&nbsp;characters&nbsp;normally)&nbsp;for<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;days&nbsp;of&nbsp;the&nbsp;week.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locale_month_names<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locale_month_names_uc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locale_month_names_lc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Names&nbsp;for&nbsp;the&nbsp;months&nbsp;of&nbsp;the&nbsp;year<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locale_month_abbrs<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locale_month_abbrs_uc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locale_month_abbrs_lc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Short-forms&nbsp;(3&nbsp;characters&nbsp;normally)&nbsp;for<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;months&nbsp;of&nbsp;the&nbsp;year<br>
+&nbsp;<br>
+Interpreters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MonthNameInterpreter">MonthNameInterpreter</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#DayNameInterpreter">DayNameInterpreter</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Both&nbsp;offer&nbsp;the&nbsp;ability&nbsp;to&nbsp;set&nbsp;an&nbsp;index&nbsp;other<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;than&nbsp;the&nbsp;default&nbsp;(of&nbsp;1)&nbsp;for&nbsp;the&nbsp;first&nbsp;item&nbsp;in<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;list.</tt></p>
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#fffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="calendar.html">calendar</a><br>
+</td><td width="25%" valign=top><a href="simpleparse.common.html">simpleparse.common</a><br>
+</td><td width="25%" valign=top><a href="simpleparse.objectgenerator.html">simpleparse.objectgenerator</a><br>
+</td><td width="25%" valign=top><a href="string.html">string</a><br>
+</td></tr></table></td></tr></table>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="simpleparse.common.calendar_names.html#NameInterpreter">NameInterpreter</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="simpleparse.common.calendar_names.html#DayNameInterpreter">DayNameInterpreter</a>
+</font></dt><dt><font face="helvetica, arial"><a href="simpleparse.common.calendar_names.html#MonthNameInterpreter">MonthNameInterpreter</a>
+</font></dt></dl>
+</dd>
+</dl>
+ 
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="DayNameInterpreter">class <strong>DayNameInterpreter</strong></a>(<a href="simpleparse.common.calendar_names.html#NameInterpreter">NameInterpreter</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Interpret&nbsp;a&nbsp;day-of-week&nbsp;name&nbsp;as&nbsp;an&nbsp;integer&nbsp;index<br>
+&nbsp;<br>
+Pass&nbsp;an&nbsp;"offset"&nbsp;value&nbsp;to&nbsp;__init__&nbsp;to&nbsp;use&nbsp;an&nbsp;offset&nbsp;other<br>
+than&nbsp;1&nbsp;(January&nbsp;=&nbsp;1),&nbsp;normally&nbsp;0&nbsp;(January&nbsp;=&nbsp;0)<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;&nbsp;</td>
+<td width="100%">Data and non-method functions defined here:<br>
+<dl><dt><strong>__doc__</strong> = 'Interpret a day-of-week name as an integer index...<font color="#c040c0">\t</font>than 1 (January = 1), normally 0 (January = 0)<font color="#c040c0">\n\t</font>'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>__module__</strong> = 'simpleparse.common.calendar_names'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>nameType</strong> = 'Day'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>tables</strong> = (['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'], ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'])<dd><tt>tuple()&nbsp;-&gt;&nbsp;an&nbsp;empty&nbsp;tuple<br>
+tuple(sequence)&nbsp;-&gt;&nbsp;tuple&nbsp;initialized&nbsp;from&nbsp;sequence's&nbsp;items<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;tuple,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<hr>
+Methods inherited from <a href="simpleparse.common.calendar_names.html#NameInterpreter">NameInterpreter</a>:<br>
+<dl><dt><a name="DayNameInterpreter-__call__"><strong>__call__</strong></a>(self, (tag, left, right, children), buffer)</dt></dl>
+
+<dl><dt><a name="DayNameInterpreter-__init__"><strong>__init__</strong></a>(self, offset<font color="#909090">=1</font>)</dt></dl>
+
+<hr>
+Data and non-method functions inherited from <a href="simpleparse.common.calendar_names.html#NameInterpreter">NameInterpreter</a>:<br>
+<dl><dt><strong>offset</strong> = 1<dd><tt>int(x[,&nbsp;base])&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+Convert&nbsp;a&nbsp;string&nbsp;or&nbsp;number&nbsp;to&nbsp;an&nbsp;integer,&nbsp;if&nbsp;possible.&nbsp;&nbsp;A&nbsp;floating&nbsp;point<br>
+argument&nbsp;will&nbsp;be&nbsp;truncated&nbsp;towards&nbsp;zero&nbsp;(this&nbsp;does&nbsp;not&nbsp;include&nbsp;a&nbsp;string<br>
+representation&nbsp;of&nbsp;a&nbsp;floating&nbsp;point&nbsp;number!)&nbsp;&nbsp;When&nbsp;converting&nbsp;a&nbsp;string,&nbsp;use<br>
+the&nbsp;optional&nbsp;base.&nbsp;&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;to&nbsp;supply&nbsp;a&nbsp;base&nbsp;when&nbsp;converting&nbsp;a<br>
+non-string.</tt></dl>
+
+</td></tr></table> 
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="MonthNameInterpreter">class <strong>MonthNameInterpreter</strong></a>(<a href="simpleparse.common.calendar_names.html#NameInterpreter">NameInterpreter</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Interpret&nbsp;a&nbsp;month-of-year&nbsp;name&nbsp;as&nbsp;an&nbsp;integer&nbsp;index<br>
+&nbsp;<br>
+Pass&nbsp;an&nbsp;"offset"&nbsp;value&nbsp;to&nbsp;__init__&nbsp;to&nbsp;use&nbsp;an&nbsp;offset&nbsp;other<br>
+than&nbsp;1&nbsp;(Monday&nbsp;=&nbsp;1),&nbsp;normally&nbsp;0&nbsp;(Monday&nbsp;=&nbsp;0)<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;&nbsp;</td>
+<td width="100%">Data and non-method functions defined here:<br>
+<dl><dt><strong>__doc__</strong> = 'Interpret a month-of-year name as an integer ind...r<font color="#c040c0">\n\t</font>than 1 (Monday = 1), normally 0 (Monday = 0)<font color="#c040c0">\n\t</font>'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>__module__</strong> = 'simpleparse.common.calendar_names'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>nameType</strong> = 'Month'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>tables</strong> = (['', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'], ['', 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'])<dd><tt>tuple()&nbsp;-&gt;&nbsp;an&nbsp;empty&nbsp;tuple<br>
+tuple(sequence)&nbsp;-&gt;&nbsp;tuple&nbsp;initialized&nbsp;from&nbsp;sequence's&nbsp;items<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;tuple,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<hr>
+Methods inherited from <a href="simpleparse.common.calendar_names.html#NameInterpreter">NameInterpreter</a>:<br>
+<dl><dt><a name="MonthNameInterpreter-__call__"><strong>__call__</strong></a>(self, (tag, left, right, children), buffer)</dt></dl>
+
+<dl><dt><a name="MonthNameInterpreter-__init__"><strong>__init__</strong></a>(self, offset<font color="#909090">=1</font>)</dt></dl>
+
+<hr>
+Data and non-method functions inherited from <a href="simpleparse.common.calendar_names.html#NameInterpreter">NameInterpreter</a>:<br>
+<dl><dt><strong>offset</strong> = 1<dd><tt>int(x[,&nbsp;base])&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+Convert&nbsp;a&nbsp;string&nbsp;or&nbsp;number&nbsp;to&nbsp;an&nbsp;integer,&nbsp;if&nbsp;possible.&nbsp;&nbsp;A&nbsp;floating&nbsp;point<br>
+argument&nbsp;will&nbsp;be&nbsp;truncated&nbsp;towards&nbsp;zero&nbsp;(this&nbsp;does&nbsp;not&nbsp;include&nbsp;a&nbsp;string<br>
+representation&nbsp;of&nbsp;a&nbsp;floating&nbsp;point&nbsp;number!)&nbsp;&nbsp;When&nbsp;converting&nbsp;a&nbsp;string,&nbsp;use<br>
+the&nbsp;optional&nbsp;base.&nbsp;&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;to&nbsp;supply&nbsp;a&nbsp;base&nbsp;when&nbsp;converting&nbsp;a<br>
+non-string.</tt></dl>
+
+</td></tr></table> 
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="NameInterpreter">class <strong>NameInterpreter</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2>&nbsp;</td></tr>
+<tr><td>&nbsp;&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="NameInterpreter-__call__"><strong>__call__</strong></a>(self, (tag, left, right, children), buffer)</dt></dl>
+
+<dl><dt><a name="NameInterpreter-__init__"><strong>__init__</strong></a>(self, offset<font color="#909090">=1</font>)</dt></dl>
+
+<hr>
+Data and non-method functions defined here:<br>
+<dl><dt><strong>__doc__</strong> = None</dl>
+
+<dl><dt><strong>__module__</strong> = 'simpleparse.common.calendar_names'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>offset</strong> = 1<dd><tt>int(x[,&nbsp;base])&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+Convert&nbsp;a&nbsp;string&nbsp;or&nbsp;number&nbsp;to&nbsp;an&nbsp;integer,&nbsp;if&nbsp;possible.&nbsp;&nbsp;A&nbsp;floating&nbsp;point<br>
+argument&nbsp;will&nbsp;be&nbsp;truncated&nbsp;towards&nbsp;zero&nbsp;(this&nbsp;does&nbsp;not&nbsp;include&nbsp;a&nbsp;string<br>
+representation&nbsp;of&nbsp;a&nbsp;floating&nbsp;point&nbsp;number!)&nbsp;&nbsp;When&nbsp;converting&nbsp;a&nbsp;string,&nbsp;use<br>
+the&nbsp;optional&nbsp;base.&nbsp;&nbsp;It&nbsp;is&nbsp;an&nbsp;error&nbsp;to&nbsp;supply&nbsp;a&nbsp;base&nbsp;when&nbsp;converting&nbsp;a<br>
+non-string.</tt></dl>
+
+</td></tr></table></td></tr></table>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><dl><dt><a name="-_build"><strong>_build</strong></a>(name, set)</dt></dl>
+</td></tr></table>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><strong>__file__</strong> = r'S:\sp\simpleparse\common\calendar_names.pyc'<br>
+<strong>__name__</strong> = 'simpleparse.common.calendar_names'<br>
+<strong>c</strong> = {'locale_day_abbrs': FirstOfGroup(
+    children = [
+        Literal(
+...l(
+            value = 'Fri',
+        ),
+    ],
+), 'locale_day_abbrs_lc': FirstOfGroup(
+    children = [
+        Literal(
+...l(
+            value = 'fri',
+        ),
+    ],
+), 'locale_day_abbrs_uc': FirstOfGroup(
+    children = [
+        Literal(
+...l(
+            value = 'FRI',
+        ),
+    ],
+), 'locale_day_names': FirstOfGroup(
+    children = [
+        Literal(
+...            value = 'Friday',
+        ),
+    ],
+), 'locale_day_names_lc': FirstOfGroup(
+    children = [
+        Literal(
+...            value = 'friday',
+        ),
+    ],
+), 'locale_day_names_uc': FirstOfGroup(
+    children = [
+        Literal(
+...            value = 'FRIDAY',
+        ),
+    ],
+), 'locale_month_abbrs': FirstOfGroup(
+    children = [
+        Literal(
+...eral(
+            value = '',
+        ),
+    ],
+), 'locale_month_abbrs_lc': FirstOfGroup(
+    children = [
+        Literal(
+...eral(
+            value = '',
+        ),
+    ],
+), 'locale_month_abbrs_uc': FirstOfGroup(
+    children = [
+        Literal(
+...eral(
+            value = '',
+        ),
+    ],
+), 'locale_month_names': FirstOfGroup(
+    children = [
+        Literal(
+...eral(
+            value = '',
+        ),
+    ],
+), ...}<br>
+<strong>da</strong> = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']<br>
+<strong>dn</strong> = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']<br>
+<strong>ma</strong> = ['', 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']<br>
+<strong>mn</strong> = ['', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']</td></tr></table>
+</body></html>

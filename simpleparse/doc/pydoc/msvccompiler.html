@@ -1,0 +1,388 @@
+
+<!doctype html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module msvccompiler</title>
+<style type="text/css"><!--
+TT { font-family: lucidatypewriter, lucida console, courier }
+--></style></head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>msvccompiler</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///S|/sp/msvccompiler.py">s:\sp\msvccompiler.py</a></font></td></tr></table>
+    <p><tt>distutils.msvccompiler<br>
+&nbsp;<br>
+Contains&nbsp;<a href="#MSVCCompiler">MSVCCompiler</a>,&nbsp;an&nbsp;implementation&nbsp;of&nbsp;the&nbsp;abstract&nbsp;<a href="distutils.ccompiler.html#CCompiler">CCompiler</a>&nbsp;class<br>
+for&nbsp;the&nbsp;Microsoft&nbsp;Visual&nbsp;Studio.</tt></p>
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#fffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="_winreg.html">_winreg</a><br>
+<a href="_winreg.html">_winreg</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+<a href="string.html">string</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="distutils.ccompiler.html#CCompiler">distutils.ccompiler.CCompiler</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="msvccompiler.html#MSVCCompiler">MSVCCompiler</a>
+</font></dt></dl>
+</dd>
+</dl>
+ 
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="MSVCCompiler">class <strong>MSVCCompiler</strong></a>(<a href="distutils.ccompiler.html#CCompiler">distutils.ccompiler.CCompiler</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Concrete&nbsp;class&nbsp;that&nbsp;implements&nbsp;an&nbsp;interface&nbsp;to&nbsp;Microsoft&nbsp;Visual&nbsp;C++,<br>
+as&nbsp;defined&nbsp;by&nbsp;the&nbsp;<a href="distutils.ccompiler.html#CCompiler">CCompiler</a>&nbsp;abstract&nbsp;class.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="MSVCCompiler-__init__"><strong>__init__</strong></a>(self, verbose<font color="#909090">=0</font>, dry_run<font color="#909090">=0</font>, force<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-compile"><strong>compile</strong></a>(self, sources, output_dir<font color="#909090">=None</font>, macros<font color="#909090">=None</font>, include_dirs<font color="#909090">=None</font>, debug<font color="#909090">=0</font>, extra_preargs<font color="#909090">=None</font>, extra_postargs<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-create_static_lib"><strong>create_static_lib</strong></a>(self, objects, output_libname, output_dir<font color="#909090">=None</font>, debug<font color="#909090">=0</font>, extra_preargs<font color="#909090">=None</font>, extra_postargs<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-find_library_file"><strong>find_library_file</strong></a>(self, dirs, lib, debug<font color="#909090">=0</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-library_dir_option"><strong>library_dir_option</strong></a>(self, dir)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-library_option"><strong>library_option</strong></a>(self, lib)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-link"><strong>link</strong></a>(self, target_desc, objects, output_filename, output_dir<font color="#909090">=None</font>, libraries<font color="#909090">=None</font>, library_dirs<font color="#909090">=None</font>, runtime_library_dirs<font color="#909090">=None</font>, export_symbols<font color="#909090">=None</font>, debug<font color="#909090">=0</font>, extra_preargs<font color="#909090">=None</font>, extra_postargs<font color="#909090">=None</font>, build_temp<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-object_filenames"><strong>object_filenames</strong></a>(self, source_filenames, strip_dir<font color="#909090">=0</font>, output_dir<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-runtime_library_dir_option"><strong>runtime_library_dir_option</strong></a>(self, dir)</dt></dl>
+
+<hr>
+Data and non-method functions defined here:<br>
+<dl><dt><strong>__doc__</strong> = 'Concrete class that implements an interface to M...      as defined by the CCompiler abstract class.'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>__module__</strong> = 'msvccompiler'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>_c_extensions</strong> = ['.c']<dd><tt>list()&nbsp;-&gt;&nbsp;new&nbsp;list<br>
+list(sequence)&nbsp;-&gt;&nbsp;new&nbsp;list&nbsp;initialized&nbsp;from&nbsp;sequence's&nbsp;items</tt></dl>
+
+<dl><dt><strong>_cpp_extensions</strong> = ['.cc', '.cpp', '.cxx']<dd><tt>list()&nbsp;-&gt;&nbsp;new&nbsp;list<br>
+list(sequence)&nbsp;-&gt;&nbsp;new&nbsp;list&nbsp;initialized&nbsp;from&nbsp;sequence's&nbsp;items</tt></dl>
+
+<dl><dt><strong>_mc_extensions</strong> = ['.mc']<dd><tt>list()&nbsp;-&gt;&nbsp;new&nbsp;list<br>
+list(sequence)&nbsp;-&gt;&nbsp;new&nbsp;list&nbsp;initialized&nbsp;from&nbsp;sequence's&nbsp;items</tt></dl>
+
+<dl><dt><strong>_rc_extensions</strong> = ['.rc']<dd><tt>list()&nbsp;-&gt;&nbsp;new&nbsp;list<br>
+list(sequence)&nbsp;-&gt;&nbsp;new&nbsp;list&nbsp;initialized&nbsp;from&nbsp;sequence's&nbsp;items</tt></dl>
+
+<dl><dt><strong>compiler_type</strong> = 'msvc'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>exe_extension</strong> = '.exe'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>executables</strong> = {}<dd><tt>dict()&nbsp;-&gt;&nbsp;new&nbsp;empty&nbsp;dictionary.<br>
+dict(mapping)&nbsp;-&gt;&nbsp;new&nbsp;dictionary&nbsp;initialized&nbsp;from&nbsp;a&nbsp;mapping&nbsp;object's<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(key,&nbsp;value)&nbsp;pairs.<br>
+dict(seq)&nbsp;-&gt;&nbsp;new&nbsp;dictionary&nbsp;initialized&nbsp;as&nbsp;if&nbsp;via:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;d&nbsp;=&nbsp;{}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;k,&nbsp;v&nbsp;in&nbsp;seq:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d[k]&nbsp;=&nbsp;v</tt></dl>
+
+<dl><dt><strong>obj_extension</strong> = '.obj'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>res_extension</strong> = '.res'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>shared_lib_extension</strong> = '.dll'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>shared_lib_format</strong> = '%s%s'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>src_extensions</strong> = ['.c', '.cc', '.cpp', '.cxx', '.rc', '.mc']<dd><tt>list()&nbsp;-&gt;&nbsp;new&nbsp;list<br>
+list(sequence)&nbsp;-&gt;&nbsp;new&nbsp;list&nbsp;initialized&nbsp;from&nbsp;sequence's&nbsp;items</tt></dl>
+
+<dl><dt><strong>static_lib_extension</strong> = '.lib'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>static_lib_format</strong> = '%s%s'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<hr>
+Methods inherited from <a href="distutils.ccompiler.html#CCompiler">distutils.ccompiler.CCompiler</a>:<br>
+<dl><dt><a name="MSVCCompiler-_check_macro_definitions"><strong>_check_macro_definitions</strong></a>(self, definitions)</dt><dd><tt>Ensures&nbsp;that&nbsp;every&nbsp;element&nbsp;of&nbsp;'definitions'&nbsp;is&nbsp;a&nbsp;valid&nbsp;macro<br>
+definition,&nbsp;ie.&nbsp;either&nbsp;(name,value)&nbsp;2-tuple&nbsp;or&nbsp;a&nbsp;(name,)&nbsp;tuple.&nbsp;&nbsp;Do<br>
+nothing&nbsp;if&nbsp;all&nbsp;definitions&nbsp;are&nbsp;OK,&nbsp;raise&nbsp;TypeError&nbsp;otherwise.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-_find_macro"><strong>_find_macro</strong></a>(self, name)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-_fix_compile_args"><strong>_fix_compile_args</strong></a>(self, output_dir, macros, include_dirs)</dt><dd><tt>Typecheck&nbsp;and&nbsp;fix-up&nbsp;some&nbsp;of&nbsp;the&nbsp;arguments&nbsp;to&nbsp;the&nbsp;'<a href="#MSVCCompiler-compile">compile</a>()'<br>
+method,&nbsp;and&nbsp;return&nbsp;fixed-up&nbsp;values.&nbsp;&nbsp;Specifically:&nbsp;if&nbsp;'output_dir'<br>
+is&nbsp;None,&nbsp;replaces&nbsp;it&nbsp;with&nbsp;'self.<strong>output_dir</strong>';&nbsp;ensures&nbsp;that&nbsp;'macros'<br>
+is&nbsp;a&nbsp;list,&nbsp;and&nbsp;augments&nbsp;it&nbsp;with&nbsp;'self.<strong>macros</strong>';&nbsp;ensures&nbsp;that<br>
+'include_dirs'&nbsp;is&nbsp;a&nbsp;list,&nbsp;and&nbsp;augments&nbsp;it&nbsp;with&nbsp;'self.<strong>include_dirs</strong>'.<br>
+Guarantees&nbsp;that&nbsp;the&nbsp;returned&nbsp;values&nbsp;are&nbsp;of&nbsp;the&nbsp;correct&nbsp;type,<br>
+i.e.&nbsp;for&nbsp;'output_dir'&nbsp;either&nbsp;string&nbsp;or&nbsp;None,&nbsp;and&nbsp;for&nbsp;'macros'&nbsp;and<br>
+'include_dirs'&nbsp;either&nbsp;list&nbsp;or&nbsp;None.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-_fix_lib_args"><strong>_fix_lib_args</strong></a>(self, libraries, library_dirs, runtime_library_dirs)</dt><dd><tt>Typecheck&nbsp;and&nbsp;fix&nbsp;up&nbsp;some&nbsp;of&nbsp;the&nbsp;arguments&nbsp;supplied&nbsp;to&nbsp;the<br>
+'link_*'&nbsp;methods.&nbsp;&nbsp;Specifically:&nbsp;ensure&nbsp;that&nbsp;all&nbsp;arguments&nbsp;are<br>
+lists,&nbsp;and&nbsp;augment&nbsp;them&nbsp;with&nbsp;their&nbsp;permanent&nbsp;versions<br>
+(eg.&nbsp;'self.<strong>libraries</strong>'&nbsp;augments&nbsp;'libraries').&nbsp;&nbsp;Return&nbsp;a&nbsp;tuple&nbsp;with<br>
+fixed&nbsp;versions&nbsp;of&nbsp;all&nbsp;arguments.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-_fix_object_args"><strong>_fix_object_args</strong></a>(self, objects, output_dir)</dt><dd><tt>Typecheck&nbsp;and&nbsp;fix&nbsp;up&nbsp;some&nbsp;arguments&nbsp;supplied&nbsp;to&nbsp;various&nbsp;methods.<br>
+Specifically:&nbsp;ensure&nbsp;that&nbsp;'objects'&nbsp;is&nbsp;a&nbsp;list;&nbsp;if&nbsp;output_dir&nbsp;is<br>
+None,&nbsp;replace&nbsp;with&nbsp;self.<strong>output_dir</strong>.&nbsp;&nbsp;Return&nbsp;fixed&nbsp;versions&nbsp;of<br>
+'objects'&nbsp;and&nbsp;'output_dir'.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-_need_link"><strong>_need_link</strong></a>(self, objects, output_file)</dt><dd><tt>Return&nbsp;true&nbsp;if&nbsp;we&nbsp;need&nbsp;to&nbsp;relink&nbsp;the&nbsp;files&nbsp;listed&nbsp;in&nbsp;'objects'<br>
+to&nbsp;recreate&nbsp;'output_file'.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-_prep_compile"><strong>_prep_compile</strong></a>(self, sources, output_dir)</dt><dd><tt>Determine&nbsp;the&nbsp;list&nbsp;of&nbsp;object&nbsp;files&nbsp;corresponding&nbsp;to&nbsp;'sources',<br>
+and&nbsp;figure&nbsp;out&nbsp;which&nbsp;ones&nbsp;really&nbsp;need&nbsp;to&nbsp;be&nbsp;recompiled.&nbsp;&nbsp;Return&nbsp;a<br>
+list&nbsp;of&nbsp;all&nbsp;object&nbsp;files&nbsp;and&nbsp;a&nbsp;dictionary&nbsp;telling&nbsp;which&nbsp;source<br>
+files&nbsp;can&nbsp;be&nbsp;skipped.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-add_include_dir"><strong>add_include_dir</strong></a>(self, dir)</dt><dd><tt>Add&nbsp;'dir'&nbsp;to&nbsp;the&nbsp;list&nbsp;of&nbsp;directories&nbsp;that&nbsp;will&nbsp;be&nbsp;searched&nbsp;for<br>
+header&nbsp;files.&nbsp;&nbsp;The&nbsp;compiler&nbsp;is&nbsp;instructed&nbsp;to&nbsp;search&nbsp;directories&nbsp;in<br>
+the&nbsp;order&nbsp;in&nbsp;which&nbsp;they&nbsp;are&nbsp;supplied&nbsp;by&nbsp;successive&nbsp;calls&nbsp;to<br>
+'<a href="#MSVCCompiler-add_include_dir">add_include_dir</a>()'.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-add_library"><strong>add_library</strong></a>(self, libname)</dt><dd><tt>Add&nbsp;'libname'&nbsp;to&nbsp;the&nbsp;list&nbsp;of&nbsp;libraries&nbsp;that&nbsp;will&nbsp;be&nbsp;included&nbsp;in<br>
+all&nbsp;links&nbsp;driven&nbsp;by&nbsp;this&nbsp;compiler&nbsp;object.&nbsp;&nbsp;Note&nbsp;that&nbsp;'libname'<br>
+should&nbsp;*not*&nbsp;be&nbsp;the&nbsp;name&nbsp;of&nbsp;a&nbsp;file&nbsp;containing&nbsp;a&nbsp;library,&nbsp;but&nbsp;the<br>
+name&nbsp;of&nbsp;the&nbsp;library&nbsp;itself:&nbsp;the&nbsp;actual&nbsp;filename&nbsp;will&nbsp;be&nbsp;inferred&nbsp;by<br>
+the&nbsp;linker,&nbsp;the&nbsp;compiler,&nbsp;or&nbsp;the&nbsp;compiler&nbsp;class&nbsp;(depending&nbsp;on&nbsp;the<br>
+platform).<br>
+&nbsp;<br>
+The&nbsp;linker&nbsp;will&nbsp;be&nbsp;instructed&nbsp;to&nbsp;link&nbsp;against&nbsp;libraries&nbsp;in&nbsp;the<br>
+order&nbsp;they&nbsp;were&nbsp;supplied&nbsp;to&nbsp;'<a href="#MSVCCompiler-add_library">add_library</a>()'&nbsp;and/or<br>
+'<a href="#MSVCCompiler-set_libraries">set_libraries</a>()'.&nbsp;&nbsp;It&nbsp;is&nbsp;perfectly&nbsp;valid&nbsp;to&nbsp;duplicate&nbsp;library<br>
+names;&nbsp;the&nbsp;linker&nbsp;will&nbsp;be&nbsp;instructed&nbsp;to&nbsp;link&nbsp;against&nbsp;libraries&nbsp;as<br>
+many&nbsp;times&nbsp;as&nbsp;they&nbsp;are&nbsp;mentioned.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-add_library_dir"><strong>add_library_dir</strong></a>(self, dir)</dt><dd><tt>Add&nbsp;'dir'&nbsp;to&nbsp;the&nbsp;list&nbsp;of&nbsp;directories&nbsp;that&nbsp;will&nbsp;be&nbsp;searched&nbsp;for<br>
+libraries&nbsp;specified&nbsp;to&nbsp;'<a href="#MSVCCompiler-add_library">add_library</a>()'&nbsp;and&nbsp;'<a href="#MSVCCompiler-set_libraries">set_libraries</a>()'.&nbsp;&nbsp;The<br>
+linker&nbsp;will&nbsp;be&nbsp;instructed&nbsp;to&nbsp;search&nbsp;for&nbsp;libraries&nbsp;in&nbsp;the&nbsp;order&nbsp;they<br>
+are&nbsp;supplied&nbsp;to&nbsp;'<a href="#MSVCCompiler-add_library_dir">add_library_dir</a>()'&nbsp;and/or&nbsp;'<a href="#MSVCCompiler-set_library_dirs">set_library_dirs</a>()'.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-add_link_object"><strong>add_link_object</strong></a>(self, object)</dt><dd><tt>Add&nbsp;'object'&nbsp;to&nbsp;the&nbsp;list&nbsp;of&nbsp;object&nbsp;files&nbsp;(or&nbsp;analogues,&nbsp;such&nbsp;as<br>
+explicitly&nbsp;named&nbsp;library&nbsp;files&nbsp;or&nbsp;the&nbsp;output&nbsp;of&nbsp;"resource<br>
+compilers")&nbsp;to&nbsp;be&nbsp;included&nbsp;in&nbsp;every&nbsp;link&nbsp;driven&nbsp;by&nbsp;this&nbsp;compiler<br>
+object.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-add_runtime_library_dir"><strong>add_runtime_library_dir</strong></a>(self, dir)</dt><dd><tt>Add&nbsp;'dir'&nbsp;to&nbsp;the&nbsp;list&nbsp;of&nbsp;directories&nbsp;that&nbsp;will&nbsp;be&nbsp;searched&nbsp;for<br>
+shared&nbsp;libraries&nbsp;at&nbsp;runtime.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-announce"><strong>announce</strong></a>(self, msg, level<font color="#909090">=1</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-debug_print"><strong>debug_print</strong></a>(self, msg)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-define_macro"><strong>define_macro</strong></a>(self, name, value<font color="#909090">=None</font>)</dt><dd><tt>Define&nbsp;a&nbsp;preprocessor&nbsp;macro&nbsp;for&nbsp;all&nbsp;compilations&nbsp;driven&nbsp;by&nbsp;this<br>
+compiler&nbsp;object.&nbsp;&nbsp;The&nbsp;optional&nbsp;parameter&nbsp;'value'&nbsp;should&nbsp;be&nbsp;a<br>
+string;&nbsp;if&nbsp;it&nbsp;is&nbsp;not&nbsp;supplied,&nbsp;then&nbsp;the&nbsp;macro&nbsp;will&nbsp;be&nbsp;defined<br>
+without&nbsp;an&nbsp;explicit&nbsp;value&nbsp;and&nbsp;the&nbsp;exact&nbsp;outcome&nbsp;depends&nbsp;on&nbsp;the<br>
+compiler&nbsp;used&nbsp;(XXX&nbsp;true?&nbsp;does&nbsp;ANSI&nbsp;say&nbsp;anything&nbsp;about&nbsp;this?)</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-executable_filename"><strong>executable_filename</strong></a>(self, basename, strip_dir<font color="#909090">=0</font>, output_dir<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-execute"><strong>execute</strong></a>(self, func, args, msg<font color="#909090">=None</font>, level<font color="#909090">=1</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-library_filename"><strong>library_filename</strong></a>(self, libname, lib_type<font color="#909090">='static'</font>, strip_dir<font color="#909090">=0</font>, output_dir<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-link_executable"><strong>link_executable</strong></a>(self, objects, output_progname, output_dir<font color="#909090">=None</font>, libraries<font color="#909090">=None</font>, library_dirs<font color="#909090">=None</font>, runtime_library_dirs<font color="#909090">=None</font>, debug<font color="#909090">=0</font>, extra_preargs<font color="#909090">=None</font>, extra_postargs<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-link_shared_lib"><strong>link_shared_lib</strong></a>(self, objects, output_libname, output_dir<font color="#909090">=None</font>, libraries<font color="#909090">=None</font>, library_dirs<font color="#909090">=None</font>, runtime_library_dirs<font color="#909090">=None</font>, export_symbols<font color="#909090">=None</font>, debug<font color="#909090">=0</font>, extra_preargs<font color="#909090">=None</font>, extra_postargs<font color="#909090">=None</font>, build_temp<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-link_shared_object"><strong>link_shared_object</strong></a>(self, objects, output_filename, output_dir<font color="#909090">=None</font>, libraries<font color="#909090">=None</font>, library_dirs<font color="#909090">=None</font>, runtime_library_dirs<font color="#909090">=None</font>, export_symbols<font color="#909090">=None</font>, debug<font color="#909090">=0</font>, extra_preargs<font color="#909090">=None</font>, extra_postargs<font color="#909090">=None</font>, build_temp<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-mkpath"><strong>mkpath</strong></a>(self, name, mode<font color="#909090">=511</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-move_file"><strong>move_file</strong></a>(self, src, dst)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-preprocess"><strong>preprocess</strong></a>(self, source, output_file<font color="#909090">=None</font>, macros<font color="#909090">=None</font>, include_dirs<font color="#909090">=None</font>, extra_preargs<font color="#909090">=None</font>, extra_postargs<font color="#909090">=None</font>)</dt><dd><tt>Preprocess&nbsp;a&nbsp;single&nbsp;C/C++&nbsp;source&nbsp;file,&nbsp;named&nbsp;in&nbsp;'source'.<br>
+Output&nbsp;will&nbsp;be&nbsp;written&nbsp;to&nbsp;file&nbsp;named&nbsp;'output_file',&nbsp;or&nbsp;stdout&nbsp;if<br>
+'output_file'&nbsp;not&nbsp;supplied.&nbsp;&nbsp;'macros'&nbsp;is&nbsp;a&nbsp;list&nbsp;of&nbsp;macro<br>
+definitions&nbsp;as&nbsp;for&nbsp;'<a href="#MSVCCompiler-compile">compile</a>()',&nbsp;which&nbsp;will&nbsp;augment&nbsp;the&nbsp;macros&nbsp;set<br>
+with&nbsp;'<a href="#MSVCCompiler-define_macro">define_macro</a>()'&nbsp;and&nbsp;'<a href="#MSVCCompiler-undefine_macro">undefine_macro</a>()'.&nbsp;&nbsp;'include_dirs'&nbsp;is&nbsp;a<br>
+list&nbsp;of&nbsp;directory&nbsp;names&nbsp;that&nbsp;will&nbsp;be&nbsp;added&nbsp;to&nbsp;the&nbsp;default&nbsp;list.<br>
+&nbsp;<br>
+Raises&nbsp;PreprocessError&nbsp;on&nbsp;failure.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-set_executable"><strong>set_executable</strong></a>(self, key, value)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-set_executables"><strong>set_executables</strong></a>(self, **args)</dt><dd><tt>Define&nbsp;the&nbsp;executables&nbsp;(and&nbsp;options&nbsp;for&nbsp;them)&nbsp;that&nbsp;will&nbsp;be&nbsp;run<br>
+to&nbsp;perform&nbsp;the&nbsp;various&nbsp;stages&nbsp;of&nbsp;compilation.&nbsp;&nbsp;The&nbsp;exact&nbsp;set&nbsp;of<br>
+executables&nbsp;that&nbsp;may&nbsp;be&nbsp;specified&nbsp;here&nbsp;depends&nbsp;on&nbsp;the&nbsp;compiler<br>
+class&nbsp;(via&nbsp;the&nbsp;'executables'&nbsp;class&nbsp;attribute),&nbsp;but&nbsp;most&nbsp;will&nbsp;have:<br>
+&nbsp;&nbsp;compiler&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;C/C++&nbsp;compiler<br>
+&nbsp;&nbsp;linker_so&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linker&nbsp;used&nbsp;to&nbsp;create&nbsp;shared&nbsp;objects&nbsp;and&nbsp;libraries<br>
+&nbsp;&nbsp;linker_exe&nbsp;&nbsp;&nbsp;&nbsp;linker&nbsp;used&nbsp;to&nbsp;create&nbsp;binary&nbsp;executables<br>
+&nbsp;&nbsp;archiver&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static&nbsp;library&nbsp;creator<br>
+&nbsp;<br>
+On&nbsp;platforms&nbsp;with&nbsp;a&nbsp;command-line&nbsp;(Unix,&nbsp;DOS/Windows),&nbsp;each&nbsp;of&nbsp;these<br>
+is&nbsp;a&nbsp;string&nbsp;that&nbsp;will&nbsp;be&nbsp;split&nbsp;into&nbsp;executable&nbsp;name&nbsp;and&nbsp;(optional)<br>
+list&nbsp;of&nbsp;arguments.&nbsp;&nbsp;(Splitting&nbsp;the&nbsp;string&nbsp;is&nbsp;done&nbsp;similarly&nbsp;to&nbsp;how<br>
+Unix&nbsp;shells&nbsp;operate:&nbsp;words&nbsp;are&nbsp;delimited&nbsp;by&nbsp;spaces,&nbsp;but&nbsp;quotes&nbsp;and<br>
+backslashes&nbsp;can&nbsp;override&nbsp;this.&nbsp;&nbsp;See<br>
+'distutils.util.split_quoted()'.)</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-set_include_dirs"><strong>set_include_dirs</strong></a>(self, dirs)</dt><dd><tt>Set&nbsp;the&nbsp;list&nbsp;of&nbsp;directories&nbsp;that&nbsp;will&nbsp;be&nbsp;searched&nbsp;to&nbsp;'dirs'&nbsp;(a<br>
+list&nbsp;of&nbsp;strings).&nbsp;&nbsp;Overrides&nbsp;any&nbsp;preceding&nbsp;calls&nbsp;to<br>
+'<a href="#MSVCCompiler-add_include_dir">add_include_dir</a>()';&nbsp;subsequence&nbsp;calls&nbsp;to&nbsp;'<a href="#MSVCCompiler-add_include_dir">add_include_dir</a>()'&nbsp;add<br>
+to&nbsp;the&nbsp;list&nbsp;passed&nbsp;to&nbsp;'<a href="#MSVCCompiler-set_include_dirs">set_include_dirs</a>()'.&nbsp;&nbsp;This&nbsp;does&nbsp;not&nbsp;affect<br>
+any&nbsp;list&nbsp;of&nbsp;standard&nbsp;include&nbsp;directories&nbsp;that&nbsp;the&nbsp;compiler&nbsp;may<br>
+search&nbsp;by&nbsp;default.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-set_libraries"><strong>set_libraries</strong></a>(self, libnames)</dt><dd><tt>Set&nbsp;the&nbsp;list&nbsp;of&nbsp;libraries&nbsp;to&nbsp;be&nbsp;included&nbsp;in&nbsp;all&nbsp;links&nbsp;driven&nbsp;by<br>
+this&nbsp;compiler&nbsp;object&nbsp;to&nbsp;'libnames'&nbsp;(a&nbsp;list&nbsp;of&nbsp;strings).&nbsp;&nbsp;This&nbsp;does<br>
+not&nbsp;affect&nbsp;any&nbsp;standard&nbsp;system&nbsp;libraries&nbsp;that&nbsp;the&nbsp;linker&nbsp;may<br>
+include&nbsp;by&nbsp;default.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-set_library_dirs"><strong>set_library_dirs</strong></a>(self, dirs)</dt><dd><tt>Set&nbsp;the&nbsp;list&nbsp;of&nbsp;library&nbsp;search&nbsp;directories&nbsp;to&nbsp;'dirs'&nbsp;(a&nbsp;list&nbsp;of<br>
+strings).&nbsp;&nbsp;This&nbsp;does&nbsp;not&nbsp;affect&nbsp;any&nbsp;standard&nbsp;library&nbsp;search&nbsp;path<br>
+that&nbsp;the&nbsp;linker&nbsp;may&nbsp;search&nbsp;by&nbsp;default.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-set_link_objects"><strong>set_link_objects</strong></a>(self, objects)</dt><dd><tt>Set&nbsp;the&nbsp;list&nbsp;of&nbsp;object&nbsp;files&nbsp;(or&nbsp;analogues)&nbsp;to&nbsp;be&nbsp;included&nbsp;in<br>
+every&nbsp;link&nbsp;to&nbsp;'objects'.&nbsp;&nbsp;This&nbsp;does&nbsp;not&nbsp;affect&nbsp;any&nbsp;standard&nbsp;object<br>
+files&nbsp;that&nbsp;the&nbsp;linker&nbsp;may&nbsp;include&nbsp;by&nbsp;default&nbsp;(such&nbsp;as&nbsp;system<br>
+libraries).</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-set_runtime_library_dirs"><strong>set_runtime_library_dirs</strong></a>(self, dirs)</dt><dd><tt>Set&nbsp;the&nbsp;list&nbsp;of&nbsp;directories&nbsp;to&nbsp;search&nbsp;for&nbsp;shared&nbsp;libraries&nbsp;at<br>
+runtime&nbsp;to&nbsp;'dirs'&nbsp;(a&nbsp;list&nbsp;of&nbsp;strings).&nbsp;&nbsp;This&nbsp;does&nbsp;not&nbsp;affect&nbsp;any<br>
+standard&nbsp;search&nbsp;path&nbsp;that&nbsp;the&nbsp;runtime&nbsp;linker&nbsp;may&nbsp;search&nbsp;by<br>
+default.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-shared_object_filename"><strong>shared_object_filename</strong></a>(self, basename, strip_dir<font color="#909090">=0</font>, output_dir<font color="#909090">=''</font>)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-spawn"><strong>spawn</strong></a>(self, cmd)</dt></dl>
+
+<dl><dt><a name="MSVCCompiler-undefine_macro"><strong>undefine_macro</strong></a>(self, name)</dt><dd><tt>Undefine&nbsp;a&nbsp;preprocessor&nbsp;macro&nbsp;for&nbsp;all&nbsp;compilations&nbsp;driven&nbsp;by<br>
+this&nbsp;compiler&nbsp;object.&nbsp;&nbsp;If&nbsp;the&nbsp;same&nbsp;macro&nbsp;is&nbsp;defined&nbsp;by<br>
+'<a href="#MSVCCompiler-define_macro">define_macro</a>()'&nbsp;and&nbsp;undefined&nbsp;by&nbsp;'<a href="#MSVCCompiler-undefine_macro">undefine_macro</a>()'&nbsp;the&nbsp;last&nbsp;call<br>
+takes&nbsp;precedence&nbsp;(including&nbsp;multiple&nbsp;redefinitions&nbsp;or<br>
+undefinitions).&nbsp;&nbsp;If&nbsp;the&nbsp;macro&nbsp;is&nbsp;redefined/undefined&nbsp;on&nbsp;a<br>
+per-compilation&nbsp;basis&nbsp;(ie.&nbsp;in&nbsp;the&nbsp;call&nbsp;to&nbsp;'<a href="#MSVCCompiler-compile">compile</a>()'),&nbsp;then&nbsp;that<br>
+takes&nbsp;precedence.</tt></dd></dl>
+
+<dl><dt><a name="MSVCCompiler-warn"><strong>warn</strong></a>(self, msg)</dt></dl>
+
+<hr>
+Data and non-method functions inherited from <a href="distutils.ccompiler.html#CCompiler">distutils.ccompiler.CCompiler</a>:<br>
+<dl><dt><strong>EXECUTABLE</strong> = 'executable'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>SHARED_LIBRARY</strong> = 'shared_library'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>SHARED_OBJECT</strong> = 'shared_object'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+</td></tr></table></td></tr></table>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><dl><dt><a name="-RegEnumKey"><strong>RegEnumKey</strong></a> = EnumKey(...)</dt><dd><tt>string&nbsp;=&nbsp;EnumKey(key,&nbsp;index)&nbsp;-&nbsp;Enumerates&nbsp;subkeys&nbsp;of&nbsp;an&nbsp;open&nbsp;registry&nbsp;key.<br>
+&nbsp;<br>
+key&nbsp;is&nbsp;an&nbsp;already&nbsp;open&nbsp;key,&nbsp;or&nbsp;any&nbsp;one&nbsp;of&nbsp;the&nbsp;predefined&nbsp;HKEY_*&nbsp;constants.<br>
+index&nbsp;is&nbsp;an&nbsp;integer&nbsp;that&nbsp;identifies&nbsp;the&nbsp;index&nbsp;of&nbsp;the&nbsp;key&nbsp;to&nbsp;retrieve.<br>
+&nbsp;<br>
+The&nbsp;function&nbsp;retrieves&nbsp;the&nbsp;name&nbsp;of&nbsp;one&nbsp;subkey&nbsp;each&nbsp;time&nbsp;it&nbsp;is&nbsp;called.<br>
+It&nbsp;is&nbsp;typically&nbsp;called&nbsp;repeatedly&nbsp;until&nbsp;an&nbsp;EnvironmentError&nbsp;exception&nbsp;is<br>
+raised,&nbsp;indicating&nbsp;no&nbsp;more&nbsp;values&nbsp;are&nbsp;available.</tt></dd></dl>
+ <dl><dt><a name="-RegEnumValue"><strong>RegEnumValue</strong></a> = EnumValue(...)</dt><dd><tt>tuple&nbsp;=&nbsp;EnumValue(key,&nbsp;index)&nbsp;-&nbsp;Enumerates&nbsp;values&nbsp;of&nbsp;an&nbsp;open&nbsp;registry&nbsp;key.<br>
+key&nbsp;is&nbsp;an&nbsp;already&nbsp;open&nbsp;key,&nbsp;or&nbsp;any&nbsp;one&nbsp;of&nbsp;the&nbsp;predefined&nbsp;HKEY_*&nbsp;constants.<br>
+index&nbsp;is&nbsp;an&nbsp;integer&nbsp;that&nbsp;identifies&nbsp;the&nbsp;index&nbsp;of&nbsp;the&nbsp;value&nbsp;to&nbsp;retrieve.<br>
+&nbsp;<br>
+The&nbsp;function&nbsp;retrieves&nbsp;the&nbsp;name&nbsp;of&nbsp;one&nbsp;subkey&nbsp;each&nbsp;time&nbsp;it&nbsp;is&nbsp;called.<br>
+It&nbsp;is&nbsp;typically&nbsp;called&nbsp;repeatedly,&nbsp;until&nbsp;an&nbsp;EnvironmentError&nbsp;exception<br>
+is&nbsp;raised,&nbsp;indicating&nbsp;no&nbsp;more&nbsp;values.<br>
+&nbsp;<br>
+The&nbsp;result&nbsp;is&nbsp;a&nbsp;tuple&nbsp;of&nbsp;3&nbsp;items:<br>
+value_name&nbsp;is&nbsp;a&nbsp;string&nbsp;that&nbsp;identifies&nbsp;the&nbsp;value.<br>
+value_data&nbsp;is&nbsp;an&nbsp;object&nbsp;that&nbsp;holds&nbsp;the&nbsp;value&nbsp;data,&nbsp;and&nbsp;whose&nbsp;type&nbsp;depends<br>
+&nbsp;on&nbsp;the&nbsp;underlying&nbsp;registry&nbsp;type.<br>
+data_type&nbsp;is&nbsp;an&nbsp;integer&nbsp;that&nbsp;identifies&nbsp;the&nbsp;type&nbsp;of&nbsp;the&nbsp;value&nbsp;data.</tt></dd></dl>
+ <dl><dt><a name="-RegOpenKeyEx"><strong>RegOpenKeyEx</strong></a> = OpenKeyEx(...)</dt><dd><tt>See&nbsp;OpenKey()</tt></dd></dl>
+ <dl><dt><a name="-find_exe"><strong>find_exe</strong></a>(exe, version_number)</dt><dd><tt>Try&nbsp;to&nbsp;find&nbsp;an&nbsp;MSVC&nbsp;executable&nbsp;program&nbsp;'exe'&nbsp;(from&nbsp;version<br>
+'version_number'&nbsp;of&nbsp;MSVC)&nbsp;in&nbsp;several&nbsp;places:&nbsp;first,&nbsp;one&nbsp;of&nbsp;the&nbsp;MSVC<br>
+program&nbsp;search&nbsp;paths&nbsp;from&nbsp;the&nbsp;registry;&nbsp;next,&nbsp;the&nbsp;directories&nbsp;in&nbsp;the<br>
+PATH&nbsp;environment&nbsp;variable.&nbsp;&nbsp;If&nbsp;any&nbsp;of&nbsp;those&nbsp;work,&nbsp;return&nbsp;an&nbsp;absolute<br>
+path&nbsp;that&nbsp;is&nbsp;known&nbsp;to&nbsp;exist.&nbsp;&nbsp;If&nbsp;none&nbsp;of&nbsp;them&nbsp;work,&nbsp;just&nbsp;return&nbsp;the<br>
+original&nbsp;program&nbsp;name,&nbsp;'exe'.</tt></dd></dl>
+ <dl><dt><a name="-get_devstudio_versions"><strong>get_devstudio_versions</strong></a>()</dt><dd><tt>Get&nbsp;list&nbsp;of&nbsp;devstudio&nbsp;versions&nbsp;from&nbsp;the&nbsp;Windows&nbsp;registry.&nbsp;&nbsp;Return&nbsp;a<br>
+list&nbsp;of&nbsp;strings&nbsp;containing&nbsp;version&nbsp;numbers;&nbsp;the&nbsp;list&nbsp;will&nbsp;be<br>
+empty&nbsp;if&nbsp;we&nbsp;were&nbsp;unable&nbsp;to&nbsp;access&nbsp;the&nbsp;registry&nbsp;(eg.&nbsp;couldn't&nbsp;import<br>
+a&nbsp;registry-access&nbsp;module)&nbsp;or&nbsp;the&nbsp;appropriate&nbsp;registry&nbsp;keys&nbsp;weren't<br>
+found.</tt></dd></dl>
+ <dl><dt><a name="-get_msvc_paths"><strong>get_msvc_paths</strong></a>(path, version<font color="#909090">='6.0'</font>, platform<font color="#909090">='x86'</font>)</dt><dd><tt>Get&nbsp;a&nbsp;list&nbsp;of&nbsp;devstudio&nbsp;directories&nbsp;(include,&nbsp;lib&nbsp;or&nbsp;path).&nbsp;&nbsp;Return<br>
+a&nbsp;list&nbsp;of&nbsp;strings;&nbsp;will&nbsp;be&nbsp;empty&nbsp;list&nbsp;if&nbsp;unable&nbsp;to&nbsp;access&nbsp;the<br>
+registry&nbsp;or&nbsp;appropriate&nbsp;registry&nbsp;keys&nbsp;not&nbsp;found.</tt></dd></dl>
+ <dl><dt><a name="-set_path_env_var"><strong>set_path_env_var</strong></a>(name, version_number)</dt><dd><tt>Set&nbsp;environment&nbsp;variable&nbsp;'name'&nbsp;to&nbsp;an&nbsp;MSVC&nbsp;path&nbsp;type&nbsp;value&nbsp;obtained<br>
+from&nbsp;'<a href="#-get_msvc_paths">get_msvc_paths</a>()'.&nbsp;&nbsp;This&nbsp;is&nbsp;equivalent&nbsp;to&nbsp;a&nbsp;SET&nbsp;command&nbsp;prior<br>
+to&nbsp;execution&nbsp;of&nbsp;spawned&nbsp;commands.</tt></dd></dl>
+</td></tr></table>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><strong>HKEY_CLASSES_ROOT</strong> = -2147483648<br>
+<strong>HKEY_CURRENT_USER</strong> = -2147483647<br>
+<strong>HKEY_LOCAL_MACHINE</strong> = -2147483646<br>
+<strong>HKEY_USERS</strong> = -2147483645<br>
+<strong>StringTypes</strong> = (&lt;type 'str'&gt;, &lt;type 'unicode'&gt;)<br>
+<strong>__file__</strong> = r'S:\sp\msvccompiler.pyc'<br>
+<strong>__name__</strong> = 'msvccompiler'<br>
+<strong>__revision__</strong> = '$Id: msvccompiler.py,v 1.43.6.2 2002/02/22 13:55:28 mwh Exp $'<br>
+<strong>_can_read_reg</strong> = 1</td></tr></table>
+</body></html>

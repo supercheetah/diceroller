@@ -1,0 +1,425 @@
+
+<!doctype html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module simpleparse.tests.test_printers</title>
+<style type="text/css"><!--
+TT { font-family: lucidatypewriter, lucida console, courier }
+--></style></head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="simpleparse.html"><font color="#ffffff">simpleparse</font></a>.<a href="simpleparse.tests.html"><font color="#ffffff">tests</font></a>.test_printers</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///S|/sp/simpleparse/tests/test_printers.py">s:\sp\simpleparse\tests\test_printers.py</a></font></td></tr></table>
+    <p><tt>Test&nbsp;the&nbsp;print-to-python-file&nbsp;module<br>
+&nbsp;<br>
+This&nbsp;just&nbsp;uses&nbsp;the&nbsp;simpleparsegrammar&nbsp;declaration,&nbsp;which&nbsp;is<br>
+parsed,&nbsp;then&nbsp;linearised,&nbsp;then&nbsp;loaded&nbsp;as&nbsp;a&nbsp;Python&nbsp;module.</tt></p>
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#fffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="simpleparse.baseparser.html">simpleparse.baseparser</a><br>
+<a href="os.html">os</a><br>
+</td><td width="25%" valign=top><a href="simpleparse.parser.html">simpleparse.parser</a><br>
+<a href="simpleparse.printers.html">simpleparse.printers</a><br>
+</td><td width="25%" valign=top><a href="simpleparse.simpleparsegrammar.html">simpleparse.simpleparsegrammar</a><br>
+<a href="simpleparse.tests.test_grammarparser.html">simpleparse.tests.test_grammarparser</a><br>
+</td><td width="25%" valign=top><a href="simpleparse.tests.test_printers_garbage.html">simpleparse.tests.test_printers_garbage</a><br>
+<a href="unittest.html">unittest</a><br>
+</td></tr></table></td></tr></table>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="simpleparse.baseparser.html#BaseParser">simpleparse.baseparser.BaseParser</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="simpleparse.tests.test_printers.html#RParser">RParser</a>(<a href="simpleparse.tests.test_printers_garbage.html#Parser">simpleparse.tests.test_printers_garbage.Parser</a>, <a href="simpleparse.baseparser.html#BaseParser">simpleparse.baseparser.BaseParser</a>)
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="simpleparse.tests.test_printers_garbage.html#Parser">simpleparse.tests.test_printers_garbage.Parser</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="simpleparse.tests.test_printers.html#RParser">RParser</a>(<a href="simpleparse.tests.test_printers_garbage.html#Parser">simpleparse.tests.test_printers_garbage.Parser</a>, <a href="simpleparse.baseparser.html#BaseParser">simpleparse.baseparser.BaseParser</a>)
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="simpleparse.tests.test_grammarparser.html#SimpleParseGrammarTests">simpleparse.tests.test_grammarparser.SimpleParseGrammarTests</a>(<a href="unittest.html#TestCase">unittest.TestCase</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="simpleparse.tests.test_printers.html#PrintersTests">PrintersTests</a>
+</font></dt></dl>
+</dd>
+</dl>
+ 
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PrintersTests">class <strong>PrintersTests</strong></a>(<a href="simpleparse.tests.test_grammarparser.html#SimpleParseGrammarTests">simpleparse.tests.test_grammarparser.SimpleParseGrammarTests</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2>&nbsp;</td></tr>
+<tr><td>&nbsp;&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="simpleparse.tests.test_printers.html#PrintersTests">PrintersTests</a></dd>
+<dd><a href="simpleparse.tests.test_grammarparser.html#SimpleParseGrammarTests">simpleparse.tests.test_grammarparser.SimpleParseGrammarTests</a></dd>
+<dd><a href="unittest.html#TestCase">unittest.TestCase</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="PrintersTests-doBasicTest"><strong>doBasicTest</strong></a>(self, parserName, testValue, expected)</dt></dl>
+
+<hr>
+Data and non-method functions defined here:<br>
+<dl><dt><strong>__doc__</strong> = None</dl>
+
+<dl><dt><strong>__module__</strong> = 'simpleparse.tests.test_printers'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<hr>
+Methods inherited from <a href="simpleparse.tests.test_grammarparser.html#SimpleParseGrammarTests">simpleparse.tests.test_grammarparser.SimpleParseGrammarTests</a>:<br>
+<dl><dt><a name="PrintersTests-testChar1"><strong>testChar1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testChar2"><strong>testChar2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testChar3"><strong>testChar3</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testChar4"><strong>testChar4</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testChar5"><strong>testChar5</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testChar6"><strong>testChar6</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testChar7"><strong>testChar7</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testChar8"><strong>testChar8</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testChar85"><strong>testChar85</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testChar9"><strong>testChar9</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testCharNoBrace1"><strong>testCharNoBrace1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testCharRange1"><strong>testCharRange1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testComment1"><strong>testComment1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testComment2"><strong>testComment2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testCutToken2"><strong>testCutToken2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testCutToken3"><strong>testCutToken3</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testCutToken4"><strong>testCutToken4</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testDeclaration"><strong>testDeclaration</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testDeclaration2"><strong>testDeclaration2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testDeclaration3"><strong>testDeclaration3</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testDeclaration4"><strong>testDeclaration4</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testDeclaration5"><strong>testDeclaration5</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testDeclarationSet1"><strong>testDeclarationSet1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testDeclarationSet2"><strong>testDeclarationSet2</strong></a>(self)</dt><dd><tt>Just&nbsp;tries&nbsp;to&nbsp;parse&nbsp;and&nbsp;sees&nbsp;that&nbsp;everything&nbsp;was&nbsp;parsed,&nbsp;doesn't&nbsp;predict&nbsp;the&nbsp;result</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-testElementToken1"><strong>testElementToken1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testElementToken2"><strong>testElementToken2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testElementToken3"><strong>testElementToken3</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testElementToken4"><strong>testElementToken4</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testElementToken5"><strong>testElementToken5</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testElementToken6"><strong>testElementToken6</strong></a>(self)</dt><dd><tt>Lookahead&nbsp;indicator&nbsp;with&nbsp;positive</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-testElementToken7"><strong>testElementToken7</strong></a>(self)</dt><dd><tt>Lookahead&nbsp;indicator&nbsp;with&nbsp;negative</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-testElementToken8"><strong>testElementToken8</strong></a>(self)</dt><dd><tt>Error&nbsp;on&nbsp;fail&nbsp;indicator</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-testElementToken9"><strong>testElementToken9</strong></a>(self)</dt><dd><tt>Error&nbsp;on&nbsp;fail&nbsp;indicator&nbsp;with&nbsp;message</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-testErrorOnFailFlag1"><strong>testErrorOnFailFlag1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testExpandedName1"><strong>testExpandedName1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testExpandedName2"><strong>testExpandedName2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testFOGroup1"><strong>testFOGroup1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testGroup1"><strong>testGroup1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testGroup2"><strong>testGroup2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testGroup3"><strong>testGroup3</strong></a>(self)</dt><dd><tt>Test&nbsp;group&nbsp;with&nbsp;sequential&nbsp;added&nbsp;group<br>
+Note&nbsp;that&nbsp;this&nbsp;test&nbsp;also&nbsp;serves&nbsp;to&nbsp;test<br>
+the&nbsp;function&nbsp;of&nbsp;non-reporting&nbsp;names</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-testGroup4"><strong>testGroup4</strong></a>(self)</dt><dd><tt>Test&nbsp;group&nbsp;with&nbsp;sequential&nbsp;added&nbsp;group<br>
+Note&nbsp;that&nbsp;this&nbsp;test&nbsp;also&nbsp;serves&nbsp;to&nbsp;test<br>
+the&nbsp;function&nbsp;of&nbsp;non-reporting&nbsp;names</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-testGroup5"><strong>testGroup5</strong></a>(self)</dt><dd><tt>Test&nbsp;group&nbsp;with&nbsp;sequential&nbsp;added&nbsp;group<br>
+Note&nbsp;that&nbsp;this&nbsp;test&nbsp;also&nbsp;serves&nbsp;to&nbsp;test<br>
+the&nbsp;function&nbsp;of&nbsp;non-reporting&nbsp;names</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-testGroup6"><strong>testGroup6</strong></a>(self)</dt><dd><tt>Test&nbsp;group&nbsp;with&nbsp;multiple&nbsp;/&nbsp;'d&nbsp;values</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-testLiteral1"><strong>testLiteral1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testLiteral2"><strong>testLiteral2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testLiteral3"><strong>testLiteral3</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testLiteral4"><strong>testLiteral4</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testLiteral5"><strong>testLiteral5</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testLiteral6"><strong>testLiteral6</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testLookAheadIndicator1"><strong>testLookAheadIndicator1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testLookAheadIndicator2"><strong>testLookAheadIndicator2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testName1"><strong>testName1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testName2"><strong>testName2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testName3"><strong>testName3</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testNegposIndicator1"><strong>testNegposIndicator1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testNegposIndicator2"><strong>testNegposIndicator2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testOccurenceIndicator1"><strong>testOccurenceIndicator1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testOccurenceIndicator2"><strong>testOccurenceIndicator2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testOccurenceIndicator3"><strong>testOccurenceIndicator3</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testOccurenceIndicator4"><strong>testOccurenceIndicator4</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testOccurenceIndicator5"><strong>testOccurenceIndicator5</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testRange1"><strong>testRange1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testRange2"><strong>testRange2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testRange3"><strong>testRange3</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testRange4"><strong>testRange4</strong></a>(self)</dt><dd><tt>Test&nbsp;optional&nbsp;repeating&nbsp;children&nbsp;running&nbsp;into&nbsp;eof<br>
+&nbsp;<br>
+Original&nbsp;SimpleParse&nbsp;had&nbsp;a&nbsp;major&nbsp;failure&nbsp;here,<br>
+system&nbsp;hung&nbsp;trying&nbsp;to&nbsp;parse&nbsp;the&nbsp;[]&nbsp;string.&nbsp;&nbsp;Basically,<br>
+there&nbsp;was&nbsp;no&nbsp;check&nbsp;for&nbsp;EOF&nbsp;during&nbsp;a&nbsp;repeating-item<br>
+parse&nbsp;(save&nbsp;for&nbsp;literals&nbsp;and&nbsp;character&nbsp;sets),&nbsp;so&nbsp;you<br>
+wound&nbsp;up&nbsp;with&nbsp;infinite&nbsp;loops.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-testRange5"><strong>testRange5</strong></a>(self)</dt><dd><tt>Test&nbsp;optional&nbsp;repeating&nbsp;children&nbsp;with&nbsp;no&nbsp;termination<br>
+&nbsp;<br>
+Original&nbsp;SimpleParse&nbsp;had&nbsp;a&nbsp;major&nbsp;failure&nbsp;here,<br>
+system&nbsp;hung&nbsp;trying&nbsp;to&nbsp;parse&nbsp;the&nbsp;[]&nbsp;string.&nbsp;&nbsp;Basically,<br>
+there&nbsp;was&nbsp;no&nbsp;check&nbsp;for&nbsp;EOF&nbsp;during&nbsp;a&nbsp;repeating-item<br>
+parse&nbsp;(save&nbsp;for&nbsp;literals&nbsp;and&nbsp;character&nbsp;sets),&nbsp;so&nbsp;you<br>
+wound&nbsp;up&nbsp;with&nbsp;infinite&nbsp;loops.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-testSEQGroup1"><strong>testSEQGroup1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testSEQToken1"><strong>testSEQToken1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testSeqGroup2"><strong>testSeqGroup2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testUnreportedName1"><strong>testUnreportedName1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testUnreportedName2"><strong>testUnreportedName2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testWhitespace1"><strong>testWhitespace1</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testWhitespace2"><strong>testWhitespace2</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testWhitespace3"><strong>testWhitespace3</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-testWhitespace4"><strong>testWhitespace4</strong></a>(self)</dt></dl>
+
+<hr>
+Methods inherited from <a href="unittest.html#TestCase">unittest.TestCase</a>:<br>
+<dl><dt><a name="PrintersTests-_TestCase__exc_info"><strong>_TestCase__exc_info</strong></a> = __exc_info(self)</dt><dd><tt>Return&nbsp;a&nbsp;version&nbsp;of&nbsp;sys.exc_info()&nbsp;with&nbsp;the&nbsp;traceback&nbsp;frame<br>
+minimised;&nbsp;usually&nbsp;the&nbsp;top&nbsp;level&nbsp;of&nbsp;the&nbsp;traceback&nbsp;frame&nbsp;is&nbsp;not<br>
+needed.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-__call__"><strong>__call__</strong></a>(self, result<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="PrintersTests-__init__"><strong>__init__</strong></a>(self, methodName<font color="#909090">='runTest'</font>)</dt><dd><tt>Create&nbsp;an&nbsp;instance&nbsp;of&nbsp;the&nbsp;class&nbsp;that&nbsp;will&nbsp;use&nbsp;the&nbsp;named&nbsp;test<br>
+method&nbsp;when&nbsp;executed.&nbsp;Raises&nbsp;a&nbsp;ValueError&nbsp;if&nbsp;the&nbsp;instance&nbsp;does<br>
+not&nbsp;have&nbsp;a&nbsp;method&nbsp;with&nbsp;the&nbsp;specified&nbsp;name.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-__str__"><strong>__str__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-assertEqual"><strong>assertEqual</strong></a> = failUnlessEqual(self, first, second, msg<font color="#909090">=None</font>)</dt><dd><tt>Fail&nbsp;if&nbsp;the&nbsp;two&nbsp;objects&nbsp;are&nbsp;unequal&nbsp;as&nbsp;determined&nbsp;by&nbsp;the&nbsp;'!='<br>
+operator.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-assertEquals"><strong>assertEquals</strong></a> = failUnlessEqual(self, first, second, msg<font color="#909090">=None</font>)</dt><dd><tt>Fail&nbsp;if&nbsp;the&nbsp;two&nbsp;objects&nbsp;are&nbsp;unequal&nbsp;as&nbsp;determined&nbsp;by&nbsp;the&nbsp;'!='<br>
+operator.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-assertNotEqual"><strong>assertNotEqual</strong></a> = failIfEqual(self, first, second, msg<font color="#909090">=None</font>)</dt><dd><tt>Fail&nbsp;if&nbsp;the&nbsp;two&nbsp;objects&nbsp;are&nbsp;equal&nbsp;as&nbsp;determined&nbsp;by&nbsp;the&nbsp;'=='<br>
+operator.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-assertNotEquals"><strong>assertNotEquals</strong></a> = failIfEqual(self, first, second, msg<font color="#909090">=None</font>)</dt><dd><tt>Fail&nbsp;if&nbsp;the&nbsp;two&nbsp;objects&nbsp;are&nbsp;equal&nbsp;as&nbsp;determined&nbsp;by&nbsp;the&nbsp;'=='<br>
+operator.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-assertRaises"><strong>assertRaises</strong></a> = failUnlessRaises(self, excClass, callableObj, *args, **kwargs)</dt><dd><tt>Fail&nbsp;unless&nbsp;an&nbsp;exception&nbsp;of&nbsp;class&nbsp;excClass&nbsp;is&nbsp;thrown<br>
+by&nbsp;callableObj&nbsp;when&nbsp;invoked&nbsp;with&nbsp;arguments&nbsp;args&nbsp;and&nbsp;keyword<br>
+arguments&nbsp;kwargs.&nbsp;If&nbsp;a&nbsp;different&nbsp;type&nbsp;of&nbsp;exception&nbsp;is<br>
+thrown,&nbsp;it&nbsp;will&nbsp;not&nbsp;be&nbsp;caught,&nbsp;and&nbsp;the&nbsp;test&nbsp;case&nbsp;will&nbsp;be<br>
+deemed&nbsp;to&nbsp;have&nbsp;suffered&nbsp;an&nbsp;error,&nbsp;exactly&nbsp;as&nbsp;for&nbsp;an<br>
+unexpected&nbsp;exception.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-assert_"><strong>assert_</strong></a> = failUnless(self, expr, msg<font color="#909090">=None</font>)</dt><dd><tt>Fail&nbsp;the&nbsp;test&nbsp;unless&nbsp;the&nbsp;expression&nbsp;is&nbsp;true.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-countTestCases"><strong>countTestCases</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-debug"><strong>debug</strong></a>(self)</dt><dd><tt>Run&nbsp;the&nbsp;test&nbsp;without&nbsp;collecting&nbsp;errors&nbsp;in&nbsp;a&nbsp;TestResult</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-defaultTestResult"><strong>defaultTestResult</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-fail"><strong>fail</strong></a>(self, msg<font color="#909090">=None</font>)</dt><dd><tt>Fail&nbsp;immediately,&nbsp;with&nbsp;the&nbsp;given&nbsp;message.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-failIf"><strong>failIf</strong></a>(self, expr, msg<font color="#909090">=None</font>)</dt><dd><tt>Fail&nbsp;the&nbsp;test&nbsp;if&nbsp;the&nbsp;expression&nbsp;is&nbsp;true.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-failIfEqual"><strong>failIfEqual</strong></a>(self, first, second, msg<font color="#909090">=None</font>)</dt><dd><tt>Fail&nbsp;if&nbsp;the&nbsp;two&nbsp;objects&nbsp;are&nbsp;equal&nbsp;as&nbsp;determined&nbsp;by&nbsp;the&nbsp;'=='<br>
+operator.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-failUnless"><strong>failUnless</strong></a>(self, expr, msg<font color="#909090">=None</font>)</dt><dd><tt>Fail&nbsp;the&nbsp;test&nbsp;unless&nbsp;the&nbsp;expression&nbsp;is&nbsp;true.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-failUnlessEqual"><strong>failUnlessEqual</strong></a>(self, first, second, msg<font color="#909090">=None</font>)</dt><dd><tt>Fail&nbsp;if&nbsp;the&nbsp;two&nbsp;objects&nbsp;are&nbsp;unequal&nbsp;as&nbsp;determined&nbsp;by&nbsp;the&nbsp;'!='<br>
+operator.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-failUnlessRaises"><strong>failUnlessRaises</strong></a>(self, excClass, callableObj, *args, **kwargs)</dt><dd><tt>Fail&nbsp;unless&nbsp;an&nbsp;exception&nbsp;of&nbsp;class&nbsp;excClass&nbsp;is&nbsp;thrown<br>
+by&nbsp;callableObj&nbsp;when&nbsp;invoked&nbsp;with&nbsp;arguments&nbsp;args&nbsp;and&nbsp;keyword<br>
+arguments&nbsp;kwargs.&nbsp;If&nbsp;a&nbsp;different&nbsp;type&nbsp;of&nbsp;exception&nbsp;is<br>
+thrown,&nbsp;it&nbsp;will&nbsp;not&nbsp;be&nbsp;caught,&nbsp;and&nbsp;the&nbsp;test&nbsp;case&nbsp;will&nbsp;be<br>
+deemed&nbsp;to&nbsp;have&nbsp;suffered&nbsp;an&nbsp;error,&nbsp;exactly&nbsp;as&nbsp;for&nbsp;an<br>
+unexpected&nbsp;exception.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-id"><strong>id</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PrintersTests-run"><strong>run</strong></a>(self, result<font color="#909090">=None</font>)</dt></dl>
+
+<dl><dt><a name="PrintersTests-setUp"><strong>setUp</strong></a>(self)</dt><dd><tt>Hook&nbsp;method&nbsp;for&nbsp;setting&nbsp;up&nbsp;the&nbsp;test&nbsp;fixture&nbsp;before&nbsp;exercising&nbsp;it.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-shortDescription"><strong>shortDescription</strong></a>(self)</dt><dd><tt>Returns&nbsp;a&nbsp;one-line&nbsp;description&nbsp;of&nbsp;the&nbsp;test,&nbsp;or&nbsp;None&nbsp;if&nbsp;no<br>
+description&nbsp;has&nbsp;been&nbsp;provided.<br>
+&nbsp;<br>
+The&nbsp;default&nbsp;implementation&nbsp;of&nbsp;this&nbsp;method&nbsp;returns&nbsp;the&nbsp;first&nbsp;line&nbsp;of<br>
+the&nbsp;specified&nbsp;test&nbsp;method's&nbsp;docstring.</tt></dd></dl>
+
+<dl><dt><a name="PrintersTests-tearDown"><strong>tearDown</strong></a>(self)</dt><dd><tt>Hook&nbsp;method&nbsp;for&nbsp;deconstructing&nbsp;the&nbsp;test&nbsp;fixture&nbsp;after&nbsp;testing&nbsp;it.</tt></dd></dl>
+
+<hr>
+Data and non-method functions inherited from <a href="unittest.html#TestCase">unittest.TestCase</a>:<br>
+<dl><dt><strong>failureException</strong> = &lt;class exceptions.AssertionError at 0x00761558&gt;<dd><tt>Assertion&nbsp;failed.</tt></dl>
+
+</td></tr></table> 
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="RParser">class <strong>RParser</strong></a>(<a href="simpleparse.tests.test_printers_garbage.html#Parser">simpleparse.tests.test_printers_garbage.Parser</a>, <a href="simpleparse.baseparser.html#BaseParser">simpleparse.baseparser.BaseParser</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2>&nbsp;</td></tr>
+<tr><td>&nbsp;&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="simpleparse.tests.test_printers.html#RParser">RParser</a></dd>
+<dd><a href="simpleparse.tests.test_printers_garbage.html#Parser">simpleparse.tests.test_printers_garbage.Parser</a></dd>
+<dd><a href="simpleparse.baseparser.html#BaseParser">simpleparse.baseparser.BaseParser</a></dd>
+</dl>
+<hr>
+Data and non-method functions defined here:<br>
+<dl><dt><strong>__doc__</strong> = None</dl>
+
+<dl><dt><strong>__module__</strong> = 'simpleparse.tests.test_printers'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<hr>
+Methods inherited from <a href="simpleparse.tests.test_printers_garbage.html#Parser">simpleparse.tests.test_printers_garbage.Parser</a>:<br>
+<dl><dt><a name="RParser-buildTagger"><strong>buildTagger</strong></a>(self, name<font color="#909090">=None</font>, processor<font color="#909090">=None</font>)</dt><dd><tt>Build&nbsp;the&nbsp;tag-table&nbsp;for&nbsp;parsing&nbsp;the&nbsp;EBNF&nbsp;for&nbsp;this&nbsp;parser</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="simpleparse.baseparser.html#BaseParser">simpleparse.baseparser.BaseParser</a>:<br>
+<dl><dt><a name="RParser-buildProcessor"><strong>buildProcessor</strong></a>(self)</dt><dd><tt>Build&nbsp;default&nbsp;processor&nbsp;object&nbsp;for&nbsp;this&nbsp;parser&nbsp;class<br>
+&nbsp;<br>
+The&nbsp;default&nbsp;implementation&nbsp;returns&nbsp;None.&nbsp;&nbsp;The&nbsp;processor<br>
+can&nbsp;either&nbsp;implement&nbsp;the&nbsp;"method&nbsp;source"&nbsp;API&nbsp;(just&nbsp;provides<br>
+information&nbsp;about&nbsp;Callouts&nbsp;and&nbsp;the&nbsp;like),&nbsp;or&nbsp;the&nbsp;processor<br>
+API&nbsp;and&nbsp;the&nbsp;method-source&nbsp;API.&nbsp;&nbsp;The&nbsp;processor&nbsp;API&nbsp;merely<br>
+requires&nbsp;that&nbsp;the&nbsp;object&nbsp;be&nbsp;callable,&nbsp;and&nbsp;have&nbsp;the&nbsp;signature:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;object(&nbsp;(success,&nbsp;children,&nbsp;nextPosition),&nbsp;buffer)<br>
+&nbsp;<br>
+(Note:&nbsp;your&nbsp;object&nbsp;can&nbsp;treat&nbsp;the&nbsp;first&nbsp;item&nbsp;as&nbsp;a&nbsp;single&nbsp;tuple<br>
+if&nbsp;it&nbsp;likes).<br>
+&nbsp;<br>
+See:&nbsp;simpleparse.processor&nbsp;module&nbsp;for&nbsp;details.</tt></dd></dl>
+
+<dl><dt><a name="RParser-parse"><strong>parse</strong></a>(self, data, production<font color="#909090">=None</font>, processor<font color="#909090">=None</font>, start<font color="#909090">=0</font>, stop<font color="#909090">=None</font>)</dt><dd><tt>Parse&nbsp;data&nbsp;with&nbsp;production&nbsp;"production"&nbsp;of&nbsp;this&nbsp;parser<br>
+&nbsp;<br>
+data&nbsp;--&nbsp;data&nbsp;to&nbsp;be&nbsp;parsed,&nbsp;a&nbsp;Python&nbsp;string,&nbsp;for&nbsp;now<br>
+production&nbsp;--&nbsp;optional&nbsp;string&nbsp;specifying&nbsp;a&nbsp;non-default&nbsp;production&nbsp;to&nbsp;use<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;parsing&nbsp;data<br>
+processor&nbsp;--&nbsp;optional&nbsp;pointer&nbsp;to&nbsp;a&nbsp;Processor&nbsp;or&nbsp;MethodSource&nbsp;object&nbsp;for<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use&nbsp;in&nbsp;determining&nbsp;reporting&nbsp;format&nbsp;and/or&nbsp;post-processing&nbsp;the&nbsp;results<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;the&nbsp;parsing&nbsp;pass.&nbsp;&nbsp;Can&nbsp;be&nbsp;None&nbsp;if&nbsp;neither&nbsp;is&nbsp;desired&nbsp;(default)<br>
+start&nbsp;--&nbsp;starting&nbsp;index&nbsp;for&nbsp;the&nbsp;parsing,&nbsp;default&nbsp;0<br>
+stop&nbsp;--&nbsp;stoping&nbsp;index&nbsp;for&nbsp;the&nbsp;parsing,&nbsp;default&nbsp;len(data)</tt></dd></dl>
+
+<dl><dt><a name="RParser-resetBeforeParse"><strong>resetBeforeParse</strong></a>(self)</dt><dd><tt>Called&nbsp;just&nbsp;before&nbsp;the&nbsp;parser's&nbsp;parse&nbsp;method&nbsp;starts&nbsp;working,<br>
+&nbsp;<br>
+Allows&nbsp;you&nbsp;to&nbsp;set&nbsp;up&nbsp;special-purpose&nbsp;structures,&nbsp;such&nbsp;as&nbsp;stacks<br>
+or&nbsp;local&nbsp;storage&nbsp;values.&nbsp;&nbsp;There&nbsp;is&nbsp;no&nbsp;base&nbsp;implementation.&nbsp;&nbsp;The<br>
+base&nbsp;implementation&nbsp;does&nbsp;nothing.</tt></dd></dl>
+
+<hr>
+Data and non-method functions inherited from <a href="simpleparse.baseparser.html#BaseParser">simpleparse.baseparser.BaseParser</a>:<br>
+<dl><dt><strong>_rootProduction</strong> = ''<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+</td></tr></table></td></tr></table>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><dl><dt><a name="-getSuite"><strong>getSuite</strong></a>()</dt></dl>
+</td></tr></table>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><strong>__file__</strong> = r'S:\sp\simpleparse\tests\test_printers.pyc'<br>
+<strong>__name__</strong> = 'simpleparse.tests.test_printers'<br>
+<strong>p</strong> = &lt;simpleparse.parser.Parser instance at 0x009DEFB8&gt;<br>
+<strong>recursiveParser</strong> = &lt;simpleparse.tests.test_printers.RParser instance at 0x00A18AD0&gt;<br>
+<strong>testModuleFile</strong> = 'test_printers_garbage.py'</td></tr></table>
+</body></html>

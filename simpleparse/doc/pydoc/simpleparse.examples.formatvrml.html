@@ -1,0 +1,128 @@
+
+<!doctype html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module simpleparse.examples.formatvrml</title>
+<style type="text/css"><!--
+TT { font-family: lucidatypewriter, lucida console, courier }
+--></style></head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="simpleparse.html"><font color="#ffffff">simpleparse</font></a>.<a href="simpleparse.examples.html"><font color="#ffffff">examples</font></a>.formatvrml</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///S|/sp/simpleparse/examples/formatvrml.py">s:\sp\simpleparse\examples\formatvrml.py</a></font></td></tr></table>
+    <p><tt>Example&nbsp;using&nbsp;a&nbsp;parser&nbsp;to&nbsp;format&nbsp;VRML97&nbsp;code&nbsp;as&nbsp;HTML&nbsp;w/CSS</tt></p>
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#fffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="os.html">os</a><br>
+</td><td width="25%" valign=top><a href="string.html">string</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="simpleparse.examples.formatvrml.html#VRMLFormatter">VRMLFormatter</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="simpleparse.examples.formatvrml.html#HTMLVRMLFormatter">HTMLVRMLFormatter</a>
+</font></dt></dl>
+</dd>
+</dl>
+ 
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="HTMLVRMLFormatter">class <strong>HTMLVRMLFormatter</strong></a>(<a href="simpleparse.examples.formatvrml.html#VRMLFormatter">VRMLFormatter</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Format&nbsp;VRML&nbsp;files&nbsp;for&nbsp;display&nbsp;in&nbsp;HTML<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="HTMLVRMLFormatter-_escapeData"><strong>_escapeData</strong></a>(self, data)</dt></dl>
+
+<dl><dt><a name="HTMLVRMLFormatter-_headdata"><strong>_headdata</strong></a>(self, nodetype, head<font color="#909090">=1</font>)</dt></dl>
+
+<hr>
+Data and non-method functions defined here:<br>
+<dl><dt><strong>NODEMAP</strong> = {'DEF': '&lt;%(head)sstrong&gt;', 'DEFName': '&lt;span class="%(nodetype)s"&gt;', 'DEFName_tail': '&lt;/span&gt;', 'EXTERNPROTO': '&lt;span class="%(nodetype)s"&gt;', 'EXTERNPROTO_tail': '&lt;/span&gt;', 'PROTO': '&lt;span class="%(nodetype)s"&gt;', 'PROTO_tail': '&lt;/span&gt;', 'ROUTEData': '&lt;strong class="%(nodetype)s"&gt;', 'ROUTEData_tail': '&lt;/span&gt;', 'SFString': '&lt;span class="%(nodetype)s"&gt;', ...}<dd><tt>dict()&nbsp;-&gt;&nbsp;new&nbsp;empty&nbsp;dictionary.<br>
+dict(mapping)&nbsp;-&gt;&nbsp;new&nbsp;dictionary&nbsp;initialized&nbsp;from&nbsp;a&nbsp;mapping&nbsp;object's<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(key,&nbsp;value)&nbsp;pairs.<br>
+dict(seq)&nbsp;-&gt;&nbsp;new&nbsp;dictionary&nbsp;initialized&nbsp;as&nbsp;if&nbsp;via:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;d&nbsp;=&nbsp;{}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;k,&nbsp;v&nbsp;in&nbsp;seq:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d[k]&nbsp;=&nbsp;v</tt></dl>
+
+<dl><dt><strong>__doc__</strong> = '<font color="#c040c0">\n\t</font>Format VRML files for display in HTML<font color="#c040c0">\n\t</font>'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>__module__</strong> = 'simpleparse.examples.formatvrml'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<hr>
+Methods inherited from <a href="simpleparse.examples.formatvrml.html#VRMLFormatter">VRMLFormatter</a>:<br>
+<dl><dt><a name="HTMLVRMLFormatter-__init__"><strong>__init__</strong></a>(self, infile, vrmlparser<font color="#909090">=&lt;simpleparse.parser.Parser instance at 0x00885FA8&gt;</font>)</dt></dl>
+
+<dl><dt><a name="HTMLVRMLFormatter-_format"><strong>_format</strong></a>(self, tup, outfile, infile)</dt><dd><tt>Step&nbsp;through&nbsp;the&nbsp;children,&nbsp;our&nbsp;result&nbsp;is<br>
+thisnode's&nbsp;head,&nbsp;data_to_first_child,&nbsp;firstchild,&nbsp;data_to_second_child,&nbsp;secondchild,...,data_from_last_child,&nbsp;thisnode's&nbsp;tail</tt></dd></dl>
+
+<dl><dt><a name="HTMLVRMLFormatter-format"><strong>format</strong></a>(self, outfile)</dt></dl>
+
+</td></tr></table> 
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="VRMLFormatter">class <strong>VRMLFormatter</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Base&nbsp;formatting&nbsp;class<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="VRMLFormatter-__init__"><strong>__init__</strong></a>(self, infile, vrmlparser<font color="#909090">=&lt;simpleparse.parser.Parser instance at 0x00885FA8&gt;</font>)</dt></dl>
+
+<dl><dt><a name="VRMLFormatter-_escapeData"><strong>_escapeData</strong></a>(self, data)</dt></dl>
+
+<dl><dt><a name="VRMLFormatter-_format"><strong>_format</strong></a>(self, tup, outfile, infile)</dt><dd><tt>Step&nbsp;through&nbsp;the&nbsp;children,&nbsp;our&nbsp;result&nbsp;is<br>
+thisnode's&nbsp;head,&nbsp;data_to_first_child,&nbsp;firstchild,&nbsp;data_to_second_child,&nbsp;secondchild,...,data_from_last_child,&nbsp;thisnode's&nbsp;tail</tt></dd></dl>
+
+<dl><dt><a name="VRMLFormatter-_headdata"><strong>_headdata</strong></a>(self, nodetype, head<font color="#909090">=1</font>)</dt><dd><tt>Return&nbsp;head&nbsp;or&nbsp;tail&nbsp;data&nbsp;for&nbsp;this&nbsp;nodetype&nbsp;if&nbsp;available,&nbsp;None&nbsp;otherwise</tt></dd></dl>
+
+<dl><dt><a name="VRMLFormatter-format"><strong>format</strong></a>(self, outfile)</dt></dl>
+
+<hr>
+Data and non-method functions defined here:<br>
+<dl><dt><strong>__doc__</strong> = '<font color="#c040c0">\n\t</font>Base formatting class<font color="#c040c0">\n\t</font>'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+<dl><dt><strong>__module__</strong> = 'simpleparse.examples.formatvrml'<dd><tt>str(object)&nbsp;-&gt;&nbsp;string<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;nice&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;object.<br>
+If&nbsp;the&nbsp;argument&nbsp;is&nbsp;a&nbsp;string,&nbsp;the&nbsp;return&nbsp;value&nbsp;is&nbsp;the&nbsp;same&nbsp;object.</tt></dl>
+
+</td></tr></table></td></tr></table>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;&nbsp;</td>
+<td width="100%"><strong>VRMLPARSERDEF</strong> = '<font color="#c040c0">\n</font># Specialised VRML parser for colourising VRML ...              :=  ( [ <font color="#c040c0">\\</font>011-<font color="#c040c0">\\</font>015,]+ / comment+ )*<font color="#c040c0">\n</font>'<br>
+<strong>__file__</strong> = r'S:\sp\simpleparse\examples\formatvrml.pyc'<br>
+<strong>__name__</strong> = 'simpleparse.examples.formatvrml'<br>
+<strong>usage</strong> = "formatvrml.py infile outfile<font color="#c040c0">\n\t</font>infile -- properly... your<font color="#c040c0">\n\t</font>VRML by changing this file's definitions.<font color="#c040c0">\n</font>"<br>
+<strong>vrmlparser</strong> = &lt;simpleparse.parser.Parser instance at 0x00885FA8&gt;</td></tr></table>
+</body></html>
