@@ -1,0 +1,1 @@
+This branch should never touch master.  It can only pull/fetch/cherrypick/etc. from master.
