@@ -9,11 +9,15 @@ def main():
     if 'posix' == os.name:
         readline.parse_and_bind('set editing-mode vi')
     while True:
-        eqn_str = raw_input("Roll it! ('q' to quit): ")
+        try:
+            eqn_str = raw_input("Roll it! ('q' to quit): ")
+        except EOFError:
+            break
+        
         if '' == eqn_str:
             continue
 
-        if 'q' == eqn_str[0]:
+        if 'q' == eqn_str[0] or :
             break
 
         try:
