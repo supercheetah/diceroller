@@ -1,9 +1,9 @@
 from simpleparse.common import numbers
 from simpleparse.parser import Parser
 
-import parser
+import rollparse
 
-parser = Parser(parser.declaration)
+parser = Parser(rollparse.declaration)
 
 tests_success = [
     "d6",

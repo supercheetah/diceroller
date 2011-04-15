@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import sys
-import parser
+import rollparse
 import os
 if 'posix' == os.name:
     import readline
@@ -21,7 +21,7 @@ def main():
             break
 
         try:
-            is_separated, const_strings, (ans_str, answers) = parser.solve_roll(eqn_str)
+            is_separated, const_strings, (ans_str, answers) = rollparse.solve_roll(eqn_str)
         except Exception as e:
             print e
             continue
