@@ -2,6 +2,9 @@
 A Better Dice Rolling Program
 =============================
 
+:Author: Rene Horn
+:Homepage: <https://github.com/supercheetah/diceroller>
+
 Every dice rolling program I've encountered has a number of annoying
 limitations or quirks, and this is to address them.  What I've written
 here allows for actual equations to be written for dice rolls of any
