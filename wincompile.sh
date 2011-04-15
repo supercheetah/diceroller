@@ -2,7 +2,7 @@
 
 PYDIR="c:/Python27"
 PYTHON="wine $PYDIR/python.exe"
-WINPWD=`winepath -w \`pwd\``
+WINPWD=`winepath -w $(pwd)`
 
 cd pyinstaller
 

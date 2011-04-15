@@ -3,3 +3,9 @@
 simpleparse
 simpleparse/*
 .ropeproject
+pyinstaller/logdict*
+pyinstaller/config.dat
+pyinstaller/diceroller/dist
+pyinstaller/diceroller/build
+pyinstaller/diceroller/warn*
+
