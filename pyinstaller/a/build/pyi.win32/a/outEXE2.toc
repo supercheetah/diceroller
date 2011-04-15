@@ -1,0 +1,10 @@
+('a\\build\\pyi.win32\\a\\a.exe',
+ True,
+ False,
+ None,
+ None,
+ [],
+ False,
+ True,
+ 0,
+ 1302838119L)

@@ -1,0 +1,147 @@
+# project  configured on Thu Apr 14 16:22:42 2011 by
+# waf 1.5.18 (abi 7, python 20606f0 on linux2)
+# using ./waf configure --no-lsb
+#
+
+----------------------------------------
+Checking for program gcc or cc
+  find program=['gcc', 'cc'] paths=[] var='CC'
+  -> '/usr/bin/gcc'
+
+----------------------------------------
+Checking for program cpp
+  find program=['cpp'] paths=[] var='CPP'
+  -> '/usr/bin/cpp'
+
+----------------------------------------
+Checking for program ar
+  find program=['ar'] paths=[] var='AR'
+  -> '/usr/bin/ar'
+
+----------------------------------------
+Checking for program ranlib
+  find program=['ranlib'] paths=[] var='RANLIB'
+  -> '/usr/bin/ranlib'
+
+----------------------------------------
+Checking for gcc 
+ok 
+
+----------------------------------------
+Checking for program python
+  find program=['python'] paths=[] var='PYTHON'
+  -> '/usr/bin/python'
+
+----------------------------------------
+Checking for Python version 
+2.6.6
+Configuration returned from '/usr/bin/python':
+python_prefix = '/usr'
+python_SO = '.so'
+python_SYSLIBS = '-lm'
+python_LDFLAGS = '-Wl,-Bsymbolic-functions'
+python_SHLIBS = '-lpthread -ldl  -lutil'
+python_LIBDIR = '/usr/lib'
+python_LIBPL = '/usr/lib/python2.6/config'
+INCLUDEPY = '/usr/include/python2.6'
+Py_ENABLE_SHARED = 0
+MACOSX_DEPLOYMENT_TARGET = ''
+
+
+# Trying LIBDIR: ['/usr/lib']
+
+----------------------------------------
+Checking for library python2.6
+==>
+
+int main() {
+	return 0;
+}
+
+<==
+[1/2] [32mcc: build/.conf_check_0/test.c -> build/.conf_check_0/testbuild/default/test_1.o
+[0m['/usr/bin/gcc', '../test.c', '-c', '-o', 'default/test_1.o']
+[2/2] [33mcc_link: build/.conf_check_0/testbuild/default/test_1.o -> build/.conf_check_0/testbuild/default/testprog
+[0m['/usr/bin/gcc', 'default/test_1.o', '-o', '/home/ndogg/Projects/diceroller/pyinstaller/source/build/.conf_check_0/testbuild/default/testprog', '-Wl,-Bsymbolic-functions', '-L/usr/lib', '-Wl,-Bdynamic', '-lpython2.6', '-lm', '-lpthread', '-ldl', '-lutil']
+yes
+
+----------------------------------------
+Checking for program python2.6-config
+  find program=['python2.6-config'] paths=[] var='PYTHON_CONFIG'
+  -> '/usr/bin/python2.6-config'
+Include path for Python extensions (found via python-config --includes): ['/usr/include/python2.6']
+
+----------------------------------------
+Checking for custom code
+==>
+
+#include "Python.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+	void Py_Initialize(void);
+	void Py_Finalize(void);
+#ifdef __cplusplus
+}
+#endif
+int main()
+{
+   Py_Initialize();
+   Py_Finalize();
+   return 0;
+}
+
+<==
+[1/2] [32mcc: build/.conf_check_0/test.c -> build/.conf_check_0/testbuild/default/test_1.o
+[0m['/usr/bin/gcc', '-fno-strict-aliasing', '-I/usr/include/python2.6', '../test.c', '-c', '-o', 'default/test_1.o']
+[2/2] [33mcc_link: build/.conf_check_0/testbuild/default/test_1.o -> build/.conf_check_0/testbuild/default/testprog
+[0m['/usr/bin/gcc', 'default/test_1.o', '-o', '/home/ndogg/Projects/diceroller/pyinstaller/source/build/.conf_check_0/testbuild/default/testprog', '-Wl,-Bsymbolic-functions', '-L/usr/lib', '-Wl,-Bdynamic', '-lm', '-lpthread', '-ldl', '-lutil', '-lpython2.6']
+yes
+
+----------------------------------------
+Checking for library z
+==>
+
+int main() {
+	return 0;
+}
+
+<==
+[1/2] [32mcc: build/.conf_check_0/test.c -> build/.conf_check_0/testbuild/default/test_1.o
+[0m['/usr/bin/gcc', '-Wdeclaration-after-statement', '-Werror', '-I../common', '../test.c', '-c', '-o', 'default/test_1.o']
+[2/2] [33mcc_link: build/.conf_check_0/testbuild/default/test_1.o -> build/.conf_check_0/testbuild/default/testprog
+[0m['/usr/bin/gcc', 'default/test_1.o', '-o', '/home/ndogg/Projects/diceroller/pyinstaller/source/build/.conf_check_0/testbuild/default/testprog', '-Wl,-Bdynamic', '-lz']
+yes
+
+----------------------------------------
+Checking for function readlink
+==>
+#include <unistd.h>
+
+	int main() {
+	void *p;
+	p=(void*)(readlink);
+	return 0;
+}
+
+<==
+[1/2] [32mcc: build/.conf_check_0/test.c -> build/.conf_check_0/testbuild/default/test_1.o
+[0m['/usr/bin/gcc', '-Wdeclaration-after-statement', '-Werror', '-I../common', '../test.c', '-c', '-o', 'default/test_1.o']
+[2/2] [33mcc_link: build/.conf_check_0/testbuild/default/test_1.o -> build/.conf_check_0/testbuild/default/testprog
+[0m['/usr/bin/gcc', 'default/test_1.o', '-o', '/home/ndogg/Projects/diceroller/pyinstaller/source/build/.conf_check_0/testbuild/default/testprog']
+yes
+
+----------------------------------------
+Checking for flags -Wl,--as-needed
+==>
+
+int main() {
+	return 0;
+}
+
+<==
+[1/2] [32mcc: build/.conf_check_0/test.c -> build/.conf_check_0/testbuild/default/test_1.o
+[0m['/usr/bin/gcc', '-Wdeclaration-after-statement', '-Werror', '-DHAVE_READLINK', '-Wl,--as-needed', '-I../common', '../test.c', '-c', '-o', 'default/test_1.o']
+[2/2] [33mcc_link: build/.conf_check_0/testbuild/default/test_1.o -> build/.conf_check_0/testbuild/default/testprog
+[0m['/usr/bin/gcc', 'default/test_1.o', '-o', '/home/ndogg/Projects/diceroller/pyinstaller/source/build/.conf_check_0/testbuild/default/testprog']
+yes
