@@ -1,5 +1,5 @@
 from simpleparse.simpleparsegrammar import Parser
-from mx.TextTools import TextTools
+from simpleparse.stt.TextTools import TextTools
 import pprint
 from genericvalues import NullResult, AnyInt
 

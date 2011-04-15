@@ -1,9 +1,9 @@
 """Low-level matching tests for mx.TextTools"""
 import unittest, pprint
-from mx.TextTools import *
+from simpleparse.stt.TextTools import *
 
 import string
-from mx import TextTools
+from simpleparse.stt import TextTools
 mxVersion = tuple(string.split( TextTools.__version__, '.')[:3])
 
 class MXHighTests(unittest.TestCase):
@@ -106,6 +106,8 @@ class MXHighTests(unittest.TestCase):
 
 		def testsFindWord1( self ):
 			"""Test simple sWordFind command"""
+#			import pdb
+#			pdb.set_trace()
 			for algo in [BOYERMOORE, TRIVIAL]:
 				self.doBasicTest(
 					(

@@ -1,3 +1,4 @@
+"""Utility to print Python code for a given generator object's element tokens"""
 import string
 class _GeneratorFormatter:
 	"""Singleton Class to give a generator's element tokens as a source string
@@ -57,4 +58,3 @@ class Parser:
 asGenerator = _GeneratorFormatter()
 asObject = asGenerator.reprObject
 
-	    

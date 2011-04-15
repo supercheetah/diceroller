@@ -1,9 +1,6 @@
 import unittest, pprint
 from simpleparse.parser import Parser
-try:
-	from TextTools import TextTools
-except ImportError:
-	from mx.TextTools import TextTools
+from simpleparse.stt.TextTools import TextTools
 from genericvalues import NullResult, AnyInt
 		
 class ParserGenerationTests(unittest.TestCase):
@@ -244,6 +241,48 @@ class ParserGenerationTests(unittest.TestCase):
 ##			],24),
 ##		)
 
+	def testGenCILiteral1( self ):
+		self.doBasicTest(
+			'''s := c"this"''',
+			's',
+			'this',
+			(1,[],4)
+		)
+	def testGenCILiteral2( self ):
+		self.doBasicTest(
+			'''s := c"this"''',
+			's',
+			'This',
+			(1,[],4)
+		)
+	def testGenCILiteral3( self ):
+		self.doBasicTest(
+			'''s := c"this"''',
+			's',
+			'THIS',
+			(1,[],4)
+		)
+	def testGenCILiteral4( self ):
+		self.doBasicTest(
+			'''s := -c"this"''',
+			's',
+			' THIS',
+			(1,[],1)
+		)
+	def testGenCILiteral5( self ):
+		self.doBasicTest(
+			'''s := -c"this"''',
+			's',
+			' thi',
+			(1,[],1)
+		)
+	def testGenCILiteral6( self ):
+		self.doBasicTest(
+			'''s := -c"this"*''',
+			's',
+			' thi',
+			(1,[],4)
+		)
 
 class NameTests(unittest.TestCase):
 	def doBasicTest(self, definition, parserName, testValue, expected, ):
@@ -433,7 +472,7 @@ class CallTests(unittest.TestCase):
 			a := "a"
 			b := "b"
 		""", 'x', 'abba', source)
-		assert source.results == [ ('a','a'),('b',1,2),('b',2,3),('a','a'),], """Method source methods were not called, or called improperly"""
+		assert source.results == [ ('a','a'),('b',1,2),('b',2,3),('a','a'),], """Method source methods were not called, or called improperly:\n%s"""%(source.results,)
 		
 	def test_AppendMatch( self ):
 		"""Test ability to append the text-string match to the results list"""
@@ -464,16 +503,13 @@ class CallTests(unittest.TestCase):
 			x := d*
 			d := 'd'
 		""", 'x', 'ddd', source)
-		assert source._o_d == [ (None,0,1,NullResult),(None,1,2,NullResult),(None,2,3,NullResult)], """Method source methods were not called, or called improperly"""
+		assert source._o_d == [ (None,0,1,NullResult),(None,1,2,NullResult),(None,2,3,NullResult)], """Method source methods were not called, or called improperly:\n%s"""%(source._o_d,)
 
 import test_grammarparser
 import test_erroronfail
 
 def getSuite():
 	return unittest.TestSuite((
-##		unittest.makeSuite(SimpleParseGrammarTests,'test'),
-##		unittest.makeSuite(SimpleParseRecursiveTests,'test'),
-##		unittest.makeSuite(ErrorOnFailTests,'test'),
 		test_grammarparser.getSuite(),
 		test_erroronfail.getSuite(),
 		unittest.makeSuite(ParserGenerationTests, 'test'),

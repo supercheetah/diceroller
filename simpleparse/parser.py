@@ -1,3 +1,4 @@
+"""Real-world parsers using the SimpleParse EBNF"""
 from simpleparse import baseparser, simpleparsegrammar, common
 
 class Parser( baseparser.BaseParser ):

@@ -1,9 +1,6 @@
+"""Definition of the ParserSyntaxError raised on parse failure"""
 import string
-try:
-	from TextTools.TextTools import countlines
-except ImportError:
-	from mx.TextTools.TextTools import countlines
-
+from simpleparse.stt.TextTools.TextTools import countlines
 
 class ParserSyntaxError( SyntaxError ):
 	"""Sub-class of SyntaxError for use by SimpleParse parsers
@@ -25,11 +22,12 @@ class ParserSyntaxError( SyntaxError ):
 	line = -1
 	production = ""
 	expected = ""
+	error_message = None
 	DEFAULTTEMPLATE = """Failed parsing production "%(production)s" @pos %(position)s (~line %(line)s:%(lineChar)s).\nExpected syntax: %(expected)s\nGot text: %(text)s"""
 	def __str__( self ):
 		"""Create a string representation of the error"""
-		if self.message:
-			return '%s: %s'%( self.__class__.__name__, self.messageFormat(message) )
+		if self.error_message:
+			return '%s: %s'%( self.__class__.__name__, self.messageFormat(self.error_message) )
 		else:
 			return '%s: %s'%( self.__class__.__name__, self.messageFormat() )
 	def messageFormat( self, template=None):

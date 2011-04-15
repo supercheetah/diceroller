@@ -1,6 +1,6 @@
 """Low-level matching tests for mx.TextTools"""
 import unittest, pprint
-from mx.TextTools import *
+from simpleparse.stt.TextTools import *
 
 ab = (
 	( "ab", Word, "ab", 0 ),

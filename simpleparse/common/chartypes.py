@@ -75,7 +75,7 @@ del _lc
 # specially by Python's string-escaping when they
 # follow a \\ char.
 
-from mx import TextTools
+from simpleparse.stt import TextTools
 c[ "EOF" ] = objectgenerator.Prebuilt( value = (
 	(None, TextTools.EOF, TextTools.Here),
 ) )

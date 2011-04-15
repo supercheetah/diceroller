@@ -1,9 +1,9 @@
 """Low-level matching tests for mx.TextTools"""
 import unittest, pprint
-from mx.TextTools import *
+from simpleparse.stt.TextTools import *
 
 import string
-from mx import TextTools
+from simpleparse.stt import TextTools
 mxVersion = tuple(string.split( TextTools.__version__, '.')[:3])
 from genericvalues import AnyInt, NullResult
 

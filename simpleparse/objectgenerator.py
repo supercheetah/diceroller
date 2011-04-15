@@ -12,10 +12,7 @@ obvious of which is the permute method, which takes care of
 the negative, optional, and repeating flags for the normal
 case (with character ranges and literals being non-normal).
 """
-try:
-	from TextTools.TextTools import *
-except ImportError:
-	from mx.TextTools.TextTools import *
+from simpleparse.stt.TextTools.TextTools import *
 
 ### Direct use of BMS is deprecated now...
 try:
@@ -24,6 +21,7 @@ except NameError:
 	TextSearch = BMS
 
 from simpleparse.error import ParserSyntaxError
+import copy
 
 class ElementToken:
 	"""Abstract base class for all ElementTokens
@@ -76,12 +74,15 @@ class ElementToken:
 		updates the object's dictionary with them
 		"""
 		self.__dict__.update( namedarguments )
-	def toParser( self, generator ):
+	def toParser( self, generator, noReport=0 ):
 		"""Abstract interface for implementing the conversion to a text-tools table
 
-		generator is an instance of generator.Generator
-		which provides various facilities for discovering
-		other productions.
+		generator -- an instance of generator.Generator
+			which provides various facilities for discovering
+			other productions.
+		noReport -- if true, we're being called recursively
+			for a terminal grammar fragment where one of our
+			parents has explicitly suppressed all reporting.
 
 		This method is called by the generator or by
 		another element-token's toParser method.
@@ -166,7 +167,9 @@ class ElementToken:
 		"""Return a readily recognisable version of ourself"""
 		from simpleparse import printers
 		return printers.asObject( self )
-		
+	def terminal (self, generator):
+		"""Determine if this element is terminal for the generator"""
+		return 0
 		
 
 class Literal( ElementToken ):
@@ -187,12 +190,13 @@ class Literal( ElementToken ):
 		value -- a string storing the literal's value
 
 	Notes:
-		Currently we don't support case-insensitive matching
-
 		Currently we don't support Unicode literals
+		
+	See also:
+		CILiteral -- case-insensitive Literal values
 	"""
 	value = ""
-	def toParser( self, generator=None):
+	def toParser( self, generator=None, noReport=0 ):
 		"""Create the parser for the element token"""
 		flags = 0
 		if self.lookahead:
@@ -262,6 +266,9 @@ class Literal( ElementToken ):
 						return [ (None, Word, svalue) ]
 					else:
 						return [ (None, Word, svalue) ]
+	def terminal (self, generator):
+		"""Determine if this element is terminal for the generator"""
+		return 1
 
 class _Range( ElementToken ):
 	"""Range of character values where any one of the characters may match
@@ -293,7 +300,7 @@ class _Range( ElementToken ):
 	"""
 	value = ""
 	requiresExpandedSet = 1
-	def toParser( self, generator=None):
+	def toParser( self, generator=None, noReport=0 ):
 		"""Create the parser for the element token"""
 		flags = 0
 		if self.lookahead:
@@ -389,6 +396,9 @@ class Range( _Range ):
 				else: # not optional
 					#return [ (None, IsInSet, svalue ) ]
 					return [ (None, IsIn, svalue ) ]
+	def terminal (self, generator):
+		"""Determine if this element is terminal for the generator"""
+		return 1
 
 class Group( ElementToken ):
 	"""Abstract base class for all group element tokens
@@ -397,6 +407,17 @@ class Group( ElementToken ):
 	of element tokens stored in the attribute "children".
 	"""
 	children = ()
+	terminalValue = None
+	def terminal (self, generator):
+		"""Determine if this element is terminal for the generator"""
+		if self.terminalValue in (0,1):
+			return self.terminalValue
+		self.terminalValue = 0
+		for item in self.children:
+			if not item.terminal( generator):
+				return self.terminalValue
+		self.terminalValue = 1
+		return self.terminalValue
 	
 class SequentialGroup( Group ):
 	"""A sequence of element tokens which must match in a particular order
@@ -410,11 +431,76 @@ class SequentialGroup( Group ):
 		("a", b, c, "d")
 	i.e. a series of comma-separated element token definitions.
 	"""
-	def toParser( self, generator=None ):
+	def toParser( self, generator=None, noReport=0 ):
 		elset = []
 		for child in self.children:
-			elset.extend( child.toParser( generator ) )
-		return self.permute( (None, SubTable, tuple( elset)) )
+			elset.extend( child.toParser( generator, noReport ) )
+		basic = self.permute( (None, SubTable, tuple( elset)) )
+		if len(basic) == 1:
+			first = basic[0]
+			if len(first) == 3 and first[0] is None and first[1] == SubTable:
+				return tuple(first[2])
+		return basic
+			
+class CILiteral( SequentialGroup ):
+	"""Case-insensitive Literal values
+
+	The CILiteral is a sequence of literal and
+	character-range values, where each element is
+	positive and required.  Literal values are
+	composed of those characters which are not
+	upper-case/lower-case pairs, while the ranges
+	are all two-character ranges with the upper
+	and lower forms.
+
+	CILiterals in the SimpleParse EBNF grammar are defined like so:
+		c"test", c"test"?, c"test"*, c"test"+
+		-c"test", -c"test"?, -c"test"*, -c"test"+
+
+	Attributes:
+		value -- a string storing the literal's value
+
+	Notes:
+		Currently we don't support Unicode literals
+
+		A CILiteral will be *much* slower than a
+		regular literal or character range
+	"""
+	value = ""
+	def toParser( self, generator=None, noReport=0 ):
+		elset = self.ciParse( self.value )
+		if len(elset) == 1:
+			# XXX should be compressing these out during optimisation...
+			# pointless declaration of case-insensitivity,
+			# or a single-character value
+			pass
+		basic = self.permute( (None, SubTable, tuple( elset)) )
+		if len(basic) == 1:
+			first = basic[0]
+			if len(first) == 3 and first[0] is None and first[1] == SubTable:
+				return tuple(first[2])
+		return basic
+	def ciParse( self, value ):
+		"""Break value into set of case-dependent groups..."""
+		def equalPrefix( a,b ):
+			for x in range(len(a)-1):
+				if a[x] != b[x]:
+					return x
+		result = []
+		a,b = value.upper(), value.lower()
+		while a and b:
+			# is there an equal literal run at the start?
+			stringPrefix = equalPrefix( a,b )
+			if stringPrefix:
+				result.append( (None, Word, a[:stringPrefix]) )
+				a,b = a[stringPrefix:],b[stringPrefix:]
+			# if we hit the end of the string, that's fine, just return
+			if not a and b:
+				break
+			# otherwise, the next character must be a case-differing pair
+			result.append( (None, IsIn, a[0]+b[0]) )
+			a,b = a[1:], b[1:]
+		return result
 		
 
 class ErrorOnFail(ElementToken):
@@ -441,7 +527,7 @@ class ErrorOnFail(ElementToken):
 	def __call__( self, text, position, end ):
 		"""Method called by mxTextTools iff the base production fails"""
 		error = ParserSyntaxError( self.message )
-		error.message = self.message
+		error.error_message = self.message
 		error.production = self.production
 		error.expected= self.expected
 		error.buffer = text
@@ -466,7 +552,7 @@ class FirstOfGroup( Group ):
 		("a" / b / c / "d")
 	i.e. a series of slash-separated element token definitions.
 	"""
-	def toParser( self, generator=None ):
+	def toParser( self, generator=None, noReport=0 ):
 		elset = []
 		# should catch condition where a child is optional
 		# and we are repeating (which causes a crash during
@@ -474,7 +560,7 @@ class FirstOfGroup( Group ):
 		# requires analysis of the whole grammar.
 		for el in self.children:
 			assert not el.optional, """Optional child of a FirstOf group created, this would cause an infinite recursion in the engine, child was %s"""%el
-			dataset = el.toParser( generator )
+			dataset = el.toParser( generator, noReport )
 			if len( dataset) == 1:# and len(dataset[0]) == 3: # we can alter the jump states with impunity
 				elset.append( dataset[0] )
 			else: # for now I'm eating the inefficiency and doing an extra SubTable for all elements to allow for easy calculation of jumps within the FO group
@@ -498,14 +584,14 @@ class Prebuilt( ElementToken ):
 	by the other element tokens in your grammar.
 	"""
 	value = ()
-	def toParser( self, generator ):
+	def toParser( self, generator=None, noReport=0 ):
 		return self.value
 class LibraryElement( ElementToken ):
 	"""Holder for a prebuilt item with it's own generator"""
 	generator = None
 	production = ""
 	methodSource = None
-	def toParser( self, generator ):
+	def toParser( self, generator=None, noReport=0 ):
 		if self.methodSource is None:
 			source = generator.methodSource
 		else:
@@ -561,36 +647,93 @@ class Name( ElementToken ):
 	value = ""
 	# following two flags are new ideas in the rewrite...
 	report = 1
-	def toParser( self, generator ):
+	def toParser( self, generator, noReport=0 ):
+		"""Create the table for parsing a name-reference
+
+		Note that currently most of the "compression" optimisations
+		occur here.
+		"""
 		sindex = generator.getNameIndex( self.value )
 		command = TableInList
 		target = generator.getRootObjects()[sindex]
-		if (
-			(not self.report) or
-			(self.negative) or
-			(not target.report)
-		):
-			svalue = None
-		else:
+
+		reportSelf = (
+			(not noReport) and # parent hasn't suppressed reporting
+			self.report and # we are not suppressing ourselves
+			target.report and # target doesn't suppress reporting
+			(not self.negative) and # we aren't a negation, which doesn't report anything by itself
+			(not target.expanded) # we don't report the expanded production
+		)
+		reportChildren = (
+			(not noReport) and # parent hasn't suppressed reporting
+			self.report and # we are not suppressing ourselves
+			target.report and # target doesn't suppress reporting
+			(not self.negative) # we aren't a negation, which doesn't report anything by itself
+		)
+		if reportSelf:
 			svalue = self.value
+		else:
+			svalue = None
+
+		flags = 0
 		if target.expanded:
 			# the target is the root of an expandedname declaration
 			# so we need to do special processing to make sure that
 			# it gets properly reported...
 			command = SubTableInList
 			tagobject = None
-		elif (
-			(not self.report) or
-			(self.negative) or
-			(not target.report)
-		):
+			# check for indirected reference to another name...
+		elif not reportSelf:
 			tagobject = svalue
 		else:
 			flags, tagobject = generator.getObjectForName( svalue )
 			if flags:
 				command = command | flags
-
+		if tagobject is None and not flags:
+			if self.terminal(generator):
+				if extractFlags(self,reportChildren) != extractFlags(target):
+					composite = compositeFlags(self,target, reportChildren)
+					partial = generator.getCustomTerminalParser( sindex,composite)
+					if partial is not None:
+						return partial
+					partial = tuple(copyToNewFlags(target, composite).toParser(
+						generator,
+						not reportChildren
+					))
+					generator.cacheCustomTerminalParser( sindex,composite, partial)
+					return partial
+				else:
+					partial = generator.getTerminalParser( sindex )
+					if partial is not None:
+						return partial
+					partial = tuple(target.toParser(
+						generator,
+						not reportChildren
+					))
+					generator.setTerminalParser( sindex, partial)
+					return partial
 		# base, required, positive table...
+		if (
+			self.terminal( generator ) and
+			(not flags) and
+			isinstance(target, (SequentialGroup,Literal,Name,Range))
+		):
+			partial = generator.getTerminalParser( sindex )
+			if partial is None:
+				partial = tuple(target.toParser(
+					generator,
+					#not reportChildren
+				))
+				generator.setTerminalParser( sindex, partial)
+			if len(partial) == 1 and len(partial[0]) == 3 and (
+				partial[0][0] is None or tagobject is None
+			):
+				# there is a single child
+				# it doesn't report anything, or we don't
+				partial = (partial[0][0] or tagobject,)+ partial[0][1:]
+			else:
+				partial = (tagobject, Table, tuple(partial))
+			return self.permute( partial )
 		basetable = (
 			tagobject,
 			command, (
@@ -598,5 +741,41 @@ class Name( ElementToken ):
 				sindex,
 			)
 		)
-		value =  self.permute( basetable )
-		return value
+		return self.permute( basetable )
+	terminalValue = None
+	def terminal (self, generator):
+		"""Determine if this element is terminal for the generator"""
+		if self.terminalValue in (0,1):
+			return self.terminalValue
+		self.terminalValue = 0
+		target = generator.getRootObject( self.value )
+		if target.terminal( generator):
+			self.terminalValue = 1
+		return self.terminalValue
+
+
+def extractFlags( item, report=1 ):
+	"""Extract the flags from an item as a tuple"""
+	return (
+		item.negative,
+		item.optional,
+		item.repeating,
+		item.errorOnFail,
+		item.lookahead,
+		item.report and report,
+	)
+def compositeFlags( first, second, report=1 ):
+	"""Composite flags from two items into overall flag-set"""
+	result = []
+	for a,b in map(None, extractFlags(first, report), extractFlags(second, report)):
+		result.append( a or b )
+	return tuple(result)
+def copyToNewFlags( target, flags ):
+	"""Copy target using combined flags"""
+	new = copy.copy( target )
+	for name,value in map(None,
+		("negative","optional","repeating","errorOnFail","lookahead",'report'),
+		flags,
+	):
+		setattr(new, name,value)
+	return new

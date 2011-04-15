@@ -2,8 +2,10 @@ import unittest, string
 from simpleparse.parser import Parser
 from simpleparse.common import iso_date, iso_date_loose
 from mx import DateTime
+import time
 
 fulltrans = string.maketrans("","")
+tzOffset = DateTime.DateTimeDelta( 0,0,0, time.timezone )
 
 class CommonTests(unittest.TestCase):
 	def testISODateLoose( self ):
@@ -14,10 +16,10 @@ class CommonTests(unittest.TestCase):
 			("2002",DateTime.DateTime( 2002)),
 			("2002-02-03 04:15", DateTime.DateTime( 2002, 2,3, 4,15)),
 			("2002-02-03 04:15:16", DateTime.DateTime( 2002, 2,3, 4,15, 16)),
-			("2002-02-03 04:15:16 +00:00", DateTime.DateTime( 2002, 2,2, 23,15, 16)),
+			("2002-02-03 04:15:16 +00:00", DateTime.DateTime( 2002, 2,3, 4,15, 16)-tzOffset),
 			("2002-02-03 4:5", DateTime.DateTime( 2002, 2,3, 4,5)),
 			("2002-02-03 4:5:16", DateTime.DateTime( 2002, 2,3, 4,5, 16)),
-			("2002-02-03 4:5:16 +00:00", DateTime.DateTime( 2002, 2,2, 23,5, 16)),
+			("2002-02-03 4:5:16 +00:00", DateTime.DateTime( 2002, 2,3, 4, 5,16)-tzOffset),
 		]
 		p = Parser ("d:= ISO_date_time_loose", "d")
 		proc = iso_date_loose.MxInterpreter()
@@ -34,7 +36,7 @@ class CommonTests(unittest.TestCase):
 			("2002",DateTime.DateTime( 2002)),
 			("2002-02-03T04:15", DateTime.DateTime( 2002, 2,3, 4,15)),
 			("2002-02-03T04:15:16", DateTime.DateTime( 2002, 2,3, 4,15, 16)),
-			("2002-02-03T04:15:16+00:00", DateTime.DateTime( 2002, 2,2, 23,15, 16)),
+			("2002-02-03T04:15:16+00:00", DateTime.DateTime( 2002, 2,3, 4,15, 16)-tzOffset),
 		]
 		p = Parser ("d:= ISO_date_time", "d")
 		proc = iso_date.MxInterpreter()

@@ -1,6 +1,6 @@
 import unittest, pprint, traceback
 from simpleparse.objectgenerator import *
-from mx.TextTools import TextTools
+from simpleparse.stt.TextTools import TextTools
 from genericvalues import NullResult, AnyInt
 
 class ElementTokenTests(unittest.TestCase):
@@ -275,6 +275,37 @@ class ElementTokenTests(unittest.TestCase):
 			),
 			'hellotheretestabtest',
 			(1, [],10),
+		)
+
+	def testCIString1( self ):
+		self.doBasicTest(
+			CILiteral( value = 'test'),
+			'test',
+			(1, [],4),
+		)
+	def testCIString2( self ):
+		self.doBasicTest(
+			CILiteral( value = 'test'),
+			'Test',
+			(1, [],4),
+		)
+	def testCIString3( self ):
+		self.doBasicTest(
+			CILiteral( value = 'test'),
+			'TEST',
+			(1, [],4),
+		)
+	def testCIString4( self ):
+		self.doBasicTest(
+			CILiteral( value = 'test'),
+			'tes',
+			(0, [],AnyInt),
+		)
+	def testCIString5( self ):
+		self.doBasicTest(
+			CILiteral( value = 'test', optional=1),
+			'tes',
+			(1, [], 0),
 		)
 
 ### Simpleparse 2.0.0b4 introduced an explicit check that

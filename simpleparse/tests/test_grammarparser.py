@@ -5,13 +5,10 @@ import unittest, pprint
 from simpleparse.simpleparsegrammar import SPGenerator, declaration
 from simpleparse.parser import Parser
 from simpleparse.error import ParserSyntaxError
-try:
-	from TextTools import TextTools
-except ImportError:
-	from mx.TextTools import TextTools
+from simpleparse.stt.TextTools import TextTools
 from genericvalues import NullResult, AnyInt
 
-from mx.TextTools import print_tagtable
+from simpleparse.stt.TextTools import print_tagtable
 print_tagtable(
 	SPGenerator.buildParser( 'range' )
 )
@@ -226,6 +223,25 @@ class SimpleParseGrammarTests(unittest.TestCase):
 			], 10)
 			
 		)
+	def testLiteralDecorator( self ):
+		self.doBasicTest(
+			"literalDecorator",
+			'c',
+			(1, [], 1),
+		)
+	def testLiteralDecorator2( self ):
+		self.doBasicTest(
+			"literal",
+			'c"this"',
+			(1, [('literalDecorator',0,1,NullResult),('CHARNODBLQUOTE',2,6,NullResult)], 7),
+		)
+	def testLiteralDecorator3( self ):
+		"""Decorator must be right next to literal, no whitespace"""
+		self.doBasicTest(
+			"literal",
+			'c "this"',
+			(0, [], AnyInt),
+		)
 		
 	def testWhitespace1( self ):
 		self.doBasicTest(
@@ -250,6 +266,17 @@ class SimpleParseGrammarTests(unittest.TestCase):
 			"ts",
 			'nospace',
 			(1, [], 0)
+		)
+	def testWhitespace5( self ):
+		"""Bug in 2.0.0 where Null comments such as:
+		"#\n"
+
+		didn't parse.
+		"""
+		self.doBasicTest(
+			"ts",
+			' #\n ',
+			(1, [('comment',1,3,NullResult)], 4)
 		)
 		
 	def testName1( self ):

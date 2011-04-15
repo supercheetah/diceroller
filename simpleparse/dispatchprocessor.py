@@ -109,7 +109,7 @@ def getString( (tag, left, right, sublist), buffer):
 	return buffer[ left:right ]
 
 try:
-	from mx.TextTools import countlines
+	from simpleparse.stt.TextTools import countlines
 except ImportError:
 	def lines( start=None, end=None, buffer=None ):
 		"""Return line number in file at character index (string.count version)"""
@@ -117,5 +117,6 @@ except ImportError:
 else:
 	def lines( start=None, end=None, buffer=None ):
 		"""Return line number in file at character index (mx.TextTools version)"""
-		return countlines (buffer[start:end])
+		return countlines (buffer[start or 0:end or len(buffer)])
+	
 	

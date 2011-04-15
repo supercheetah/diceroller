@@ -83,7 +83,7 @@ from simpleparse.common import strings
 
 parser = Parser( declaration )
 if __name__ == "__main__":
-	from mx.TextTools import print_tags
+	from simpleparse.stt.TextTools import print_tags
 	grammar = open("""py_grammar.txt""").read()
 	success, result, next = parser.parse( grammar, 'declarationset')
 	print 'success', success, next

@@ -1,7 +1,7 @@
 import unittest, pprint
-from mx.TextTools import *
+from simpleparse.stt.TextTools import *
 import string
-from mx import TextTools
+from simpleparse.stt import TextTools
 mxVersion = tuple(string.split( TextTools.__version__, '.')[:3])
 
 class MXFlagTests(unittest.TestCase):

@@ -6,10 +6,7 @@ testdata = 'aba'
 expectedResult = (1, [('a',0,1,[]), ('b',1,2,[])], 2 )
 
 from simpleparse.simpleparsegrammar import Parser
-try:
-	from TextTools import TextTools
-except ImportError:
-	from mx.TextTools import TextTools
+from simpleparse.stt.TextTools import TextTools
 import pprint
 
 

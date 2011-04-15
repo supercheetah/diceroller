@@ -10,7 +10,7 @@ fifthLine := "This is fifth line"
 # for the negative versions which is basically to
 # avoid the overhead of the name-ref indirection
 # (which should be optimised away automatically, but isn't)
-set := -"This is first line"*, firstLine, -"This is second line"*, secondLine, -"This is fifth line"*, fifthLine
+set := -firstLine*, firstLine, -secondLine*, secondLine, -fifthLine*, fifthLine
 sets := set*
 """
 

@@ -71,6 +71,42 @@ class ErrorOnFailTests( unittest.TestCase ):
 			's',
 			'acbdba',
 		)
+	def testErrorOnFail9( self ):
+		self.shouldRaise(
+			'''s := !,'a','b'
+			''',
+			's',
+			'bcbdba',
+		)
+	def testErrorOnFail10( self ):
+		"""Test for use of setting message in definition"""
+		self.shouldRaise(
+			'''s := 'a',! "Blargh!",'b'
+			''',
+			's',
+			'acbdba',
+		)
+	def testErrorOnFail11( self ):
+		"""Test proper setting of err message text from !"message" syntax"""
+		try:
+			Parser( '''s := 'a',! "Blargh!",'b'
+				''', 's' ).parse(
+				'acbdba',
+			)
+		except ParserSyntaxError, err:
+			assert err.args[0] == "Blargh!", """Error message was %r, should have been "Blargh!"."""%(err.args[0],)
+	def testErrorOnFail12( self ):
+		"""Test proper setting of err message text from !"message" syntax"""
+		try:
+			Parser( '''s := 'a',! "Blargh!",'b'
+				''', 's' ).parse(
+				'acbdba',
+			)
+		except ParserSyntaxError, err:
+			description = str( err )
+			assert description == 'ParserSyntaxError: Blargh!', """Didn't get expected error description, got: %s"""%(
+				str(err),
+			)
 
 def getSuite():
 	return unittest.makeSuite(ErrorOnFailTests,'test')

@@ -1,7 +1,5 @@
-try:
-	from TextTools.TextTools import *
-except ImportError:
-	from mx.TextTools.TextTools import *
+"""Base class for real-world parsers (such as parser.Parser)"""
+from simpleparse.stt.TextTools.TextTools import *
 from simpleparse.generator import Generator
 
 class BaseParser:

@@ -9,10 +9,7 @@ The example also (obviously) demonstrates the use of an
 re object during the parsing process.
 """
 import re
-try:
-	from TextTools.TextTools import *
-except ImportError:
-	from mx.TextTools.TextTools import *
+from simpleparse.stt.TextTools.TextTools import *
 from simpleparse.parser import Parser
 from simpleparse import dispatchprocessor
 

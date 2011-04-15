@@ -5,7 +5,6 @@ To process, handle the "comment" production,
 expanded productions, so you won't get them
 returned for processing).
 
-
 	hash_comment
 		# to EOL comments
 	slashslash_comment
@@ -50,18 +49,25 @@ comment := -"*/"*
 >slashbang_comment< := '/*', comment, '*/'
 """
 _p = Parser( ccomments )
-c[ "c_comment" ] = c[ "slashbang_comment" ] = _p._generator.getRootObject( "slashbang_comment" )
+for name in ["c_comment","slashbang_comment"]:
+	c[ name ] = objectgenerator.LibraryElement(
+		generator = _p._generator,
+		production = "slashbang_comment",
+	)
 
 nccomments = r"""
 ### nestable C comments of form /* comment /* innercomment */ back to previous */
 <comment_start>          := '/*'
 <comment_stop>           := '*/'
-comment                  := -(comment_stop/comment_start)*/slashbang_nest_comment
+comment                  := (-(comment_stop/comment_start)+/slashbang_nest_comment)*
 >slashbang_nest_comment< := comment_start, comment, comment_stop
 """
 _p = Parser( nccomments )
-c[ "c_nest_comment" ] = c[ "slashbang_nest_comment" ] = _p._generator.getRootObject( "slashbang_nest_comment" )
+for name in ["c_nest_comment","slashbang_nest_comment"]:
+	c[ name ] = objectgenerator.LibraryElement(
+		generator = _p._generator,
+		production = "slashbang_nest_comment",
+	)
 
 common.share(c)
 
-	

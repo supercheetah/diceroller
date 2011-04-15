@@ -1,11 +1,11 @@
-try:
-	from TextTools import TextTools
-except ImportError:
-	from mx.TextTools import TextTools
+"""Abstract representation of an in-memory grammar that generates parsers"""
+from simpleparse.stt.TextTools import TextTools
 import traceback
 
 class Generator:
-	'''The generator class manages a collection of
+	'''Abstract representation of an in-memory grammar that generates parsers
+	
+	The generator class manages a collection of
 	ElementToken objects.  These element token objects
 	allow the generator to be separated from the
 	particular parser associated with any particular EBNF
@@ -13,6 +13,7 @@ class Generator:
 	using only the generator objects as a python API.
 	'''
 	def __init__( self ):
+		"""Initialise the Generator"""
 		self.names = []
 		self.rootObjects = []
 		self.methodSource = None
@@ -51,15 +52,42 @@ class Generator:
 	def buildParser( self, name, methodSource=None ):
 		'''Build the given parser definition, returning a TextTools parsing tuple'''
 		self.parserList = []
+		self.terminalParserCache = {}
 		self.methodSource = methodSource
-		for rootObject in self.rootObjects:
+		i = 0
+		while i < len(self.rootObjects):
+			# XXX Note: rootObjects will grow in certain cases where
+			# a grammar is loading secondary grammars into itself
+			rootObject = self.rootObjects[i]
 			try:
-				self.parserList.append ( tuple(rootObject.toParser( self )))
+				if len(self.parserList) <= i or self.parserList[i] is None:
+					parser = tuple(rootObject.toParser( self ))
+					self.setTerminalParser( i, parser )
 			except NameError,err:
-				currentRuleName = self.names[self.rootObjects.index(rootObject)]
+				currentRuleName = self.names[i]
 				err.args = err.args + ('current declaration is %s'%(currentRuleName), )
 				raise
+			i = i + 1
+		assert None not in self.parserList, str( self.parserList)
 		return self.parserList [self.getNameIndex (name)]
+	def setTerminalParser( self, index, parser ):
+		"""Explicitly set the parser value for given name"""
+		while index >= len(self.parserList):
+			self.parserList.append(None)
+		self.parserList[index] = parser
+	def getTerminalParser( self, index ):
+		"""Try to retrieve a parser from the parser-list"""
+		try:
+			return self.parserList[ index ]
+		except IndexError:
+			return None
+	def cacheCustomTerminalParser( self, index, flags, parser ):
+		"""Optimization to reuse customized terminal parsers"""
+		self.terminalParserCache[ (index,flags) ] = parser
+	def getCustomTerminalParser( self, index, flags ):
+		"""Retrieved a cached customized terminal parser or None"""
+		return self.terminalParserCache.get( (index, flags))
+		
 	def getParserList (self):
 		return self.parserList
 

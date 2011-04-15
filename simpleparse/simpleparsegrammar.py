@@ -1,6 +1,9 @@
-'''This module defines the original SimpleParse
+'''Default SimpleParse EBNF grammar as a generator with productions
+
+This module defines the original SimpleParse
 grammar.  It uses the generator objects directly
-as this is the first grammar being written.'''
+as this is the first grammar being written.
+'''
 from simpleparse.objectgenerator import *
 from simpleparse import generator, baseparser
 import string
@@ -221,42 +224,52 @@ SPGenerator.addDefinition (
 	SequentialGroup (
 		children = [
 			Literal ( value ="#"),
-			Literal (value ="\n", negative = 1, repeating = 1),
+			Literal (value ="\n", negative = 1, repeating = 1, optional=1),
 			Literal (value = "\n",),
 		],
 	),
 )
 
 SPGenerator.addDefinition (
+	"literalDecorator", # literalDecorator    :=  [c]
+	Range( value = 'c' )
+)
+
+SPGenerator.addDefinition (
 	"literal",  # ("'",(CHARNOSNGLQUOTE/ESCAPEDCHAR)*,"'")  /  ('"',(CHARNODBLQUOTE/ESCAPEDCHAR)*,'"')
-	FirstOfGroup (
+	SequentialGroup(
 		children = [
-			SequentialGroup (
+			Name( value = 'literalDecorator', optional=1 ),
+			FirstOfGroup (
 				children = [
-					Literal (value ="'"),
-					FirstOfGroup (
+					SequentialGroup (
 						children = [
-							Name (value = "CHARNOSNGLQUOTE"),
-							Name (value = "ESCAPEDCHAR"),
+							Literal (value ="'"),
+							FirstOfGroup (
+								children = [
+									Name (value = "CHARNOSNGLQUOTE"),
+									Name (value = "ESCAPEDCHAR"),
+								],
+								optional = 1, repeating = 1,
+							),
+							Literal (value ="'"),
 						],
-						optional = 1, repeating = 1,
 					),
-					Literal (value ="'"),
+					SequentialGroup (
+						children = [
+							Literal (value ='"'),
+							FirstOfGroup (
+								children = [
+									Name (value = "CHARNODBLQUOTE"),
+									Name (value = "ESCAPEDCHAR"),
+								],
+								optional = 1, repeating = 1,
+							),
+							Literal (value ='"'),
+						],
+					)
 				],
 			),
-			SequentialGroup (
-				children = [
-					Literal (value ='"'),
-					FirstOfGroup (
-						children = [
-							Name (value = "CHARNODBLQUOTE"),
-							Name (value = "ESCAPEDCHAR"),
-						],
-						optional = 1, repeating = 1,
-					),
-					Literal (value ='"'),
-				],
-			)
 		],
 	)
 )
@@ -399,8 +412,9 @@ unreportedname      :=  '<', name, '>'
 expandedname        :=  '>', name, '<'
 name                :=  [a-zA-Z_],[a-zA-Z0-9_]*
 <ts>                :=  ( [ \011-\015]+ / comment )*
-comment             :=  '#',-'\n'+,'\n'
-literal             :=  ("'",(CHARNOSNGLQUOTE/ESCAPEDCHAR)*,"'")  /  ('"',(CHARNODBLQUOTE/ESCAPEDCHAR)*,'"')
+comment             :=  '#',-'\n'*,'\n'
+literal             :=  literalDecorator?,("'",(CHARNOSNGLQUOTE/ESCAPEDCHAR)*,"'")  /  ('"',(CHARNODBLQUOTE/ESCAPEDCHAR)*,'"')
+literalDecorator    :=  [c]
 
 
 
@@ -558,8 +572,15 @@ class SPGrammarProcessor( DispatchProcessor ):
 		
 	def literal( self, (tag, left, right, sublist), buffer):
 		'''Turn a literal result into a literal generator'''
+		if sublist and sublist[0][0] == 'literalDecorator':
+			# right now only have the one decorator...
+			sublist = sublist[1:]
+			classObject = CILiteral
+		else:
+			classObject = Literal
 		elements = dispatchList( self, sublist, buffer)
-		return Literal( value = string.join(elements, "" ) )
+		### Should check for CILiteral with non-CI string or single-character value!
+		return classObject( value = string.join(elements, "" ) )
 
 	def range( self, (tag, left, right, sublist), buffer):
 ##		if hasattr( Range, 'requiresExpandedSet') and Range.requiresExpandedSet:
@@ -599,7 +620,7 @@ class SPGrammarProcessor( DispatchProcessor ):
 		err = ErrorOnFail()
 		if children:
 			(tag,left,right,children) = children[0]
-			message = string.join( dispatchList( self, sublist, buffer), "")
+			message = string.join( dispatchList( self, children, buffer), "")
 			err.message = message
 		return err
 	def _config_error_on_fail( self, errorOnFail, tup, buffer ):
@@ -647,7 +668,11 @@ class SPGrammarProcessor( DispatchProcessor ):
 	def CHARRANGE( self, (tag, left, right, sublist), buffer):
 		'''Create a string from first to second item'''
 		# following should never raise an error, as there's only one possible format...
-		first, second = map( ord, dispatchList( self, sublist, buffer))
+		try:
+			first, second = map( ord, dispatchList( self, sublist, buffer))
+		except TypeError:
+			import pdb
+			pdb.set_trace ()
 		if second < first:
 			second, first = first, second
 		return string.join(map( chr, range(first, second+1),), '')
