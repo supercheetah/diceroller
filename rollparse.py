@@ -7,10 +7,10 @@ import dispatcher
 
 declaration = r''' #this defines the language, of course
 root          := roll
-roll          := space,root_fn/sep_grouping,space
+roll          := space,root_fn/sep_grouping/var_set,space
 root_fn       := operations
 operations    := function
-function      := (dice,op,operations)/(grouping,op,operations)/(constant,op,operations)/(xdice,op,operations)/xdice/dice/constant/grouping
+function      := (dice,op,operations)/(grouping,op,operations)/(constant,op,operations)/(xdice,op,operations)(variable,op,operations)/xdice/dice/constant/grouping
 constant      := number
 grouping      := var_grouping/const_grouping
 var_grouping  := negation?,'(',space,operations,space,')'
@@ -20,6 +20,8 @@ sep_grouping  := '{',space,xdice,space,'}',(op,operations)?
 sep_dice      := num_dice?,incl_zero,num_sides
 dice          := num_dice?,incl_zero,num_sides
 xdice         := number,'x',sep_dice # This will expand an expression, so '6x3d6' becomes '3d6+3d6+3d6', and returns it as a list
+variable      := [a-zA-Z]+
+var_set       := [a-zA-Z]+,space,'=',space,operations
 incl_zero     := [dD]
 num_sides     := number
 num_dice      := number

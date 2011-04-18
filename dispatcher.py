@@ -70,6 +70,9 @@ class RollDispatcher( DispatchProcessor ):
         RollDispatcher.eqn_string, RollDispatcher.resolution = final
         return final
 
+    def var_set( self, (tag,start,stop,subtags), buffer ):
+        """This is how variables are set."""
+
     def operations( self, (tag,start,stop,subtags), buffer ):
         """The start of a new roll equation"""
         logging.debug("def:            operations")
