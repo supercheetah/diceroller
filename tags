@@ -1,0 +1,115 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BuildProcessor	rollparse.py	/^    def BuildProcessor(self):$/;"	m	class:RollParser
+Enum	enum.py	/^class Enum(object):$/;"	c
+EnumBadKeyError	enum.py	/^class EnumBadKeyError(TypeError, EnumException):$/;"	c
+EnumEmptyError	enum.py	/^class EnumEmptyError(AssertionError, EnumException):$/;"	c
+EnumException	enum.py	/^class EnumException(Exception):$/;"	c
+EnumImmutableError	enum.py	/^class EnumImmutableError(TypeError, EnumException):$/;"	c
+EnumValue	enum.py	/^class EnumValue(object):$/;"	c
+Fn	rollenum.py	/^Fn = Enum('constant','dice','xdice','op','var_grouping','const_grouping')$/;"	v
+Ops	rollenum.py	/^Ops = Enum('add','sub','mul','div')$/;"	v
+RollDispatcher	dispatcher.py	/^class RollDispatcher( DispatchProcessor ):$/;"	c
+RollParser	rollparse.py	/^class RollParser( Parser ):$/;"	c
+StrFn	rollenum.py	/^StrFn = lambda x: eval('Fn.{0}'.format(x))$/;"	v
+StrOps	rollenum.py	/^StrOps = lambda x: eval('Ops.{0}'.format(x))$/;"	v
+VarMultipleException	dispexcept.py	/^class VarMultipleException( Exception ):$/;"	c
+VarNestedException	dispexcept.py	/^class VarNestedException( Exception ):$/;"	c
+__author__	enum.py	/^__author__ = "%(__author_name__)s <%(__author_email__)s>" % vars()$/;"	v
+__author_email__	enum.py	/^__author_email__ = "ben+python@benfinney.id.au"$/;"	v
+__author_name__	enum.py	/^__author_name__ = "Ben Finney"$/;"	v
+__contains__	enum.py	/^    def __contains__(self, value):$/;"	m	class:Enum	file:
+__copyright__	enum.py	/^__copyright__ = ($/;"	v
+__date__	enum.py	/^__date__ = "2009-08-26"$/;"	v
+__delattr__	enum.py	/^    def __delattr__(self, name):$/;"	m	class:Enum	file:
+__delitem__	enum.py	/^    def __delitem__(self, index):$/;"	m	class:Enum	file:
+__eq__	enum.py	/^    def __eq__(self, other):$/;"	m	class:EnumValue	file:
+__ge__	enum.py	/^    def __ge__(self, other):$/;"	m	class:EnumValue	file:
+__getitem__	enum.py	/^    def __getitem__(self, index):$/;"	m	class:Enum	file:
+__gt__	enum.py	/^    def __gt__(self, other):$/;"	m	class:EnumValue	file:
+__hash__	enum.py	/^    def __hash__(self):$/;"	m	class:EnumValue	file:
+__init__	dispexcept.py	/^    def __init__( self, position ):$/;"	m	class:VarMultipleException
+__init__	dispexcept.py	/^    def __init__( self, position ):$/;"	m	class:VarNestedException
+__init__	enum.py	/^    def __init__(self, *args):$/;"	m	class:EnumImmutableError
+__init__	enum.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:EnumException
+__init__	enum.py	/^    def __init__(self, *keys, **kwargs):$/;"	m	class:Enum
+__init__	enum.py	/^    def __init__(self, enumtype, index, key):$/;"	m	class:EnumValue
+__init__	enum.py	/^    def __init__(self, key):$/;"	m	class:EnumBadKeyError
+__iter__	enum.py	/^    def __iter__(self):$/;"	m	class:Enum	file:
+__le__	enum.py	/^    def __le__(self, other):$/;"	m	class:EnumValue	file:
+__len__	enum.py	/^    def __len__(self):$/;"	m	class:Enum	file:
+__license__	enum.py	/^__license__ = "Choice of GPL or Python license"$/;"	v
+__lt__	enum.py	/^    def __lt__(self, other):$/;"	m	class:EnumValue	file:
+__ne__	enum.py	/^    def __ne__(self, other):$/;"	m	class:EnumValue	file:
+__repr__	enum.py	/^    def __repr__(self):$/;"	m	class:EnumValue	file:
+__setattr__	enum.py	/^    def __setattr__(self, name, value):$/;"	m	class:Enum	file:
+__setitem__	enum.py	/^    def __setitem__(self, index, value):$/;"	m	class:Enum	file:
+__str__	dispexcept.py	/^    def __str__( self ):$/;"	m	class:VarMultipleException	file:
+__str__	dispexcept.py	/^    def __str__( self ):$/;"	m	class:VarNestedException	file:
+__str__	enum.py	/^    def __str__(self):$/;"	m	class:EnumBadKeyError	file:
+__str__	enum.py	/^    def __str__(self):$/;"	m	class:EnumEmptyError	file:
+__str__	enum.py	/^    def __str__(self):$/;"	m	class:EnumImmutableError	file:
+__str__	enum.py	/^    def __str__(self):$/;"	m	class:EnumValue	file:
+__url__	enum.py	/^__url__ = "http:\/\/pypi.python.org\/pypi\/enum\/"$/;"	v
+__version__	enum.py	/^__version__ = "0.4.4"$/;"	v
+_comparator	enum.py	/^def _comparator(func):$/;"	f
+_copyright_year_begin	enum.py	/^_copyright_year_begin = "2007"$/;"	v
+_copyright_year_latest	enum.py	/^_copyright_year_latest = __date__.split('-')[0]$/;"	v
+_copyright_year_range	enum.py	/^_copyright_year_range = _copyright_year_begin$/;"	v
+_inside_var_group	dispatcher.py	/^    _inside_var_group = False$/;"	v	class:RollDispatcher
+_var_group_count	dispatcher.py	/^    _var_group_count = 0$/;"	v	class:RollDispatcher
+add_up	processraw.py	/^def add_up( num_array, addition ):$/;"	f
+comparator_wrapper	enum.py	/^    def comparator_wrapper(self, other):$/;"	f	function:_comparator
+const_grouping	dispatcher.py	/^    def const_grouping( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+const_grp_strings	dispatcher.py	/^    const_grp_strings = []$/;"	v	class:RollDispatcher
+constant	dispatcher.py	/^    def constant( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+dice	dispatcher.py	/^    def dice( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+dice_add	processraw.py	/^def dice_add( (dice_type, dice_rolls, is_neg), negate ):$/;"	f
+enumtype	enum.py	/^    def enumtype(self):$/;"	m	class:EnumValue
+eqn_string	dispatcher.py	/^    eqn_string = ""$/;"	v	class:RollDispatcher
+function	dispatcher.py	/^    def function( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+get_const_strings	dispatcher.py	/^def get_const_strings():$/;"	f
+get_resolution	dispatcher.py	/^def get_resolution():$/;"	f
+get_sep_grp_results	dispatcher.py	/^def get_sep_grp_results():$/;"	f
+grouping	dispatcher.py	/^    def grouping( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+incl_zero	dispatcher.py	/^    def incl_zero( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+index	enum.py	/^    def index(self):$/;"	m	class:EnumValue
+init_var	dispatcher.py	/^    def init_var( self ):$/;"	m	class:RollDispatcher
+is_separated	dispatcher.py	/^    is_separated = False$/;"	v	class:RollDispatcher
+is_separated	dispatcher.py	/^def is_separated():$/;"	f
+key	enum.py	/^    def key(self):$/;"	m	class:EnumValue
+main	diceroller.py	/^def main():$/;"	f
+num_dice	dispatcher.py	/^    def num_dice( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+num_sides	dispatcher.py	/^    def num_sides( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+number	dispatcher.py	/^    def number( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+op	dispatcher.py	/^    def op( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+operations	dispatcher.py	/^    def operations( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+parser	parsertest.py	/^parser = Parser(rollparse.declaration)$/;"	v
+position	dispexcept.py	/^    position = 0$/;"	v	class:VarMultipleException
+position	dispexcept.py	/^    position = 0$/;"	v	class:VarNestedException
+process_raw	processraw.py	/^def process_raw( raw_fn ):$/;"	f
+prod	parsertest.py	/^prod = "roll"$/;"	v
+production	dispatchdebug.py	/^production = "roll"$/;"	v
+resolution	dispatcher.py	/^    resolution = 0$/;"	v	class:RollDispatcher
+roll	dispatcher.py	/^    def roll( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+rollit	dispatcher.py	/^    def rollit( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+rollparser	dispatchdebug.py	/^rollparser = rollparse.RollParser( rollparse.declaration )$/;"	v
+rollparser	rollparse.py	/^rollparser = RollParser( declaration )$/;"	v
+root_fn	dispatcher.py	/^    def root_fn( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+sep_dice	dispatcher.py	/^    def sep_dice( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+sep_grouping	dispatcher.py	/^    def sep_grouping( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+sep_grp_results	dispatcher.py	/^    sep_grp_results = []$/;"	v	class:RollDispatcher
+sep_grp_strings	dispatcher.py	/^    sep_grp_strings = []$/;"	v	class:RollDispatcher
+solve_roll	processraw.py	/^def solve_roll( raw_fn ):$/;"	f
+solve_roll	rollparse.py	/^def solve_roll( roll_str ):$/;"	f
+space	dispatcher.py	/^    def space( self, (tag,start,stop,subtags), buffer):$/;"	m	class:RollDispatcher
+space_carot	rollparse.py	/^def space_carot( num_spaces ):$/;"	f
+tests_fail	parsertest.py	/^tests_fail = [$/;"	v
+tests_success	parsertest.py	/^tests_success = [$/;"	v
+var_grouping	dispatcher.py	/^    def var_grouping( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+xdice	dispatcher.py	/^    def xdice( self, (tag,start,stop,subtags), buffer ):$/;"	m	class:RollDispatcher
+xor	processraw.py	/^xor = lambda x,y: (not x and y) or (not y and x)$/;"	v
