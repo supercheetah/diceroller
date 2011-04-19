@@ -20,8 +20,8 @@ def is_separated():
     return Lexer.isSeparated
 
 class Lexer( DispatchProcessor ):
-    _inside_var_group = False
-    _var_group_count = 0
+    _insideVarGroup = False
+    _varGroupCount = 0
 
     constGrpStrings = []
 
@@ -51,8 +51,8 @@ class Lexer( DispatchProcessor ):
         logging.debug("result:  "+str(result)+'\n')
 
     def init_var( self ):
-        self._inside_var_group = False
-        self._var_group_count = 0
+        self._insideVarGroup = False
+        self._varGroupCount = 0
         Lexer.constGrpStrings = []
         Lexer.sepGrpStrings = []
         Lexer.sepGrpResults = []
@@ -146,10 +146,10 @@ class Lexer( DispatchProcessor ):
         """Operations outside of this group apply to each inside (except constants),
         which is then added up to the whole.  There can be only one var_grouping per
         roll equation, and nesting is not allowed."""
-        if self._inside_var_group:
+        if self._insideVarGroup:
             #raise Exception("Cannot nest variable groupings")
             raise VarNestedException( start )
-        if self._var_group_count > 0:
+        if self._varGroupCount > 0:
             #raise Exception("Cannot have more than one variable grouping")
             raise VarMultipleException( start )
         logging.debug("def:        var_grouping")
@@ -159,7 +159,7 @@ class Lexer( DispatchProcessor ):
         logging.debug("subtags:   "+str(subtags))
         result = None
         is_negative = False 
-        self._inside_var_group = True
+        self._insideVarGroup = True
         for tup in subtags:
             if "space" == tup[0]:
                 continue # Why waste processing power on spaces?
@@ -173,18 +173,18 @@ class Lexer( DispatchProcessor ):
             except SyntaxError, se:
                 raise se
         result.append(is_negative)
-        self._inside_var_group = False
-        self._var_group_count += 1
+        self._insideVarGroup = False
+        self._varGroupCount += 1
             
         return [Fn.var_grouping, result]
 
     def const_grouping( self, (tag,start,stop,subtags), buffer ):
         """Operations inside this group are processed first, and return a single constant."""
         # Since everything in a const_grouping gets processed right away, we don't care about these until we're done.
-        save_inside_var_grp = self._inside_var_group
-        save_var_grp_count = self._var_group_count
-        self._inside_var_group = False
-        self._var_group_count = 0
+        save_inside_var_grp = self._insideVarGroup
+        save_var_grp_count = self._varGroupCount
+        self._insideVarGroup = False
+        self._varGroupCount = 0
         
         negation = False
         for tup in subtags:
@@ -206,8 +206,8 @@ class Lexer( DispatchProcessor ):
             solution = -solution
         Lexer.constGrpStrings.append(eqn_str)
         # We're done!  Set them back to what they were before.
-        self._inside_var_group = save_inside_var_grp
-        self._var_group_count = save_var_grp_count
+        self._insideVarGroup = save_inside_var_grp
+        self._varGroupCount = save_var_grp_count
         return [ Fn.const_grouping,  solution ]
 
     def sep_grouping( self, (tag,start,stop,subtags), buffer ):
@@ -233,8 +233,8 @@ class Lexer( DispatchProcessor ):
 
         logging.debug("sep_dice:")
         for r in rolls:
-            self._inside_var_group = False # These need to be reset for each roll
-            self._var_group_count = 0
+            self._insideVarGroup = False # These need to be reset for each roll
+            self._varGroupCount = 0
             corrected = [die_type]
             corrected.extend(r)
             result = [[Fn.dice, corrected]]

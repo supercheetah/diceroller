@@ -11,34 +11,34 @@ class RollInstruction:
     """This will hold the different functions/instructions."""
     function = None
     data = None
-    def __init__(self, fn, d):
+    def __init__(self, fn, data_):
         function=fn
-        data=d
+        data=data_
 
 class DiceRoll:
     """Dice roll structure"""
-    is_negative = False
-    die_type = ''
+    isNegative = False
+    dieType = ''
     rolls = None
     def __init__(self, is_neg, dtype, r):
-        is_negative=is_neg
-        die_type=dtype
+        isNegative=is_neg
+        dieNype=dtype
         rolls=r
         return self
 
 class ExpandedRoll:
     """Expanded roll structure"""
-    die_type = ''
+    dieType = ''
     rolls = []
-    is_negative = False
+    isNegative = False
     def __init__(self, is_neg, dtype, single_roll_set, num_rolls):
-        is_negative = is_neg
-        die_type = dtype
+        isNegative = is_neg
+        dieType = dtype
         if is_neg:
             if num_rolls<0:
-                is_negative = False
+                isNegative = False
         elif num_rolls<0:
-            is_negative = True
+            isNegative = True
         for i in range(abs(num_rolls)):
             rolls.append(single_roll_set)
         return self
