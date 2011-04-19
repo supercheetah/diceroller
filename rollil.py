@@ -8,7 +8,7 @@ class RollInstruction:
     data = None
     def __init__(self, function, data):
         self.function=function
-        self.data=data_
+        self.data=data
 
 class DiceRoll:
     """Dice roll structure"""
