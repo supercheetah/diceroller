@@ -10,6 +10,9 @@ class RollInstruction:
         self.function=function
         self.data=data
 
+    def __repr__(self):
+        return "RollInstruction: {0} -> {1}".format(self.function, self.data)
+
 class DiceRoll:
     """Dice roll structure"""
     isNegative = False
@@ -17,12 +20,16 @@ class DiceRoll:
     rolls = None
     def __init__(self, is_neg, dtype, r):
         self.isNegative=is_neg
-        self.dieNype=dtype
+        self.dieType=dtype
         self.rolls=r
+
+    def __repr__(self):
+        n = (self.isNegative and -len(self.rolls) or len(self.rolls))
+        return "DiceRoll: {0}{1}".format(n, self.dieType)
 
 class ExpandedRoll:
     """Expanded roll structure"""
-    rollIteration = []
+    rollIteration = None
     numRolls = 0
     def __init__(self, roll_iteration, num_rolls):
         self.rollIteration = roll_iteration
@@ -32,3 +39,6 @@ class ExpandedRoll:
         elif num_rolls<0:
             self.rollIteration.isNegative = True
         self.numRolls = abs(num_rolls)
+
+    def __repr__(self):
+        return "ExpandedRoll: {0}x({1})".format(self.numRolls, str(self.rollIteration))

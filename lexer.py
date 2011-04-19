@@ -231,7 +231,7 @@ class Lexer( DispatchProcessor ):
             else:
                 bytecode.extend(result)
 
-        bytecode.insert(0, RollInstruction( Fn.dice, r ))
+        bytecode.insert(0, RollInstruction( Fn.dice, rolls.rollIteration ))
         logging.debug("sep_dice:")
         for i in range(rolls.numRolls):
             self._insideVarGroup = False # These need to be reset for each roll
