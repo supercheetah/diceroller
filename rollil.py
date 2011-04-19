@@ -26,7 +26,7 @@ class ExpandedRoll:
     numRolls = 0
     def __init__(self, roll_iteration, num_rolls):
         self.rollIteration = roll_iteration
-        if rollIteration.isNegative:
+        if self.rollIteration.isNegative:
             if num_rolls<0:
                 self.rollIteration.isNegative = False
         elif num_rolls<0:
