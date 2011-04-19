@@ -24,36 +24,36 @@ def dice_add( (dice_type, dice_rolls, is_neg), negate ):
 
     return eqn_str, dice_sum
 
-def process_raw( raw_fn ):
+def process_tokens( tokens ):
     """This does the processing of the raw equation."""
     adder = []
     negate = False
     eqn_str = ''
     c_grp_count = 0
     logging.debug("process raw:")
-    for elem in raw_fn:
+    for fn_token in tokens:
         # This was quick and dirty. Each of the
         # different element's logic should probably
         # be separated into their own function.
-        elem_type, data = elem
-        if elem_type == Fn.constant:            
+        fn_type, data = fn_token
+        if fn_type == Fn.constant:            
             eqn_str += str(data)
             adder.insert(0, str(negate and -data or data)) # Turn it into a string to signify it's a constant
             negate = False
             logging.debug(str(eqn_str)+'\n\t'+str(adder))
-        elif elem_type == Fn.const_grouping:
+        elif fn_type == Fn.const_grouping:
             adder.insert(0, str(negate and -data or data))
             c_grp_count += 1
             eqn_str += '[{0}: {1}]'.format(c_grp_count, data)
             negate = False
             logging.debug(str(eqn_str)+'\n\t'+str(adder))
-        elif elem_type == Fn.dice:
+        elif fn_type == Fn.dice:
             dice_str, dice_sum = dice_add(data, negate)
             eqn_str += dice_str
             adder.insert(0, dice_sum)
             negate = False
             logging.debug(str(eqn_str)+'\n\t'+str(adder))
-        elif elem_type == Fn.xdice:
+        elif fn_type == Fn.xdice:
             dice_type, dice_rolls = data
             roll0, is_neg = dice_rolls.pop(0)
             dice_str, _sum = dice_add( (dice_type, roll0, is_neg), negate )
@@ -67,9 +67,9 @@ def process_raw( raw_fn ):
             dice_rolls.insert(0, (roll0, is_neg))
             negate = False
             logging.debug(str(eqn_str)+'\n\t'+str(adder))
-        elif elem_type == Fn.var_grouping:
+        elif fn_type == Fn.var_grouping:
             is_negative = data.pop()
-            var_str, var_adder = process_raw( data )
+            var_str, var_adder = process_tokens( data )
             if xor(negate, is_negative):
                 neg_var_adder = []
                 for i in var_adder:
@@ -86,7 +86,7 @@ def process_raw( raw_fn ):
             adder.append(var_adder)
             negate = False
             logging.debug(str(eqn_str)+'\n\t'+str(adder))
-        elif elem_type == Fn.op:
+        elif fn_type == Fn.op:
             op_str = ' + '
             if data == Ops.sub:
                 negate = True
@@ -110,10 +110,10 @@ def add_up( num_array, addition ):
             _sum += add_later
     return _sum, const_adder
 
-def solve_roll( raw_fn ):
+def compile( tokens ):
     """doesn't really have another purpose other than
-    to call process_raw"""
-    eqn_str, result = process_raw(raw_fn)
+    to call process_tokens"""
+    eqn_str, result = process_tokens(tokens)
     last_elem = result[len(result)-1]
     if isinstance(last_elem, str) or isinstance(last_elem, int):
         result.append([0]) # This takes care of the corner case where there are no var_groupings

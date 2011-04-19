@@ -1,36 +1,37 @@
 import logging
 import random
-import processraw
+import compiler
 from dispexcept import VarNestedException, VarMultipleException
 from rollenum import *
 from simpleparse.dispatchprocessor import *
+from rollil import *
 #from simpleparse.error import ParserSyntaxError
 
 def get_const_strings():
-    return RollDispatcher.const_grp_strings
+    return Lexer.constGrpStrings
 
 def get_sep_grp_results():
-    return RollDispatcher.sep_grp_strings, RollDispatcher.sep_grp_results
+    return Lexer.sepGrpStrings, Lexer.sepGrpResults
 
 def get_resolution():
-    return RollDispatcher.eqn_string, RollDispatcher.resolution
+    return Lexer.eqnString, Lexer.resolution
 
 def is_separated():
-    return RollDispatcher.is_separated
+    return Lexer.isSeparated
 
-class RollDispatcher( DispatchProcessor ):
+class Lexer( DispatchProcessor ):
     _inside_var_group = False
     _var_group_count = 0
 
-    const_grp_strings = []
+    constGrpStrings = []
 
-    sep_grp_strings = []
-    sep_grp_results = []
+    sepGrpStrings = []
+    sepGrpResults = []
 
     resolution = 0
-    eqn_string = ""
+    eqnString = ""
 
-    is_separated = False
+    isSeparated = False
     
     def roll( self, (tag,start,stop,subtags), buffer ):
         """The start of processing a 'roll.'  Forms the root of the tree."""
@@ -52,10 +53,10 @@ class RollDispatcher( DispatchProcessor ):
     def init_var( self ):
         self._inside_var_group = False
         self._var_group_count = 0
-        RollDispatcher.const_grp_strings = []
-        RollDispatcher.sep_grp_strings = []
-        RollDispatcher.sep_grp_results = []
-        RollDispatcher.is_separated = False
+        Lexer.constGrpStrings = []
+        Lexer.sepGrpStrings = []
+        Lexer.sepGrpResults = []
+        Lexer.isSeparated = False
         
     def root_fn( self, (tag,start,stop,subtags), buffer ):
         """This is where all the magic happens."""
@@ -66,8 +67,8 @@ class RollDispatcher( DispatchProcessor ):
         except SyntaxError, se:
             raise se
         logging.debug("root result:   "+str(result)+'\n')
-        final = processraw.solve_roll( result )
-        RollDispatcher.eqn_string, RollDispatcher.resolution = final
+        final = compiler.compile( result )
+        Lexer.eqnString, Lexer.resolution = final
         return final
 
     def operations( self, (tag,start,stop,subtags), buffer ):
@@ -198,10 +199,12 @@ class RollDispatcher( DispatchProcessor ):
                 result = dispatch ( self, tup, buffer )
             except SyntaxError, se:
                 raise se
-        eqn_str, solution = processraw.solve_roll( result )
+        eqn_str, solution = compiler.compile( result )
+        # future thought for separated constants (a different grammar element):
+        # solution = lambda x=result: compiler.compile( result )
         if negation:
             solution = -solution
-        RollDispatcher.const_grp_strings.append(eqn_str)
+        Lexer.constGrpStrings.append(eqn_str)
         # We're done!  Set them back to what they were before.
         self._inside_var_group = save_inside_var_grp
         self._var_group_count = save_var_grp_count
@@ -209,7 +212,7 @@ class RollDispatcher( DispatchProcessor ):
 
     def sep_grouping( self, (tag,start,stop,subtags), buffer ):
         """This is a group of rolls that should all be taken separately.  Returns a list of rolls."""
-        RollDispatcher.is_separated = True
+        Lexer.isSeparated = True
         die_type = 'd'
         rolls = None
         is_neg = False
@@ -238,9 +241,9 @@ class RollDispatcher( DispatchProcessor ):
             if [] != fn:
                 result.extend(fn)
             logging.debug(result)
-            eqn_str, answer = processraw.solve_roll(result)
-            RollDispatcher.sep_grp_strings.append(eqn_str)
-            RollDispatcher.sep_grp_results.append(answer)
+            eqn_str, answer = compiler.compile(result)
+            Lexer.sepGrpStrings.append(eqn_str)
+            Lexer.sepGrpResults.append(answer)
 
     def rollit( self, (tag,start,stop,subtags), buffer ):
         """Common function to both dice and sep_dice.  Does not sum the rolls.

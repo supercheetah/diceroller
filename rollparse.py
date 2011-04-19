@@ -3,7 +3,7 @@ from simpleparse.parser import Parser
 #from simpleparse.error import ParserSyntaxError
 from dispexcept import VarNestedException, VarMultipleException
 import logging
-import dispatcher
+import lexer
 
 declaration = r''' #this defines the language, of course
 root          := roll
@@ -30,7 +30,7 @@ space         := [ \t]*
 class RollParser( Parser ):
     def BuildProcessor(self):
         try:
-            return dispatcher.RollDispatcher()
+            return lexer.Lexer()
         except SyntaxError, se:
             raise se
 
@@ -46,7 +46,7 @@ def space_carot( num_spaces ):
 def solve_roll( roll_str ):
     resolution = None
     try:
-        success, children, nextchar = rollparser.parse( roll_str, processor=dispatcher.RollDispatcher() )
+        success, children, nextchar = rollparser.parse( roll_str, processor=lexer.Lexer() )
         if not (success and len(roll_str)==nextchar):
             raise Exception(roll_str+'\n'+space_carot(nextchar)+"\nI'm sorry, but I don't understand that.")
     except SyntaxError, se:
@@ -56,11 +56,11 @@ def solve_roll( roll_str ):
     except VarMultipleException, mult_e:
         raise Exception(roll_str+'\n'+space_carot(mult_e.posotion)+"\nCan't have more than one variable grouping.")
         
-    is_separated = dispatcher.is_separated()
+    is_separated = lexer.is_separated()
     if is_separated:
-        resolution = dispatcher.get_sep_grp_results()
+        resolution = lexer.get_sep_grp_results()
     else:
-        resolution = dispatcher.get_resolution()
+        resolution = lexer.get_resolution()
 
-    return is_separated, dispatcher.get_const_strings(), resolution
+    return is_separated, lexer.get_const_strings(), resolution
     
