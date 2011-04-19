@@ -98,7 +98,7 @@ class Lexer( DispatchProcessor ):
         logging.debug("subtags:    "+str(subtags))
         logging.debug("buffer:     "+str(buffer))
         logging.debug("subtags[0]: "+str(subtags[0])+'\n')
-        fn = []
+        bytecode = []
         for tup in subtags:
             if "space" == tup[0]: #We don't need to do anything for a space.
                 continue
@@ -107,17 +107,17 @@ class Lexer( DispatchProcessor ):
             except SyntaxError, se:
                 raise se
             if "operations" == tup[0]:
-                fn.extend(result)
-                logging.debug('  opfn:'+str(fn)+'\n')
+                bytecode.extend(result)
+                logging.debug('  opfn:'+str(bytecode)+'\n')
             elif "grouping" == tup[0]:
-                fn.append(result)
-                logging.debug(' grpfn:'+str(fn)+'\n')
+                bytecode.append(result)
+                logging.debug(' grpfn:'+str(bytecode)+'\n')
             else:
-                fn.append([StrFn(tup[0]),result])
+                bytecode.append(RollInstruction(StrFn(tup[0]),result))
                 logging.debug('   '+str(tup[0])+':',result)
-                logging.debug('    fn:'+str(fn)+'\n')
+                logging.debug('    bytecode:'+str(bytecode)+'\n')
         logging.debug("")
-        return fn
+        return bytecode
 
 
     def constant( self, (tag,start,stop,subtags), buffer ):
@@ -176,7 +176,7 @@ class Lexer( DispatchProcessor ):
         self._insideVarGroup = False
         self._varGroupCount += 1
             
-        return [Fn.var_grouping, result]
+        return RollInstruction(Fn.var_grouping, result)
 
     def const_grouping( self, (tag,start,stop,subtags), buffer ):
         """Operations inside this group are processed first, and return a single constant."""
@@ -208,7 +208,7 @@ class Lexer( DispatchProcessor ):
         # We're done!  Set them back to what they were before.
         self._insideVarGroup = save_inside_var_grp
         self._varGroupCount = save_var_grp_count
-        return [ Fn.const_grouping,  solution ]
+        return RollInstruction( Fn.const_grouping,  solution )
 
     def sep_grouping( self, (tag,start,stop,subtags), buffer ):
         """This is a group of rolls that should all be taken separately.  Returns a list of rolls."""
@@ -216,7 +216,7 @@ class Lexer( DispatchProcessor ):
         die_type = 'd'
         rolls = None
         is_neg = False
-        fn = []
+        bytecode = []
         for tup in subtags:
             if "space" == tup[0]:
                 continue
@@ -225,23 +225,18 @@ class Lexer( DispatchProcessor ):
             except SyntaxError, se:
                 raise se
             if "xdice" == tup[0]:
-                die_type, rolls = result
+                rolls = result
             elif "op" == tup[0]:
-                fn.append([Fn.op, result])
+                bytecode.append(RollInstruction(Fn.op, result))
             else:
-                fn.extend(result)
+                bytecode.extend(result)
 
+        bytecode.insert(0, RollInstruction( Fn.dice, r ))
         logging.debug("sep_dice:")
-        for r in rolls:
+        for i in range(rolls.numRolls):
             self._insideVarGroup = False # These need to be reset for each roll
             self._varGroupCount = 0
-            corrected = [die_type]
-            corrected.extend(r)
-            result = [[Fn.dice, corrected]]
-            if [] != fn:
-                result.extend(fn)
-            logging.debug(result)
-            eqn_str, answer = compiler.compile(result)
+            eqn_str, answer = compiler.compile(bytecode)
             Lexer.sepGrpStrings.append(eqn_str)
             Lexer.sepGrpResults.append(answer)
 
@@ -268,7 +263,6 @@ class Lexer( DispatchProcessor ):
         if include_zero:
             die_type = "D"+str(dice_sides)
             start = 0
-            dice_sides += 1
         rolls = []
         logging.debug("dice_sides:    "+str(dice_sides))
         logging.debug("num_dice:      "+str(num_dice))
@@ -279,7 +273,7 @@ class Lexer( DispatchProcessor ):
         for i in range(abs(num_dice)):
             rolls.append(roll_fn)
         is_negative = num_dice<0 and True or False
-        return is_negative, die_type, rolls
+        return DiceRoll(is_negative, die_type, rolls)
 
     def dice( self, (tag,start,stop,subtags), buffer ):
         """This defines the actual dice being rolled"""
@@ -292,9 +286,8 @@ class Lexer( DispatchProcessor ):
         logging.debug("stop:          "+str(stop))
         logging.debug("subtags:       "+str(subtags))
         logging.debug("buffer:        "+str(buffer))
-        is_negative, die_type, rolls = self.rollit( (tag,start,stop,subtags), buffer )
         logging.debug("rolls:")
-        return die_type, rolls, is_negative
+        return self.rollit( (tag,start,stop,subtags), buffer )
 
     def sep_dice( self, (tag,start,stop,subtags), buffer ):
         """This defines the actual dice being rolled, but not added together.
@@ -305,9 +298,8 @@ class Lexer( DispatchProcessor ):
         logging.debug("stop:          "+str(stop))
         logging.debug("subtags:       "+str(subtags))
         logging.debug("buffer:        "+str(buffer))
-        is_negative, die_type,rolls = self.rollit( (tag,start,stop,subtags), buffer )
         logging.debug("")
-        return is_negative, die_type, rolls
+        return self.rollit( (tag,start,stop,subtags), buffer )
 
     def xdice( self, (tag,start,stop,subtags), buffer ):
         """This will expand an expression, so '6x3d6' becomes '3d6+3d6+3d6',
@@ -324,19 +316,11 @@ class Lexer( DispatchProcessor ):
         num_rolls = dispatch( self, subtags[0], buffer ) #This will call number
         logging.debug("num_rolls:     "+str(num_rolls))
         try:
-            is_negative, die_type, rolls = dispatch( self, subtags[1], buffer) #This will call sep_dice
+            rollset = dispatch( self, subtags[1], buffer) #This will call sep_dice
         except SyntaxError, se:
             raise se
-        expanded_rolls = []
-        if is_negative:
-            if num_rolls<0:
-                is_negative=False
-        elif num_rolls<0:
-            is_negative=True
-        for i in range(abs(num_rolls)):
-            logging.debug("  roll"+str(i)+":")
-            expanded_rolls.append((rolls, is_negative))
-        return die_type, expanded_rolls
+        expanded_rolls = ExpandedRoll(rollset, num_rolls)
+        return expanded_rolls
 
     def num_dice( self, (tag,start,stop,subtags), buffer ):
         """Number of dice being rolled"""

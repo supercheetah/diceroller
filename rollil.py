@@ -28,17 +28,14 @@ class DiceRoll:
 
 class ExpandedRoll:
     """Expanded roll structure"""
-    dieType = ''
-    rolls = []
-    isNegative = False
-    def __init__(self, is_neg, dtype, single_roll_set, num_rolls):
-        isNegative = is_neg
-        dieType = dtype
-        if is_neg:
+    rollIteration = []
+    numRolls = 0
+    def __init__(self, roll_iteration, num_rolls):
+         rollIteration = roll_iteration
+        if rollIteration.isNegative:
             if num_rolls<0:
-                isNegative = False
+                rollIteration.isNegative = False
         elif num_rolls<0:
-            isNegative = True
-        for i in range(abs(num_rolls)):
-            rolls.append(single_roll_set)
+            rollIteration.isNegative = True
+        numRolls = abs(num_rolls)
         return self
