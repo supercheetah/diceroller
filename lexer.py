@@ -196,12 +196,12 @@ class Lexer( DispatchProcessor ):
             if "operations" != tup[0]:
                 raise Exception("How can there be anything other than an operation here?!")
             try:
-                result = dispatch ( self, tup, buffer )
+                bytecode = dispatch ( self, tup, buffer )
             except SyntaxError, se:
                 raise se
-        eqn_str, solution = compiler.compile( result )
+        eqn_str, solution = compiler.compile( bytecode )
         # future thought for separated constants (a different grammar element):
-        # solution = lambda x=result: compiler.compile( result )
+        # solution = lambda x=bytecode: compiler.compile( bytecode )
         if negation:
             solution = -solution
         Lexer.constGrpStrings.append(eqn_str)
