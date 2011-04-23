@@ -61,6 +61,7 @@ class ExpandedRoll:
     numRolls = 0
     eqnStr = ''
     adderExtension = []
+    
     def __init__(self, roll_iteration, num_rolls):
         self.rollIteration = roll_iteration
         if self.rollIteration.isNegative:
@@ -82,6 +83,11 @@ class ExpandedRoll:
             self.eqnStr += ' + '+dice_str
 
         return self.eqnStr, self.adderExtension
+
+    def insertAdderExtension(self, other_list):
+        buffer = self.adderExtension[:]
+        buffer.extend(other_list)
+        return buffer
 
     def hasExpansion( self ):
         return ('' != self.eqnStr) and ([] != self.adderExtension)
