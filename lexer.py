@@ -263,17 +263,14 @@ class Lexer( DispatchProcessor ):
         if include_zero:
             die_type = "D"+str(dice_sides)
             start = 0
-        rolls = []
         logging.debug("dice_sides:    "+str(dice_sides))
         logging.debug("num_dice:      "+str(num_dice))
         logging.debug("include_zero:  "+str(include_zero))
         if include_zero:
             start = 0
         roll_fn = lambda x=0: random.randint(start, dice_sides)+x
-        for i in range(abs(num_dice)):
-            rolls.append(roll_fn)
         is_negative = num_dice<0 and True or False
-        return DiceRoll(is_negative, die_type, rolls)
+        return DiceRoll(is_negative, die_type, roll_fn, abs(num_dice))
 
     def dice( self, (tag,start,stop,subtags), buffer ):
         """This defines the actual dice being rolled"""
