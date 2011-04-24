@@ -1,17 +1,18 @@
 """This will define the intermediary language."""
 
 from rollenum import *
+from collections import deque
 
 class RollInstruction:
     """This will hold the different functions/instructions."""
-    function = None
+    opFn = None
     data = None
     def __init__(self, function, data):
-        self.function=function
+        self.opFn=function
         self.data=data
 
     def __repr__(self):
-        return "RollInstruction: {0} -> {1}".format(self.function, self.data)
+        return "RollInstruction: {0} -> {1}".format(self.opFn, self.data)
 
 class DiceRoll:
     """Dice roll structure"""
@@ -25,23 +26,26 @@ class DiceRoll:
     def __init__(self, is_neg, dtype, r, num_rolls):
         self.isNegative=is_neg
         self.dieType=dtype
-        self.rolls=r
+        self.roll=r
         self.numRolls = num_rolls
 
     def __repr__(self):
-        n = (self.isNegative and -len(self.rolls) or len(self.rolls))
+        n = -self.numRolls if self.isNegative else self.numRolls
         return "DiceRoll: {0}{1}".format(n, self.dieType)
 
-    def sum( self, negate ):
+    def __call__(self, negate, multiplier=1):
+        return self.sum(negate, multiplier)
+
+    def sum( self, negate, multipier=1 ):
         self.diceSum = 0
         self.eqnStr = ''
         self.diceSum += self.roll()
         if self.isNegative:
             self.eqnStr += '-'
-        self.eqnStr += '({0}: '.format(self.dieType)
+        self.eqnStr += '({0}: {1}'.format(self.dieType, self.diceSum)
 
         if 1<self.numRolls:
-            for i in self.numRolls:
+            for i in range(1, self.numRolls):
                 dval = self.roll()
                 self.diceSum += -dval if self.isNegative else dval # I found out too late that this syntax is available
                 self.eqnStr += ' + {0}'.format(dval)
@@ -49,6 +53,8 @@ class DiceRoll:
 
         if negate:
             self.diceSum = -self.diceSum
+
+        self.diceSum*=multipier
 
         return self.eqnStr, self.diceSum
 
@@ -60,7 +66,7 @@ class ExpandedRoll:
     rollIteration = None
     numRolls = 0
     eqnStr = ''
-    adderExtension = []
+    adderExtension = None
     
     def __init__(self, roll_iteration, num_rolls):
         self.rollIteration = roll_iteration
@@ -75,19 +81,14 @@ class ExpandedRoll:
         return "ExpandedRoll: {0}x({1})".format(self.numRolls, str(self.rollIteration))
 
     def expand( self, negate ):
-        roll_sum, self.eqnStr = self.rollIteration.sum(negate)
-        self.adderExtension = [roll_sum]
+        self.eqnStr, roll_sum = self.rollIteration.sum(negate) #negation from subtraction is only applied on the first iteration
+        self.adderExtension = deque([roll_sum])
         for i in range(1, self.numRolls):
-            roll_sum, dice_str = self.rollIteration.sum(negate)
+            dice_str, roll_sum = self.rollIteration.sum(False)
             self.adderExtension.append(roll_sum)
             self.eqnStr += ' + '+dice_str
 
         return self.eqnStr, self.adderExtension
 
-    def insertAdderExtension(self, other_list):
-        buffer = self.adderExtension[:]
-        buffer.extend(other_list)
-        return buffer
-
     def hasExpansion( self ):
-        return ('' != self.eqnStr) and ([] != self.adderExtension)
+        return ('' != self.eqnStr) and (None != self.adderExtension)

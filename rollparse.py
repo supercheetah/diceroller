@@ -23,7 +23,7 @@ xdice         := number,'x',sep_dice # This will expand an expression, so '6x3d6
 incl_zero     := [dD]
 num_sides     := number
 num_dice      := number
-op            := space,[-+],space
+op            := space,[-+*],space
 space         := [ \t]*
 '''
 

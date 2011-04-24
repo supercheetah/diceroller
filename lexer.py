@@ -199,12 +199,12 @@ class Lexer( DispatchProcessor ):
                 bytecode = dispatch ( self, tup, buffer )
             except SyntaxError, se:
                 raise se
-        eqn_str, solution = compiler.compile( bytecode )
-        # future thought for separated constants (a different grammar element):
-        # solution = lambda x=bytecode: compiler.compile( bytecode )
-        if negation:
-            solution = -solution
-        Lexer.constGrpStrings.append(eqn_str)
+        solution = lambda x=bytecode: (compiler.compile( bytecode ), negation)
+        ## future thought for separated constants (a different grammar element):
+        ## solution = lambda x=bytecode: compiler.compile( bytecode )
+        #if negation:
+        #    solution = -solution
+        #Lexer.constGrpStrings.append(eqn_str)
         # We're done!  Set them back to what they were before.
         self._insideVarGroup = save_inside_var_grp
         self._varGroupCount = save_var_grp_count

@@ -1,4 +1,5 @@
 import logging
+from collections import deque
 from rollenum import *
 
 xor = lambda x,y: (not x and y) or (not y and x)
@@ -95,6 +96,129 @@ def process_instructions( bytecode ):
             logging.debug(str(eqn_str)+'\n\t'+str(adder))
     return eqn_str, adder
 
+adder_push = lambda adder, x: adder.insert(0, x)
+islambda = lambda l: isinstance(l, type(lambda: None)) and l.__name__ == '<lambda>'
+
+def negate_adder( adder ):
+    return multiply_adder( adder, -1 )
+
+def multiply_adder( adder, multiplier ):
+    mult_adder = []
+    for i in adder:
+        if isinstance(i, int):
+            mult_adder.append(multiplier*i)
+        else:
+            mult_adder.append(str(-int(multiplier*i)))
+    return mult_adder
+
+def prod_deque( multiplier, coef ):
+    new_mult = deque([])
+    for i in multiplier:
+        if isinstance(i, int):
+            new_mult.append(i*coef)
+        else:
+            new_mult.append(str(int(i)*coef))
+    return new_mult
+
+def product( multiplier ):
+    prod = 1
+    is_const = True
+    for i in multiplier:
+        if not isinstance(i, deque):
+            prod *= int(i)
+            if isinstance(i, int):
+                is_const = False
+        else:
+            return prod_deque(i, prod)
+    return (str(prod) if is_const else prod)
+
+def generate_adder( bytecode ):
+    adder = deque([])
+    negate = False
+    multiplier = deque([])
+    eqn_str = ''
+    reset = lambda: False #resets negate back to false
+    logdebug = lambda: logging.debug(eqn_str+'\n\tadder:\t'+str(adder)+'\n\tmult:\t'+str(multiplier))
+    for instruction in bytecode:
+        if instruction.opFn == Fn.constant:
+            eqn_str += str(instruction.data)
+            data = -instruction.data if negate else instruction.data
+            multiplier.appendleft(str(data))
+            negate = reset()
+            logdebug()
+        elif instruction.opFn == Fn.const_grouping:
+            ((const_str, constant), is_neg) = instruction.data()
+            if is_neg:
+                eqn_str += '-'
+            eqn_str += '[{0} = {1}]'.format(const_str, constant)
+            data = -constant if xor(negate, is_neg) else constant
+            multiplier.appendleft(str(data))
+            negate = reset()
+            logdebug()
+        elif instruction.opFn == Fn.dice:
+            dice_str, dice_sum = instruction.data(negate)
+            eqn_str += dice_str
+            multiplier.appendleft(dice_sum)
+            negate = reset()
+            logdebug()
+        elif instruction.opFn == Fn.xdice:
+            x_str, expansion = instruction.data.expand(negate)
+            eqn_str += x_str
+            multiplier.appendleft(expansion.popleft())
+            data = deque([])
+            if 1<len(multiplier):
+                data = product(multiplier)
+                multiplier = deque([])
+            else:
+                data=multiplier.pop()
+            if isinstance(data, deque):
+                adder.append(data)
+            else:
+                adder.appendleft(data)
+            while 1<len(expansion):
+                adder.appendleft(expansion.popleft())
+            multiplier.appendleft(expansion.pop())
+            negate = reset()
+            logdebug()
+        elif instruction.opFn == Fn.var_grouping:
+            is_neg = instruction.data.pop()
+            var_str, var_adder = generate_adder(instruction.data)
+            if xor(negate, is_neg):
+                var_adder = negate_adder(var_adder)
+            if is_neg:
+                eqn_str += '-('+var_str+')'
+            else:
+                eqn_str += '('+var_str+')'
+            instruction.data.append(is_neg)
+            multiplier.append(var_adder)
+            negate = reset()
+            logdebug()
+        elif instruction.opFn == Fn.op:
+            eqn_str += ' '+OpsRepr[instruction.data]+' '
+            if instruction.data == Ops.sub:
+                negate = True
+            if instruction.data != Ops.mul:
+                data = None
+                if 1<len(multiplier):
+                    data = product(multiplier)
+                    multiplier = deque([])
+                else:
+                    data = multiplier.pop()
+                if isinstance(data, deque):
+                    adder.append(data)
+                else:
+                    adder.appendleft(data)
+            logdebug()
+    logdebug()
+    if 0<len(multiplier):
+        data = product(multiplier)
+    if isinstance(data, deque):
+        adder.append(data)
+    else:
+        adder.appendleft(data)
+    logdebug()
+    return eqn_str, adder
+
 def add_up( num_array, addition ):
     _sum = 0
     const_adder = 0
@@ -123,5 +247,11 @@ def _compile( bytecode ):
 
 def compile( bytecode ):
     """temporary debug version of the above"""
-    print bytecode
-    return '', 0
+    #print bytecode
+    eqn_str, adder = generate_adder(bytecode)
+    last = adder[len(adder)-1]
+    if not isinstance(last, deque):
+        adder.append([0]) # This takes care of the corner case where there are no var_groupings
+    answer, garbage = add_up(adder, 0)
+    logging.debug("answer: "+str(answer))
+    return eqn_str, answer
