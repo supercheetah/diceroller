@@ -91,7 +91,10 @@ def generate_adder( bytecode ):
             add_to_adder(data)
             while 1<len(expansion):
                 adder.appendleft(expansion.popleft())
-            multiplier.appendleft(expansion.pop())
+            if 0!=len(expansion):
+                # If some weirdo decides to use 1xd?, this won't work
+                # since expansion will be empty.
+                multiplier.append(expansion.pop())
             negate = reset()
             logdebug()
         elif instruction.opFn == Fn.var_grouping:
