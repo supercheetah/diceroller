@@ -26,7 +26,7 @@ def main():
             print e
             continue
 
-        if 0 < len(const_strings):
+        if 0 < len(const_strings) and not is_separated:
             print "Calculated constants:"
             i = 1
             for c in const_strings:
@@ -35,7 +35,11 @@ def main():
 
         if is_separated:
             print "Rolls:"
-            for i in range(len(ans_str)):
+            for i in range(0,len(ans_str)-1):
+                const_counter = 1
+                for const_str in const_strings[i]:
+                    print "    [{0}: {1}]".format(const_counter, const_str)
+                    const_counter += 1
                 print "  {0}: {1} = {2}".format(i+1, ans_str[i], answers[i])
         else:
             print "{0} = {1}".format(ans_str, answers)

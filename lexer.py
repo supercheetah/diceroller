@@ -8,7 +8,10 @@ from rollil import *
 #from simpleparse.error import ParserSyntaxError
 
 def get_const_strings():
-    return Lexer.constGrpStrings
+    if is_separated():
+        return Lexer.constGrpStrings
+    else:
+        return Lexer.sepConstGrpStrings
 
 def get_sep_grp_results():
     return Lexer.sepGrpStrings, Lexer.sepGrpResults
@@ -27,6 +30,7 @@ class Lexer( DispatchProcessor ):
 
     sepGrpStrings = []
     sepGrpResults = []
+    sepConstGrpStrings = []
 
     resolution = 0
     eqnString = ""
@@ -68,7 +72,7 @@ class Lexer( DispatchProcessor ):
             raise se
         logging.debug("root result:   "+str(result)+'\n')
         final = compiler.compile( result )
-        Lexer.eqnString, Lexer.resolution = final
+        Lexer.eqnString, Lexer.constGrpStrings, Lexer.resolution = final
         return final
 
     def operations( self, (tag,start,stop,subtags), buffer ):
@@ -236,9 +240,10 @@ class Lexer( DispatchProcessor ):
         for i in range(rolls.numRolls):
             self._insideVarGroup = False # These need to be reset for each roll
             self._varGroupCount = 0
-            eqn_str, answer = compiler.compile(bytecode)
+            eqn_str, const_grp_strings, answer = compiler.compile(bytecode)
             Lexer.sepGrpStrings.append(eqn_str)
             Lexer.sepGrpResults.append(answer)
+            Lexer.sepConstGrpStrings.append(const_grp_strings)
 
     def rollit( self, (tag,start,stop,subtags), buffer ):
         """Common function to both dice and sep_dice.  Does not sum the rolls.

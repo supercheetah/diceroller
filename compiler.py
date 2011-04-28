@@ -47,11 +47,19 @@ def generate_adder( bytecode ):
     adder = deque([])
     # Just turn subtraction into addition to make our lives easier.
     negate = False
-    # For any multiplication we encounter, we must deal with right away.
+    # For any multiplication we encounter, we must solve right away.
     multiplier = deque([])
     # This is where we create the string to give back to the user.
     eqn_str = ''
-    # resets negate back to false, may be used to reset other vars
+    # Dump all the constant group strings here. The counter counts
+    # them for identification.
+    const_grp_strings = []
+    const_counter = 0
+    # A bit hackish to overcome Python shortcomings, but it works for
+    # what I want.
+    const_add_string = lambda cstr: 0 if const_grp_strings.append(cstr) else const_counter+1
+    # Resets negate back to false, may be used to reset other vars in
+    # the future.
     reset = lambda: False
     logdebug = lambda: logging.debug(eqn_str+'\n\tadder:\t'+str(adder)+'\n\tmult:\t'+str(multiplier))
     add_to_adder = lambda data: adder.append(data) if isinstance(data, deque) else adder.appendleft(data)
@@ -59,7 +67,8 @@ def generate_adder( bytecode ):
         # This is such an ugly function.  I'm just not sure there is a
         # way to break it up into more functions.  That's not
         # completely true.  It's just that without pass by reference,
-        # I can't see it.
+        # I can't see it, at least not in a way that would be clean or
+        # elegant.
         if instruction.opFn == Fn.constant:
             eqn_str += str(instruction.data)
             data = -instruction.data if negate else instruction.data
@@ -67,16 +76,19 @@ def generate_adder( bytecode ):
             negate = reset()
             logdebug()
         elif instruction.opFn == Fn.const_grouping:
-            ((const_str, constant), is_neg) = instruction.data()
+            ((const_str, subconst_str, constant), is_neg) = instruction.data()
+            for sub_str in subconst_str:
+                const_add_string = const_add_string(sub_str)
+            const_counter = const_add_string(const_str)
             if is_neg:
                 eqn_str += '-'
-            eqn_str += '[{0} = {1}]'.format(const_str, constant)
+            eqn_str += '[({0}): {1}]'.format(const_counter, constant)
             data = -constant if xor(negate, is_neg) else constant
             multiplier.appendleft(str(data))
             negate = reset()
             logdebug()
         elif instruction.opFn == Fn.dice:
-            dice_str, dice_sum = instruction.data(negate)
+            dice_str, dice_sum = instruction.data.sum(negate)
             eqn_str += dice_str
             multiplier.appendleft(dice_sum)
             negate = reset()
@@ -114,9 +126,11 @@ def generate_adder( bytecode ):
             eqn_str += ' '+OpsRepr[instruction.data]+' '
             if instruction.data == Ops.sub:
                 negate = True
+            # As soon as we encounter any non-multiplication operator,
+            # clear out multiplier.
             if instruction.data != Ops.mul:
                 data = product(multiplier)
-                # We're done multiplying, so we need an empty multiplier
+                # We're done multiplying, so we need an empty multiplier.
                 multiplier = deque([]) 
                 add_to_adder(data)
             logdebug()
@@ -130,7 +144,7 @@ def generate_adder( bytecode ):
     else:
         adder.appendleft(data)
     logdebug()
-    return eqn_str, adder
+    return eqn_str, const_grp_strings, adder
 
 def add_up( num_array, addition ):
     _sum = 0
@@ -150,7 +164,7 @@ def add_up( num_array, addition ):
     return _sum, const_adder
 
 def compile( bytecode ):
-    eqn_str, adder = generate_adder(bytecode)
+    eqn_str, const_grp_strings, adder = generate_adder(bytecode)
     last = adder[len(adder)-1]
     if not isinstance(last, deque):
         # This takes care of the corner case where there are no
@@ -158,4 +172,4 @@ def compile( bytecode ):
         adder.append([0])
     answer, garbage = add_up(adder, 0)
     logging.debug("answer: "+str(answer))
-    return eqn_str, answer
+    return eqn_str, const_grp_strings, answer
