@@ -2,9 +2,9 @@ import logging
 from collections import deque
 from rollenum import *
 
-xor = lambda x,y: (not x and y) or (not y and x)
-adder_push = lambda adder, x: adder.insert(0, x)
-islambda = lambda l: isinstance(l, type(lambda: None)) and l.__name__ == '<lambda>'
+XOR = lambda x, y: (not x and y) or (not y and x)
+ADDER_PUSH = lambda adder, x: adder.insert(0, x)
+ISLAMBDA = lambda l: isinstance(l, type(lambda: None)) and l.__name__ == '<lambda>'
 
 def negate_adder( adder ):
     return multiply_adder( adder, -1 )
@@ -83,7 +83,7 @@ def generate_adder( bytecode ):
             if is_neg:
                 eqn_str += '-'
             eqn_str += '[({0}): {1}]'.format(const_counter, constant)
-            data = -constant if xor(negate, is_neg) else constant
+            data = -constant if XOR(negate, is_neg) else constant
             multiplier.appendleft(str(data))
             negate = reset()
             logdebug()
@@ -112,7 +112,7 @@ def generate_adder( bytecode ):
         elif instruction.opFn == Fn.var_grouping:
             is_neg = instruction.data.pop()
             var_str, var_adder = generate_adder(instruction.data)
-            if xor(negate, is_neg):
+            if XOR(negate, is_neg):
                 var_adder = negate_adder(var_adder)
             if is_neg:
                 eqn_str += '-('+var_str+')'
