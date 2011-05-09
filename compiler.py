@@ -57,12 +57,14 @@ def generate_adder( bytecode ):
     const_counter = 0
     # A bit hackish to overcome Python shortcomings, but it works for
     # what I want.
-    const_add_string = lambda cstr: 0 if const_grp_strings.append(cstr) else const_counter+1
+    const_add_string = lambda cstr: 0 if \
+        const_grp_strings.append(cstr) else const_counter+1
     # Resets negate back to false, may be used to reset other vars in
     # the future.
     reset = lambda: False
     logdebug = lambda: logging.debug(eqn_str+'\n\tadder:\t'+str(adder)+'\n\tmult:\t'+str(multiplier))
-    add_to_adder = lambda data: adder.append(data) if isinstance(data, deque) else adder.appendleft(data)
+    add_to_adder = lambda data: adder.append(data) if \
+        isinstance(data, deque) else adder.appendleft(data)
     for instruction in bytecode:
         # This is such an ugly function.  I'm just not sure there is a
         # way to break it up into more functions.  That's not
@@ -78,7 +80,7 @@ def generate_adder( bytecode ):
         elif instruction.opFn == Fn.const_grouping:
             ((const_str, subconst_str, constant), is_neg) = instruction.data()
             for sub_str in subconst_str:
-                const_add_string = const_add_string(sub_str)
+                const_counter = const_add_string(sub_str)
             const_counter = const_add_string(const_str)
             if is_neg:
                 eqn_str += '-'
