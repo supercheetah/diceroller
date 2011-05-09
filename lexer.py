@@ -9,9 +9,9 @@ from rollil import *
 
 def get_const_strings():
     if is_separated():
-        return Lexer.constGrpStrings
-    else:
         return Lexer.sepConstGrpStrings
+    else:
+        return Lexer.constGrpStrings
 
 def get_sep_grp_results():
     return Lexer.sepGrpStrings, Lexer.sepGrpResults
