@@ -21,6 +21,9 @@ def main():
             break
 
         try:
+            const_strings = []
+            ans_str = []
+            answers = None
             is_separated, const_strings, (ans_str, answers) = rollparse.solve_roll(eqn_str)
         except Exception as e:
             print e
@@ -35,7 +38,7 @@ def main():
 
         if is_separated:
             print "Rolls:"
-            for i in range(0,len(ans_str)-1):
+            for i in range(0,len(ans_str)):
                 const_counter = 1
                 for const_str in const_strings[i]:
                     print "    [{0}: {1}]".format(const_counter, const_str)

@@ -266,8 +266,7 @@ int checkCookie(int filelen)
 		return -1;
 
 	/* Read the Cookie, and check its MAGIC bytes */
-	if(0==fread(&f_cookie, sizeof(COOKIE), 1, f_fp))
-                return -1;
+	fread(&f_cookie, sizeof(COOKIE), 1, f_fp);
 	if (strncmp(f_cookie.magic, MAGIC, strlen(MAGIC)))
 		return -1;
 
@@ -360,8 +359,7 @@ int openArchive()
 		FATALERROR("Could not allocate buffer for TOC.");
 		return -1;
 	}
-	if(0==fread(f_tocbuff, ntohl(f_cookie.TOClen), 1, f_fp))
-	        return -1;
+	fread(f_tocbuff, ntohl(f_cookie.TOClen), 1, f_fp);
 	f_tocend = (TOC *) (((char *)f_tocbuff) + ntohl(f_cookie.TOClen));
 
 	/* Check input file is still ok (should be). */
@@ -508,9 +506,17 @@ int loadPython()
 	/* Workaround for virtualenv: it renames the Python framework. */
 	/* A proper solution would be to let Build.py found out the correct
 	 * name and embed it in the PKG as metadata. */
-	if (stat(dllpath, &sbuf) < 0)
+	if (stat(dllpath, &sbuf) < 0) {
 		sprintf(dllpath, "%s.Python",
 			f_workpath ? f_workpath : f_homepath);
+        
+        if(stat(dllpath, &sbuf) < 0) {
+            /* Python might be compiled as a .dylib (using --enable-shared) so lets try that one */
+            sprintf(dllpath, "%slibpython%01d.%01d.dylib",
+                    f_workpath ? f_workpath : f_homepath,
+                    ntohl(f_cookie.pyvers) / 10, ntohl(f_cookie.pyvers) % 10);
+        }
+    }
 #else
 	sprintf(dllpath, "%slibpython%01d.%01d.so.1.0",
 		f_workpath ? f_workpath : f_homepath,
@@ -886,8 +892,7 @@ unsigned char *extract(TOC *ptoc)
 		OTHERERROR("Could not allocate read buffer\n");
 		return NULL;
 	}
-	if(0==fread(data, ntohl(ptoc->len), 1, f_fp))
-	        return NULL;
+	fread(data, ntohl(ptoc->len), 1, f_fp);
 	if (ptoc->cflag == '\2') {
 		PyObject *func_new;
 		PyObject *aes_dict;

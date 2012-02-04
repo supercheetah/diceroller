@@ -155,6 +155,27 @@ def addSuffixToExtensions(toc):
         new_toc.append((inm, fnm, typ))
     return new_toc
 
+def architecture():
+    """
+    Returns the bit depth of the python interpreter's architecture as
+    a string ('32bit' or '64bit'). Similar to platform.architecture(),
+    but with fixes for universal binaries on MacOS.
+    """
+    if sys.platform == "darwin":
+        # Darwin's platform.architecture() is buggy and always
+        # returns "64bit" even for the 32bit version of Python's
+        # universal binary. So we roll out our own (that works
+        # on Darwin).
+        if sys.maxint > 2L**32:
+            return '64bit'
+        else:
+            return '32bit'
+
+    # Python 2.3+
+    import platform
+    return platform.architecture()[0]
+
+
 #--- functons for checking guts ---
 
 def _check_guts_eq(attr, old, new, last_build):
@@ -485,19 +506,26 @@ class Analysis(Target):
         Some linux distributions (e.g. debian-based) statically build the
         Python executable to the libpython, so bindepend doesn't include
         it in its output.
+
+        Darwin custom builds could possibly also have non-framework style libraries, 
+        so this method also checks for that variant as well.
         """
 
         if target_platform.startswith("linux"):
-            name = 'libpython%d.%d.so' % sys.version_info[:2]
+            names = ('libpython%d.%d.so' % sys.version_info[:2],) 
         elif target_platform.startswith("darwin"):
-            name = 'Python'
+            names = ('Python', 'libpython%d.%d.dylib' % sys.version_info[:2])
         else:
             return
 
         for (nm, fnm, typ) in binaries:
-            if typ == 'BINARY' and name in fnm:
-                # lib found
-                return
+            for name in names: 
+                if typ == 'BINARY' and name in fnm:
+                    # lib found
+                    return
+
+        # resume search using the first item in names
+        name = names[0]
 
         if target_platform.startswith("linux"):
             lib = bindepend.findLibrary(name)
@@ -631,7 +659,10 @@ def checkCache(fnm, strip, upx):
         cmd = '"' + upx_executable + '" ' + bestopt + " -q \"%s\"" % cachedfile
     else:
         if strip:
-            cmd = "strip \"%s\"" % cachedfile
+            # -S = strip only debug symbols.
+            # The default strip behaviour breaks some shared libraries
+            # under Mac OSX.
+            cmd = "strip -S \"%s\"" % cachedfile
     shutil.copy2(fnm, cachedfile)
     os.chmod(cachedfile, 0755)
 
@@ -922,22 +953,26 @@ class EXE(Target):
         return False
 
     def _bootloader_file(self, exe):
-        base = "support/loader"
-
         try:
             import platform
-            dir = platform.system() + "-" + platform.architecture()[0]
+            # On some Windows installation (Python 2.4) platform.system() is
+            # broken and incorrectly returns 'Microsoft' instead of 'Windows'.
+            # http://mail.python.org/pipermail/patches/2007-June/022947.html
+            syst = platform.system()
+            syst_real = {'Microsoft': 'Windows'}.get(syst, syst)
+            PLATFORM = syst_real + "-" + architecture()
         except ImportError:
             import os
             n = { "nt": "Windows", "linux2": "Linux", "darwin": "Darwin" }
-            dir = n[os.name] + "-32bit"
+            PLATFORM = n[os.name] + "-32bit"
 
         if not self.console:
             exe = exe + 'w'
         if self.debug:
             exe = exe + '_d'
 
-        return base + "/" + dir + "/" + exe
+        import os
+        return os.path.join('support', 'loader', PLATFORM, exe)
 
     def assemble(self):
         print "building EXE from", os.path.basename(self.out)
