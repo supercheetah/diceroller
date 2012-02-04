@@ -1,6 +1,6 @@
 import logging
 import random
-import compiler
+import dice_compiler
 from dispexcept import VarNestedException, VarMultipleException
 from rollenum import *
 from simpleparse.dispatchprocessor import *
@@ -39,6 +39,7 @@ class Lexer( DispatchProcessor ):
     
     def roll( self, (tag,start,stop,subtags), buffer ):
         """The start of processing a 'roll.'  Forms the root of the tree."""
+        self.init_var()
         logging.debug("def:      roll")
         logging.debug("tag:     "+str(tag))
         logging.debug("start:   "+str(start))
@@ -63,15 +64,15 @@ class Lexer( DispatchProcessor ):
         Lexer.isSeparated = False
         
     def root_fn( self, (tag,start,stop,subtags), buffer ):
-        """This is where all the magic happens."""
-        self.init_var()
+        """This is where all the magic happens, except not apparently.
+        This seems to be dead code?"""
         logging.debug("def:            root_fn")
         try:
             result = dispatch( self, subtags[0], buffer )
         except SyntaxError, se:
             raise se
         logging.debug("root result:   "+str(result)+'\n')
-        final = compiler.dice_compile( result )
+        final = dice_compiler.dice_compile( result )
         Lexer.eqnString, Lexer.constGrpStrings, Lexer.resolution = final
         return final
 
@@ -203,9 +204,9 @@ class Lexer( DispatchProcessor ):
                 bytecode = dispatch ( self, tup, buffer )
             except SyntaxError, se:
                 raise se
-        solution = lambda x=bytecode: (compiler.dice_compile( bytecode ), negation)
+        solution = lambda x=bytecode: (dice_compiler.dice_compile( bytecode ), negation)
         ## future thought for separated constants (a different grammar element):
-        ## solution = lambda x=bytecode: compiler.dice_compile( bytecode )
+        ## solution = lambda x=bytecode: dice_compiler.dice_compile( bytecode )
         #if negation:
         #    solution = -solution
         #Lexer.constGrpStrings.append(eqn_str)
@@ -240,7 +241,7 @@ class Lexer( DispatchProcessor ):
         for i in range(rolls.numRolls):
             self._insideVarGroup = False # These need to be reset for each roll
             self._varGroupCount = 0
-            eqn_str, const_grp_strings, answer = compiler.dice_compile(bytecode)
+            eqn_str, const_grp_strings, answer = dice_compiler.dice_compile(bytecode)
             Lexer.sepGrpStrings.append(eqn_str)
             Lexer.sepGrpResults.append(answer)
             Lexer.sepConstGrpStrings.append(const_grp_strings)
