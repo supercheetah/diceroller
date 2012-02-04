@@ -165,7 +165,7 @@ def add_up( num_array, addition ):
             _sum += add_later
     return _sum, const_adder
 
-def compile( bytecode ):
+def dice_compile( bytecode ):
     eqn_str, const_grp_strings, adder = generate_adder(bytecode)
     last = adder[len(adder)-1]
     if not isinstance(last, deque):

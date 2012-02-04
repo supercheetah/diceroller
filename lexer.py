@@ -71,7 +71,7 @@ class Lexer( DispatchProcessor ):
         except SyntaxError, se:
             raise se
         logging.debug("root result:   "+str(result)+'\n')
-        final = compiler.compile( result )
+        final = compiler.dice_compile( result )
         Lexer.eqnString, Lexer.constGrpStrings, Lexer.resolution = final
         return final
 
@@ -203,9 +203,9 @@ class Lexer( DispatchProcessor ):
                 bytecode = dispatch ( self, tup, buffer )
             except SyntaxError, se:
                 raise se
-        solution = lambda x=bytecode: (compiler.compile( bytecode ), negation)
+        solution = lambda x=bytecode: (compiler.dice_compile( bytecode ), negation)
         ## future thought for separated constants (a different grammar element):
-        ## solution = lambda x=bytecode: compiler.compile( bytecode )
+        ## solution = lambda x=bytecode: compiler.dice_compile( bytecode )
         #if negation:
         #    solution = -solution
         #Lexer.constGrpStrings.append(eqn_str)
@@ -240,7 +240,7 @@ class Lexer( DispatchProcessor ):
         for i in range(rolls.numRolls):
             self._insideVarGroup = False # These need to be reset for each roll
             self._varGroupCount = 0
-            eqn_str, const_grp_strings, answer = compiler.compile(bytecode)
+            eqn_str, const_grp_strings, answer = compiler.dice_compile(bytecode)
             Lexer.sepGrpStrings.append(eqn_str)
             Lexer.sepGrpResults.append(answer)
             Lexer.sepConstGrpStrings.append(const_grp_strings)
