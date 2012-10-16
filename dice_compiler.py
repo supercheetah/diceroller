@@ -113,7 +113,9 @@ def generate_adder( bytecode ):
             logdebug()
         elif instruction.opFn == Fn.var_grouping:
             is_neg = instruction.data.pop()
-            var_str, var_adder = generate_adder(instruction.data)
+            var_str, var_const_grp_str, var_adder = generate_adder(instruction.data)
+            if var_const_grp_str:
+                const_add_string(var_const_grp_str)
             if XOR(negate, is_neg):
                 var_adder = negate_adder(var_adder)
             if is_neg:
