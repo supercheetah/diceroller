@@ -20,9 +20,22 @@ class DiceEquationInput(TextBox):
 
 class DiceRollForm:
     def __init__(self):
-        v = VerticalPanel()
-        h = HorizontalPanel()
+        vpanel = VerticalPanel()
+        hpanel = HorizontalPanel()
+        hpanel_input = HorizontalPanel()
+        dice_equation = DiceEquationInput()
+        roll_it_button = Button()
+        results_box = TextBox()
+        results_box.setReadonly(True)
+        previous_eqns_list = ListBox()
+        hpanel_input.add(dice_equation)
+        hpanel_input.add(roll_it_button)
+        vpanel.add(hpanel_input)
+        vpanel.add(results_box)
+        hpanel.add(vpanel)
+        hpanel.add(previous_eqns_list)
         RootPanel().add(HTML("<h1>Roll it!</h1>"))
+        
         
 
 if __name__ == '__main__':
