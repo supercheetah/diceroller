@@ -27,6 +27,7 @@ def main():
             is_separated, const_strings, (ans_str, answers) = rollparse.solve_roll(eqn_str)
         except Exception as e:
             print e
+            print sys.exc_traceback.tb_lineno
             continue
 
         if 0 < len(const_strings) and not is_separated:
