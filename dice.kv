@@ -1,0 +1,75 @@
+#:kivy 1.4.1
+
+<DiceEqnInput>
+    eqn_input_box: text_input
+
+    TextInput:
+        id: text_input
+        font_size: 12
+        size: self.parent.width, self.line_height * 1.75
+
+<DiceWidget>
+    dice_eqn_input: dice_input
+    dice_output: dice_out
+    canvas:
+        Color:
+            rgb: 0, 0, 0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    FloatLayout:
+        TextInput:
+            id: dice_input
+            font_size: 14
+            size_hint: None, None
+            size: root.width-(root.width/4.0), self.line_height * 1.65
+            pos: 0, root.top - self.height
+            text: "Enter your dice roll equation here."
+
+        TextInput:
+            id: dice_out
+            font_size: 14
+            size_hint: None, None
+            size: root.width-(root.width/4.0), root.height - root.dice_eqn_input.height - 1
+            pos: 0, root.top - self.height - root.dice_eqn_input.height - 1
+
+    Label:
+        center_x: root.width - (root.width/root.label_col_div)
+        top: root.top
+        text: "DiceEqnInput position: " + str(root.dice_eqn_input.pos)
+
+    Label:
+        center_x: root.width - (root.width/root.label_col_div)
+        top: root.top - 25
+        text: "Touch position: " + root.mouse_postion
+
+    Label:
+        center_x: root.width - (root.width/root.label_col_div)
+        top: root.top - 50
+        text: "root.top: " + str(root.top)
+
+    Label:
+        center_x: root.width - (root.width/root.label_col_div)
+        top: root.top - 75
+        text: "root.height: " + str(root.height)
+
+    Label:
+        center_x: root.width - (root.width/root.label_col_div)
+        top: root.top - 100
+        text: "input height: " + str(root.dice_eqn_input.height)
+
+    Label:
+        center_x: root.width - (root.width/root.label_col_div)
+        top: root.top - 125
+        text: "input top: " + str(root.dice_eqn_input.top)
+
+    Label:
+        center_x: root.width - (root.width/root.label_col_div)
+        top: root.top - 150
+        text: "output box pos: " + str(root.dice_output.pos)
+
+    Label:
+        center_x: root.width - (root.width/root.label_col_div)
+        top: root.top - 175
+        text: "input height: " + str(root.dice_eqn_input.height)
