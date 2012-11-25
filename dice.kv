@@ -1,16 +1,17 @@
 #:kivy 1.4.1
 
-<DiceEqnInput>
-    eqn_input_box: text_input
-
-    TextInput:
-        id: text_input
-        font_size: 12
-        size: self.parent.width, self.line_height * 1.75
-
+<DiceHistory>
+    canvas:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        
 <DiceWidget>
-    dice_eqn_input: dice_input
-    dice_output: dice_out
+    dice_eqn_input: dice_eqn_input
+    dice_output: dice_output
+    dice_history: dice_history
+    roll_it_btn: roll_it_btn
+    
     canvas:
         Color:
             rgb: 0, 0, 0
@@ -19,21 +20,52 @@
             size: self.size
 
     FloatLayout:
-        TextInput:
-            id: dice_input
+        DiceEqnInput:
+            id: dice_eqn_input
             font_size: 14
             size_hint: None, None
-            size: root.width-(root.width/4.0), self.line_height * 1.65
+            size: root.width-(root.width/2.5), self.line_height * 1.65
             pos: 0, root.top - self.height
             text: "Enter your dice roll equation here."
+            on_focus: if self.text=="Enter your dice roll equation here.": self.text=""
+
+        Button:
+            id: roll_it_btn
+            size: (root.width - (root.width/4.0)) - (root.dice_eqn_input.width + 1), root.dice_eqn_input.height
+            pos: root.dice_eqn_input.right + 1, root.top - self.height
+            text: "Roll It!"
+            on_press: root.roll_it()
 
         TextInput:
-            id: dice_out
+            id: dice_output
             font_size: 14
+            readonly: True
             size_hint: None, None
             size: root.width-(root.width/4.0), root.height - root.dice_eqn_input.height - 1
             pos: 0, root.top - self.height - root.dice_eqn_input.height - 1
-
+            
+        ScrollView:
+#            canvas:
+#                Color:
+#                    rgb: 0, 1, 0
+#                Rectangle:
+#                    size: self.size
+#                    pos: self.pos
+                    
+            size_hint: None, None
+            size: root.width-root.dice_output.width+1, root.height/2.0
+            pos: root.dice_output.right+1, root.top - self.height
+            
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'bottom'
+                Bubble:
+                    id: dice_history
+                    size_hint: None, None
+                    width: self.parent.width*0.9
+                    arros_pos: 'left_mid'
+                    orientation: 'vertical'
+            
     Label:
         center_x: root.width - (root.width/root.label_col_div)
         top: root.top
@@ -57,12 +89,12 @@
     Label:
         center_x: root.width - (root.width/root.label_col_div)
         top: root.top - 100
-        text: "input height: " + str(root.dice_eqn_input.height)
+        text: "button width: " + str(((root.dice_eqn_input.width + 1) - (root.width - (root.width/4.0)) , root.dice_eqn_input.height))
 
     Label:
         center_x: root.width - (root.width/root.label_col_div)
         top: root.top - 125
-        text: "input top: " + str(root.dice_eqn_input.top)
+        text: "button pos: " + str((root.dice_eqn_input.right + 1, root.top - self.height))
 
     Label:
         center_x: root.width - (root.width/root.label_col_div)
@@ -72,4 +104,4 @@
     Label:
         center_x: root.width - (root.width/root.label_col_div)
         top: root.top - 175
-        text: "input height: " + str(root.dice_eqn_input.height)
+        text: "input right: " + str(root.dice_eqn_input.right)
