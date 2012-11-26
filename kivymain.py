@@ -12,6 +12,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.factory import Factory
 from kivy.clock import Clock
 from kivy.core.window import Keyboard
+import rollparse
 
 class DiceEqnInput(TextInput):
     """This is where the equation will be entered.
@@ -61,10 +62,30 @@ class DiceWidget(Widget):
     dice_history = ObjectProperty(None)
     roll_it_btn = ObjectProperty(None)
     history_stack = []
+    output_spool = ""
     mouse_postion = StringProperty("")
     input_height = StringProperty("")
     label_col_div = 6.5 # this is only used to position the debug labels
 
+    def spool_print(self, output_str):
+        """This will store the strings to be printed until it's ready to be printed.
+        
+        Arguments:
+        - `self`: not used
+        - `output_str`: The string that is eventually to be printed to the output box.
+        """
+        self.output_spool += output_str + '\n'
+
+    def complete_spool_print(self):
+        """Once the spool is ready to be printed, this should be called.
+        
+        Arguments:
+        - `self`: not used
+        """
+        self.dice_output.text = self.output_spool + self.dice_output.text
+        self.dice_output.cursor = (0,0)
+        self.output_spool=""
+        
     def roll_it(self, *args):
         """This performs the actual roll.
         
@@ -72,10 +93,33 @@ class DiceWidget(Widget):
         - `self`: not used
         """
         eqn_text = self.dice_eqn_input.text
-        self.add_to_history(eqn_text)
-        self.dice_output.text+=eqn_text + '\n'
+        try:
+            is_separated, const_strings, (ans_str, answers) = rollparse.solve_roll(eqn_text)
+            self.add_to_history(eqn_text)
+            self.spool_print(eqn_text)
+            if 0 < len(const_strings) and not is_separated:
+                self.spool_print("Calculated constants:")
+                i = 1
+                for c in const_strings:
+                    spool_print("  {0}: {1}".format(i, c))
+                    i += 1
+
+            if is_separated:
+                self.spool_print("Rolls:")
+                for i in range(0, len(ans_str)):
+                    const_counter = 1
+                    for c_str in const_strings[i]:
+                        self.spool_print("    [{0}: {1}]".format(const_counter, const_str))
+                        const_counter += 1
+                    self.spool_print("  {0}: {1} = {2}".format(i+1, ans_str[i], answers[i]))
+            else:
+                self.spool_print("{0} = {1}".format(ans_str, answers))
+        except Exception as e:
+            print e
+            self.spool_print(str(e))
+        self.complete_spool_print()
         self.dice_eqn_input.text=""
-        self.dice_eqn_input.focus=True
+        Clock.schedule_once(self.set_eqn_focus)
 
     def set_eqn(self, eqn_text, history_stack_pos):
         """inserts the equation into the input box from the history
@@ -115,7 +159,6 @@ class DiceWidget(Widget):
             self.bubble_height=self.dice_eqn_input.height
         else:
             self.dice_history.height+=self.bubble_height
-        Clock.schedule_once(self.set_eqn_focus)
 
     def on_touch_move(self, touch):
         """
