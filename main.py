@@ -21,16 +21,15 @@ class DiceEqnInput(TextInput):
     true_parent = ObjectProperty(None)
     
     def __init__(self, **kwargs):
-        """
+        """Here just in case I want to use it.
         
         Arguments:
         - `**kwargs`:
         """
         super(DiceEqnInput, self).__init__(**kwargs)
-        pass
 
     def _keyboard_on_key_up(self, window, keycode, *args):
-        """handle particular key events
+        """Handle up and down keys.
         
         Arguments:
         - `self`: not used
@@ -38,33 +37,27 @@ class DiceEqnInput(TextInput):
         """
         key, keycode_str = keycode
         if (keycode_str == 'up') and (self.history_stack_pos > 0):
-            print "going up, history_stack_pos: ", self.history_stack_pos
-            print "len(self.true_parent.history_stack): ", len(self.true_parent.history_stack)
             if (self.history_stack_pos != 0):
                 self.history_stack_pos -= 1
-                print "subtract 1 from history_stack_pos: ", self.history_stack_pos
+            #this shouldn't be necessary, but just to be on the safe side
             if (self.history_stack_pos >= 0) and (self.history_stack_pos < len(self.true_parent.history_stack)):
                 self.true_parent.history_stack[self.history_stack_pos]()
-                print "self.history_stack_pos after cb: ", self.history_stack_pos
         elif (keycode_str == 'down') and (self.history_stack_pos < len(self.true_parent.history_stack)):
-            print "going down, history_stack_pos: ", self.history_stack_pos
-            print "len(self.true_parent.history_stack): ", len(self.true_parent.history_stack)
             if (self.history_stack_pos < len(self.true_parent.history_stack)-1):
                 self.history_stack_pos += 1
-                print "added 1 from history_stack_pos: ", self.history_stack_pos
+            #this shouldn't be necessary, but just to be on the safe side
             if (self.history_stack_pos >= 0) and (self.history_stack_pos < len(self.true_parent.history_stack)):
                 self.true_parent.history_stack[self.history_stack_pos]()
-                print "self.history_stack_pos after cb: ", self.history_stack_pos
         
 class DiceWidget(Widget):
-    dice_eqn_input = ObjectProperty(None)
-    dice_output = ObjectProperty(None)
-    dice_history = ObjectProperty(None)
-    roll_it_btn = ObjectProperty(None)
-    history_stack = []
-    output_spool = ""
-    mouse_postion = StringProperty("")
-    input_height = StringProperty("")
+    dice_eqn_input = ObjectProperty(None) #text box where the equation will be entered by the user
+    dice_output = ObjectProperty(None) #text box where the parsed equation and its answer will be outputted
+    dice_history = ObjectProperty(None) #history of equations that have been entered
+    roll_it_btn = ObjectProperty(None) #the button to submit the rolls (although enter is just fine too)
+    history_stack = [] #all the functions for the equations that have been used before--history of equations
+    output_spool = "" #used for when we're about to print something to the output
+    mouse_postion = StringProperty("") #just used in debugging
+    input_height = StringProperty("") #just used in debugging
     label_col_div = 6.5 # this is only used to position the debug labels
 
     def spool_print(self, output_str):
@@ -147,14 +140,17 @@ class DiceWidget(Widget):
         Arguments:
         - `self`: not used
         """
-        new_btn=BubbleButton(text=eqn_text)
-        last_pos=len(self.history_stack)
-        print "last_pos: ", last_pos
+        new_btn=BubbleButton(text=eqn_text) #new button to be added to the history list
+        last_pos=len(self.history_stack) #last position in the history stack
         eqn_fn = lambda *args: self.set_eqn(eqn_text, last_pos)
         self.history_stack.append(eqn_fn)
         new_btn.bind(on_press=eqn_fn)
-        self.dice_eqn_input.history_stack_pos = last_pos+1
-        self.dice_history.add_widget(new_btn, last_pos+1)
+        self.dice_eqn_input.history_stack_pos = last_pos+1 
+        #in Kivy 1.4.2, the new buttons will be added at the top
+        #instead of the bottom, and so the following would make more
+        #sense, which, until then, adding the new button at the end of
+        #the children list doesn't really do anything
+        self.dice_history.children.add_widget(new_btn, last_pos+1)
         if not hasattr(self, 'bubble_height'):
             self.bubble_height=self.dice_eqn_input.height
         else:
@@ -168,6 +164,15 @@ class DiceWidget(Widget):
         - `touch`: mouse position
         """
         self.mouse_postion = str(touch.pos)
+
+    def on_close(self, *args):
+        """Called when this is being closed. Written mostly for debugging purposes since I'm running into some strange infinite loop I can't seem to track down.
+        
+        Arguments:
+        - `self`: not used
+        - `*args`: not used
+        """
+        print "closing..."
 
 class DiceApp(App):
     """
