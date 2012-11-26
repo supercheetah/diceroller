@@ -110,7 +110,7 @@ class DiceWidget(Widget):
         self.history_stack.append(eqn_fn)
         new_btn.bind(on_press=eqn_fn)
         self.dice_eqn_input.history_stack_pos = last_pos+1
-        self.dice_history.add_widget(new_btn, len(self.dice_history.children)+1)
+        self.dice_history.add_widget(new_btn, last_pos+1)
         if not hasattr(self, 'bubble_height'):
             self.bubble_height=self.dice_eqn_input.height
         else:
@@ -125,8 +125,6 @@ class DiceWidget(Widget):
         - `touch`: mouse position
         """
         self.mouse_postion = str(touch.pos)
-        #self.dice_output.center = touch.pos
-        #self.dice_input.center = touch.pos
 
 class DiceApp(App):
     """
