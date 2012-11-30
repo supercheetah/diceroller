@@ -5,13 +5,13 @@ from kivy.uix.widget import Widget
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty, StringProperty
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.bubble import Bubble, BubbleButton
 from kivy.uix.scrollview import ScrollView
 from kivy.factory import Factory
 from kivy.clock import Clock
 from kivy.core.window import Keyboard
+from kivy.interactive import InteractiveLauncher
 import rollparse
 
 class DiceEqnInput(TextInput):
@@ -36,29 +36,39 @@ class DiceEqnInput(TextInput):
         - `keycode`: the key that was just pressed
         """
         key, keycode_str = keycode
-        if (keycode_str == 'up') and (self.history_stack_pos > 0):
+        if (keycode_str == 'down') and (self.history_stack_pos > 0):
             if (self.history_stack_pos != 0):
                 self.history_stack_pos -= 1
             #this shouldn't be necessary, but just to be on the safe side
             if (self.history_stack_pos >= 0) and (self.history_stack_pos < len(self.true_parent.history_stack)):
                 self.true_parent.history_stack[self.history_stack_pos]()
-        elif (keycode_str == 'down') and (self.history_stack_pos < len(self.true_parent.history_stack)):
+        elif (keycode_str == 'up') and (self.history_stack_pos < len(self.true_parent.history_stack)):
             if (self.history_stack_pos < len(self.true_parent.history_stack)-1):
                 self.history_stack_pos += 1
             #this shouldn't be necessary, but just to be on the safe side
             if (self.history_stack_pos >= 0) and (self.history_stack_pos < len(self.true_parent.history_stack)):
                 self.true_parent.history_stack[self.history_stack_pos]()
+        return super(DiceEqnInput, self)._keyboard_on_key_up(window, keycode, *args)
         
 class DiceWidget(Widget):
-    dice_eqn_input = ObjectProperty(None) #text box where the equation will be entered by the user
-    dice_output = ObjectProperty(None) #text box where the parsed equation and its answer will be outputted
-    dice_history = ObjectProperty(None) #history of equations that have been entered
-    roll_it_btn = ObjectProperty(None) #the button to submit the rolls (although enter is just fine too)
-    history_stack = [] #all the functions for the equations that have been used before--history of equations
-    output_spool = "" #used for when we're about to print something to the output
+    dice_eqn_input = ObjectProperty(None) #text box where the equation
+                                          #will be entered by the user
+    dice_output = ObjectProperty(None) #text box where the parsed
+                                       #equation and its answer will
+                                       #be outputted
+    dice_history = ObjectProperty(None) #history of equations that
+                                        #have been entered
+    roll_it_btn = ObjectProperty(None) #the button to submit the rolls
+                                       #(although enter is just fine
+                                       #too)
+    history_stack = [] #all the functions for the equations that have
+                       #been used before--history of equations
+    output_spool = "" #used for when we're about to print something to
+                      #the output
     mouse_postion = StringProperty("") #just used in debugging
     input_height = StringProperty("") #just used in debugging
-    label_col_div = 6.5 # this is only used to position the debug labels
+    label_col_div = 6.5 # this is only used to position the debug
+                        # labels
 
     def spool_print(self, output_str):
         """This will store the strings to be printed until it's ready to be printed.
@@ -70,7 +80,8 @@ class DiceWidget(Widget):
         self.output_spool += output_str + '\n'
 
     def complete_spool_print(self):
-        """Once the spool is ready to be printed, this should be called.
+        """Once the spool is ready to be printed, this should be
+        called.
         
         Arguments:
         - `self`: not used
@@ -94,7 +105,7 @@ class DiceWidget(Widget):
                 self.spool_print("Calculated constants:")
                 i = 1
                 for c in const_strings:
-                    spool_print("  {0}: {1}".format(i, c))
+                    self.spool_print("  {0}: {1}".format(i, c))
                     i += 1
 
             if is_separated:
@@ -115,7 +126,7 @@ class DiceWidget(Widget):
         Clock.schedule_once(self.set_eqn_focus)
 
     def set_eqn(self, eqn_text, history_stack_pos):
-        """inserts the equation into the input box from the history
+        """Inserts the equation into the input box from the history.
         
         Arguments:
         - `self`: not used
@@ -126,7 +137,7 @@ class DiceWidget(Widget):
         self.dice_eqn_input.history_stack_pos=history_stack_pos
 
     def set_eqn_focus(self, dt):
-        """set the focus back on the input box
+        """Set the focus back on the input box.
         
         Arguments:
         - `self`:
@@ -150,7 +161,7 @@ class DiceWidget(Widget):
         #instead of the bottom, and so the following would make more
         #sense, which, until then, adding the new button at the end of
         #the children list doesn't really do anything
-        self.dice_history.children.add_widget(new_btn, last_pos+1)
+        self.dice_history.content.add_widget(new_btn, last_pos+1)
         if not hasattr(self, 'bubble_height'):
             self.bubble_height=self.dice_eqn_input.height
         else:
@@ -164,15 +175,19 @@ class DiceWidget(Widget):
         - `touch`: mouse position
         """
         self.mouse_postion = str(touch.pos)
+        return super(DiceWidget, self).on_touch_move(touch)
 
     def on_close(self, *args):
-        """Called when this is being closed. Written mostly for debugging purposes since I'm running into some strange infinite loop I can't seem to track down.
+        """Called when this is being closed. Written mostly for
+        debugging purposes since I'm running into some strange
+        infinite loop I can't seem to track down.
         
         Arguments:
         - `self`: not used
         - `*args`: not used
         """
         print "closing..."
+        return super(DiceWidget, self).on_close(*args)
 
 class DiceApp(App):
     """

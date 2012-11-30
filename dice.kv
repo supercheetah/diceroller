@@ -24,7 +24,7 @@
             id: dice_eqn_input
             font_size: 14
             size_hint: None, None
-            size: root.width-(root.width/2.5), self.line_height * 1.65
+            size: root.width-(root.width/1.5), self.line_height * 1.65
             multiline: False
             pos: 0, root.top - self.height
             text: "Enter your dice roll equation here."
@@ -34,7 +34,7 @@
 
         Button:
             id: roll_it_btn
-            size: (root.width - (root.width/4.0)) - (root.dice_eqn_input.width + 1), root.dice_eqn_input.height
+            size: (root.width - (root.width/2.5)) - (root.dice_eqn_input.width + 1), root.dice_eqn_input.height
             pos: root.dice_eqn_input.right + 1, root.top - self.height
             text: "Roll It!"
             on_press: root.roll_it()
@@ -44,12 +44,12 @@
             font_size: 14
             readonly: True
             size_hint: None, None
-            size: root.width-(root.width/4.0), root.height - root.dice_eqn_input.height - 1
+            size: root.width-(root.width/2.5), root.height - root.dice_eqn_input.height - 1
             pos: 0, root.top - self.height - root.dice_eqn_input.height - 1
             
         ScrollView:
             size_hint: None, None
-            size: root.width-root.dice_output.width+1, root.height/2.0
+            size: root.width-(root.dice_output.width+1), root.height/2.0
             pos: root.dice_output.right+1, root.top - self.height
             
 #            AnchorLayout:

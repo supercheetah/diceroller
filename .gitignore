@@ -9,3 +9,4 @@ pyinstaller/diceroller
 pyinstaller/bincache*
 *.pid
 .eric4project/
+kivy/
