@@ -22,20 +22,21 @@
     FloatLayout:
         DiceEqnInput:
             id: dice_eqn_input
+            start_text: "Enter your dice roll equation here."
             font_size: 14
             size_hint: None, None
-            size: root.width-(root.width/1.5), self.line_height * 1.65
+            size: root.width-(root.width/2.5), self.line_height * 1.65
             multiline: False
-            pos: 0, root.top - self.height
-            text: "Enter your dice roll equation here."
-            on_focus: if self.text=="Enter your dice roll equation here.": self.text=""
+            pos: 0, root.top - self.height - 1
+            text: start_text
+            on_focus: if self.text==start_text: self.text=""
             on_text_validate: root.roll_it()
             true_parent: root
 
         Button:
             id: roll_it_btn
-            size: (root.width - (root.width/2.5)) - (root.dice_eqn_input.width + 1), root.dice_eqn_input.height
-            pos: root.dice_eqn_input.right + 1, root.top - self.height
+            size: root.width - (root.width/2.5), root.dice_eqn_input.height
+            pos: 0, dice_eqn_input.y - self.height - 1
             text: "Roll It!"
             on_press: root.roll_it()
 
@@ -45,7 +46,7 @@
             readonly: True
             size_hint: None, None
             size: root.width-(root.width/2.5), root.height - root.dice_eqn_input.height - 1
-            pos: 0, root.top - self.height - root.dice_eqn_input.height - 1
+            pos: 0, roll_it_btn.y - self.height - 1
             
         ScrollView:
             size_hint: None, None
