@@ -1,4 +1,5 @@
 #:kivy 1.4.1
+#:import copy copy.copy
 
 <DiceHistory>
     canvas:
@@ -11,31 +12,38 @@
     dice_output: dice_output
     dice_history: dice_history
     roll_it_btn: roll_it_btn
+    dice_io_width: root.width-(root.width/2.5)
     
-    canvas:
-        Color:
-            rgb: 0, 0, 0
-        Rectangle:
-            pos: self.pos
-            size: self.size
+    # canvas:
+    #     Color:
+    #         rgb: 0, 0, 0
+    #     Rectangle:
+    #         pos: self.pos
+    #         size: self.size
 
     FloatLayout:
+        canvas:
+            Color:
+                rgb: 0, 0, 0
+            Rectangle:
+                pos: root.pos
+                size: root.size
+
         DiceEqnInput:
             id: dice_eqn_input
-            start_text: "Enter your dice roll equation here."
             font_size: 14
             size_hint: None, None
-            size: root.width-(root.width/2.5), self.line_height * 1.65
+            size: root.dice_io_width, self.line_height * 1.65
             multiline: False
             pos: 0, root.top - self.height - 1
-            text: start_text
-            on_focus: if self.text==start_text: self.text=""
+            text: self.start_text
+            on_focus: if self.text==self.start_text: self.text=""
             on_text_validate: root.roll_it()
             true_parent: root
 
         Button:
             id: roll_it_btn
-            size: root.width - (root.width/2.5), root.dice_eqn_input.height
+            size: root.dice_io_width, dice_eqn_input.height
             pos: 0, dice_eqn_input.y - self.height - 1
             text: "Roll It!"
             on_press: root.roll_it()
@@ -45,60 +53,22 @@
             font_size: 14
             readonly: True
             size_hint: None, None
-            size: root.width-(root.width/2.5), root.height - root.dice_eqn_input.height - 1
+            size: root.dice_io_width, root.height - dice_eqn_input.height - 1
             pos: 0, roll_it_btn.y - self.height - 1
             
         ScrollView:
             size_hint: None, None
-            size: root.width-(root.dice_output.width+1), root.height/2.0
-            pos: root.dice_output.right+1, root.top - self.height
+            size: root.width-(dice_output.width+1), root.height/2.0
+            pos: dice_output.right+1, root.top - self.height
             
-#            AnchorLayout:
-#                anchor_x: 'center'
-#                anchor_y: 'bottom'
-            Bubble:
-                id: dice_history
-                size_hint: None, None
-                width: self.parent.width*0.9
-                arros_pos: 'left_mid'
-                orientation: 'vertical'
-            
-#    Label:
-#        center_x: root.width - (root.width/root.label_col_div)
-#        top: root.top
-#        text: "DiceEqnInput position: " + str(root.dice_eqn_input.pos)
-
-#    Label:
-#        center_x: root.width - (root.width/root.label_col_div)
-#        top: root.top - 25
-#        text: "Touch position: " + root.mouse_postion
-
-#    Label:
-#        center_x: root.width - (root.width/root.label_col_div)
-#        top: root.top - 50
-#        text: "root.top: " + str(root.top)
-
-#    Label:
-#        center_x: root.width - (root.width/root.label_col_div)
-#        top: root.top - 75
-#        text: "root.height: " + str(root.height)
-
-#    Label:
-#        center_x: root.width - (root.width/root.label_col_div)
-#        top: root.top - 100
-#        text: "button width: " + str(((root.dice_eqn_input.width + 1) - (root.width - (root.width/4.0)) , root.dice_eqn_input.height))
-
-#    Label:
-#        center_x: root.width - (root.width/root.label_col_div)
-#        top: root.top - 125
-#        text: "button pos: " + str((root.dice_eqn_input.right + 1, root.top - self.height))
-
-#    Label:
-#        center_x: root.width - (root.width/root.label_col_div)
-#        top: root.top - 150
-#        text: "output box pos: " + str(root.dice_output.pos)
-
-#    Label:
-#        center_x: root.width - (root.width/root.label_col_div)
-#        top: root.top - 175
-#        text: "input right: " + str(root.dice_eqn_input.right)
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'top'
+                size_hint_y: None
+                Bubble:
+                    id: dice_history
+                    size_hint: (None, None)
+                    width: self.parent.width*0.9
+                    on_parent: self.height=dice_eqn_input.height
+                    #arros_pos: 'left_top' #for some reason, this doesn't work
+                    orientation: 'vertical'            

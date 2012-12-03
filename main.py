@@ -4,7 +4,7 @@ from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
-from kivy.properties import ObjectProperty, StringProperty
+from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.bubble import Bubble, BubbleButton
 from kivy.uix.scrollview import ScrollView
@@ -19,6 +19,7 @@ class DiceEqnInput(TextInput):
     """
     history_stack_pos = -1
     true_parent = ObjectProperty(None)
+    start_text = "Enter roll dice equation here."
     
     def __init__(self, **kwargs):
         """Here just in case I want to use it.
@@ -32,7 +33,6 @@ class DiceEqnInput(TextInput):
         """Handle up and down keys.
         
         Arguments:
-        - `self`: not used
         - `keycode`: the key that was just pressed
         """
         key, keycode_str = keycode
@@ -63,65 +63,64 @@ class DiceWidget(Widget):
                                        #too)
     history_stack = [] #all the functions for the equations that have
                        #been used before--history of equations
-    output_spool = "" #used for when we're about to print something to
-                      #the output
+    output_collector = "" #used for when we're about to print
+                          #something to the dice output box
     mouse_postion = StringProperty("") #just used in debugging
     input_height = StringProperty("") #just used in debugging
     label_col_div = 6.5 # this is only used to position the debug
                         # labels
 
-    def spool_print(self, output_str):
-        """This will store the strings to be printed until it's ready to be printed.
+    def store_print(self, output_str):
+        """This will store the strings to be printed until it's ready
+        to be printed.
         
         Arguments:
-        - `self`: not used
-        - `output_str`: The string that is eventually to be printed to the output box.
+        - `output_str`: The string that is eventually to be printed to
+                        the output box.
         """
-        self.output_spool += output_str + '\n'
+        self.output_collector += output_str + '\n'
 
-    def complete_spool_print(self):
-        """Once the spool is ready to be printed, this should be
-        called.
+    def complete_store_print(self):
+        """Once the collected print statements are ready to be
+        printed, this should be called.
         
         Arguments:
-        - `self`: not used
         """
-        self.dice_output.text = self.output_spool + self.dice_output.text
+        self.dice_output.text = self.output_collector + self.dice_output.text
         self.dice_output.cursor = (0,0)
-        self.output_spool=""
+        self.output_collector=""
         
     def roll_it(self, *args):
         """This performs the actual roll.
         
         Arguments:
-        - `self`: not used
         """
         eqn_text = self.dice_eqn_input.text
         try:
             is_separated, const_strings, (ans_str, answers) = rollparse.solve_roll(eqn_text)
             self.add_to_history(eqn_text)
-            self.spool_print(eqn_text)
+            self.store_print(eqn_text)
             if 0 < len(const_strings) and not is_separated:
-                self.spool_print("Calculated constants:")
+                self.store_print("Calculated constants:")
                 i = 1
                 for c in const_strings:
-                    self.spool_print("  {0}: {1}".format(i, c))
+                    self.store_print("  {0}: {1}".format(i, c))
                     i += 1
 
             if is_separated:
-                self.spool_print("Rolls:")
+                self.store_print("Rolls:")
                 for i in range(0, len(ans_str)):
                     const_counter = 1
                     for c_str in const_strings[i]:
-                        self.spool_print("    [{0}: {1}]".format(const_counter, const_str))
+                        self.store_print("    [{0}: {1}]".format(const_counter, const_str))
                         const_counter += 1
-                    self.spool_print("  {0}: {1} = {2}".format(i+1, ans_str[i], answers[i]))
+                    self.store_print("  {0}: {1} = {2}".format(i+1, ans_str[i], answers[i]))
             else:
-                self.spool_print("{0} = {1}".format(ans_str, answers))
+                self.store_print("{0} = {1}".format(ans_str, answers))
         except Exception as e:
             print e
-            self.spool_print(str(e))
-        self.complete_spool_print()
+            self.store_print(str(e))
+        self.complete_store_print()
         self.dice_eqn_input.text=""
         Clock.schedule_once(self.set_eqn_focus)
 
@@ -129,7 +128,6 @@ class DiceWidget(Widget):
         """Inserts the equation into the input box from the history.
         
         Arguments:
-        - `self`: not used
         - `eqn_text`: the equation from history
         - `history_stack_pos`: position in the history stack
         """
@@ -140,8 +138,7 @@ class DiceWidget(Widget):
         """Set the focus back on the input box.
         
         Arguments:
-        - `self`:
-        - `dt`:
+        - `dt`: not used
         """
         self.dice_eqn_input.focus=True
 
@@ -149,10 +146,11 @@ class DiceWidget(Widget):
         """Add to equations history
         
         Arguments:
-        - `self`: not used
         """
-        new_btn=BubbleButton(text=eqn_text) #new button to be added to the history list
-        last_pos=len(self.history_stack) #last position in the history stack
+        #new button to be added to the history list
+        new_btn=BubbleButton(text=eqn_text)
+        last_pos=len(self.history_stack) #last position in the history
+                                         #stack
         eqn_fn = lambda *args: self.set_eqn(eqn_text, last_pos)
         self.history_stack.append(eqn_fn)
         new_btn.bind(on_press=eqn_fn)
@@ -166,12 +164,14 @@ class DiceWidget(Widget):
             self.bubble_height=self.dice_eqn_input.height
         else:
             self.dice_history.height+=self.bubble_height
+            self.dice_history.parent.height+=self.bubble_height
 
     def on_touch_move(self, touch):
         """
-        this is mostly being used for the purpose of laying things out
+        This is mostly being used for the purpose of laying things
+        out.
+        
         Arguments:
-        - `self`: not used
         - `touch`: mouse position
         """
         self.mouse_postion = str(touch.pos)
@@ -183,7 +183,6 @@ class DiceWidget(Widget):
         infinite loop I can't seem to track down.
         
         Arguments:
-        - `self`: not used
         - `*args`: not used
         """
         print "closing..."
@@ -191,10 +190,11 @@ class DiceWidget(Widget):
 
 class DiceApp(App):
     """
-    dice rolling app
+    Dice rolling app.
     """
     def build(self):
         diceapp = DiceWidget()
+        diceapp.dice_history.arrow_pos='left_mid'
         return diceapp
     
 Factory.register("DiceWidget", DiceWidget)
