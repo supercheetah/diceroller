@@ -36,16 +36,20 @@ class DiceEqnInput(TextInput):
         - `keycode`: the key that was just pressed
         """
         key, keycode_str = keycode
+        #for Kivy before 1.4.2, invert the logic here since the
+        #history stack is visually inverted
         if (keycode_str == 'down') and (self.history_stack_pos > 0):
             if (self.history_stack_pos != 0):
                 self.history_stack_pos -= 1
-            #this shouldn't be necessary, but just to be on the safe side
+            #this shouldn't be necessary, but just to be on the safe
+            #side
             if (self.history_stack_pos >= 0) and (self.history_stack_pos < len(self.true_parent.history_stack)):
                 self.true_parent.history_stack[self.history_stack_pos]()
         elif (keycode_str == 'up') and (self.history_stack_pos < len(self.true_parent.history_stack)):
             if (self.history_stack_pos < len(self.true_parent.history_stack)-1):
                 self.history_stack_pos += 1
-            #this shouldn't be necessary, but just to be on the safe side
+            #this shouldn't be necessary, but just to be on the safe
+            #side
             if (self.history_stack_pos >= 0) and (self.history_stack_pos < len(self.true_parent.history_stack)):
                 self.true_parent.history_stack[self.history_stack_pos]()
         return super(DiceEqnInput, self)._keyboard_on_key_up(window, keycode, *args)
@@ -61,8 +65,10 @@ class DiceWidget(Widget):
     roll_it_btn = ObjectProperty(None) #the button to submit the rolls
                                        #(although enter is just fine
                                        #too)
-    history_stack = [] #all the functions for the equations that have
-                       #been used before--history of equations
+    history_stack = [] #all the lambdas for the equations that have
+                       #been used before--history of equations, they
+                       #set the dice_eqn_input text, return the text
+                       #as well
     output_collector = "" #used for when we're about to print
                           #something to the dice output box
     mouse_postion = StringProperty("") #just used in debugging
@@ -133,6 +139,7 @@ class DiceWidget(Widget):
         """
         self.dice_eqn_input.text=eqn_text
         self.dice_eqn_input.history_stack_pos=history_stack_pos
+        return eqn_text
 
     def set_eqn_focus(self, dt):
         """Set the focus back on the input box.
@@ -152,18 +159,31 @@ class DiceWidget(Widget):
         last_pos=len(self.history_stack) #last position in the history
                                          #stack
         eqn_fn = lambda *args: self.set_eqn(eqn_text, last_pos)
-        self.history_stack.append(eqn_fn)
         new_btn.bind(on_press=eqn_fn)
-        self.dice_eqn_input.history_stack_pos = last_pos+1 
-        #in Kivy 1.4.2, the new buttons will be added at the top
-        #instead of the bottom, and so the following would make more
-        #sense, which, until then, adding the new button at the end of
-        #the children list doesn't really do anything
-        self.dice_history.content.add_widget(new_btn, last_pos+1)
+        try:
+            #kivy 1.4.2 will respect the order bubble buttons are
+            #added (pending resolution of issue #819 for it which
+            #currently has its own branch)
+            kivy.require('1.4.2') #this will throw an exception if
+                                  #it's not 1.4.2
+            self.history_stack.append(eqn_fn)
+            self.dice_history.content.add_widget(new_btn, last_pos+1)
+        except Exception:
+            #nasty ugly work around for kivy issue #819
+            self.dice_history.content.clear_widgets()
+            self.dice_history.content.add_widget(new_btn)
+            for dice_roll in reversed(self.history_stack):
+                dice_bubble=BubbleButton(text=dice_roll())
+                dice_bubble.bind(on_press=dice_roll)
+                self.dice_history.content.add_widget(dice_bubble)
+            self.history_stack.append(eqn_fn)
+        self.dice_eqn_input.history_stack_pos = last_pos+1
         if not hasattr(self, 'bubble_height'):
             self.bubble_height=self.dice_eqn_input.height
         else:
             self.dice_history.height+=self.bubble_height
+            #Why change the following? Because the parent is actually
+            #an anchor layout.
             self.dice_history.parent.height+=self.bubble_height
 
     def on_touch_move(self, touch):
@@ -194,7 +214,6 @@ class DiceApp(App):
     """
     def build(self):
         diceapp = DiceWidget()
-        diceapp.dice_history.arrow_pos='left_mid'
         return diceapp
     
 Factory.register("DiceWidget", DiceWidget)
