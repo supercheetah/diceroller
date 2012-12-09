@@ -177,8 +177,7 @@ class DiceWidget(Widget):
         new_btn.bind(on_press=eqn_fn)
         try:
             #kivy 1.4.2 will respect the order bubble buttons are
-            #added (pending resolution of issue #819 for it which
-            #currently has its own branch)
+            #added
             kivy.require('1.4.2') #this will throw an exception if
                                   #it's not 1.4.2
             self.history_stack.append(eqn_fn)
@@ -216,9 +215,8 @@ class DiceWidget(Widget):
         """This will bind the image's on_touch_up event.
         
         Arguments:
-        - `self`:
-        - `image`:
-        - `dice_text`:
+        - `image`: The image widget itself.
+        - `dice_text`: The dice text that's to be used.
         """
         Logger.debug('DiceWidget: setting bind for ' + dice_text)
         image.bind(on_touch_up=lambda im, touch: self.add_dice_input(im, touch, dice_text))

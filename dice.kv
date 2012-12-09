@@ -63,14 +63,9 @@
             on_parent: root.log_mesg('dice pics scroll view size ' + repr(self.size))
 
             BoxLayout:
-                d4width: 0
-                d100width: 0
                 pic_size_hint: None, 1
-                on_parent: root.log_mesg('init dice pics box size ' + repr(self.size))
-                on_size: self.d4width, self.d100width = d4.width, d100.width
-                on_size: root.log_mesg('dice pics box size ' + repr(self.size))
-                on_size: root.log_mesg('d4.width=' + repr(d4.width) + ', d4width=' + repr(self.d4width))
-                on_size: root.log_mesg('d100.width=' + repr(d100.width) + ', d100width=' + repr(self.d100width))
+                #on_parent: root.log_mesg('init dice pics box size ' + repr(self.size))
+                #on_size: root.log_mesg('dice pics box size ' + repr(self.size))
                 size_hint: (None, None)
                 size: d4.width*6+d100.width, self.parent.height
                 orientation: 'horizontal'
@@ -79,7 +74,6 @@
                     id: d4
                     source: 'd4.png'
                     size_hint: self.parent.pic_size_hint
-                    #size: self.width, self.parent.height
                     height: self.parent.height
                     width: self.height
                     allow_stretch: True
@@ -90,7 +84,6 @@
                 Image:
                     source: 'd6.png'
                     size_hint: self.parent.pic_size_hint
-                    #size: self.width, self.parent.height
                     height: d4.height
                     width: d4.width
                     allow_stretch: True
@@ -100,7 +93,6 @@
                 Image:
                     source: 'd8.png'
                     size_hint: self.parent.pic_size_hint
-                    #size: self.width, self.parent.height
                     height: d4.height
                     width: d4.width
                     allow_stretch: True
@@ -110,7 +102,6 @@
                 Image:
                     source: 'd10.png'
                     size_hint: self.parent.pic_size_hint
-                    #size: self.width, self.parent.height
                     height: d4.height
                     width: d4.width
                     allow_stretch: True
@@ -120,7 +111,6 @@
                 Image:
                     source: 'd12.png'
                     size_hint: self.parent.pic_size_hint
-                    #size: self.width, self.parent.height
                     height: d4.height
                     width: d4.width
                     allow_stretch: True
@@ -130,7 +120,6 @@
                 Image:
                     source: 'd20.png'
                     size_hint: self.parent.pic_size_hint
-                    #size: self.width, self.parent.height
                     height: d4.height
                     width: d4.width
                     allow_stretch: True
@@ -141,7 +130,6 @@
                     id: d100
                     source: 'd100.png'
                     size_hint: self.parent.pic_size_hint
-                    #size: self.width, self.parent.height
                     height: d4.height
                     width: d4.width*1.4969
                     allow_stretch: True
