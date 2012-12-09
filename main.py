@@ -4,14 +4,14 @@ from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
-from kivy.properties import ObjectProperty, StringProperty, NumericProperty
+from kivy.properties import ObjectProperty, StringProperty, NumericProperty, ListProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.bubble import Bubble, BubbleButton
 from kivy.uix.scrollview import ScrollView
 from kivy.factory import Factory
 from kivy.clock import Clock
 from kivy.core.window import Keyboard
-#from kivy.interactive import InteractiveLauncher
+from kivy.interactive import InteractiveLauncher
 from kivy.logger import Logger
 import rollparse
 
@@ -79,6 +79,7 @@ class DiceWidget(Widget):
                        #been used before--history of equations, they
                        #set the dice_eqn_input text, return the text
                        #as well
+    dice_images = ListProperty([])
     output_collector = "" #used for when we're about to print
                           #something to the dice output box
     mouse_postion = StringProperty("") #just used in debugging
@@ -233,10 +234,10 @@ class DiceWidget(Widget):
                                  " blank dice. Please report this.")
         if not image.collide_point(touch.x, touch.y):
             return
-        Logger.debug('DiceWidget: touch.button=' + touch.button)
+        #Logger.debug('DiceWidget: touch.button=' + touch.button)
         if touch.button != 'left':
             return
-        Logger.debug('DiceWidget: touch up for ' + dice_text)
+        #Logger.debug('DiceWidget: touch up for ' + dice_text)
         self.dice_eqn_input.clear_start_text()
         if self.dice_eqn_input.text == '':
             self.dice_eqn_input.text = dice_text
