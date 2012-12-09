@@ -111,7 +111,11 @@ class DiceWidget(Widget):
         
         Arguments:
         """
+        self.dice_eqn_input.clear_start_text()
         eqn_text = self.dice_eqn_input.text
+        if eqn_text == '':
+            Clock.schedule_once(self.set_eqn_focus)
+            return
         try:
             is_separated, const_strings, (ans_str, answers) = rollparse.solve_roll(eqn_text)
             self.add_to_history(eqn_text)
@@ -226,23 +230,26 @@ class DiceWidget(Widget):
         """
         assert dice_text!=None, ("Something very bad happened."
                                  " Somehow I tried to add"
-                                 " non-existent dice. Please report this.")
-        self.dice_eqn_input.clear_start_text()
+                                 " blank dice. Please report this.")
         if not image.collide_point(touch.x, touch.y):
             return
+        Logger.debug('DiceWidget: touch.button=' + touch.button)
+        if touch.button != 'left':
+            return
         Logger.debug('DiceWidget: touch up for ' + dice_text)
+        self.dice_eqn_input.clear_start_text()
         if self.dice_eqn_input.text == '':
             self.dice_eqn_input.text = dice_text
         else:
             self.dice_eqn_input.text += ' + ' + dice_text
 
-    def log_mesg(self, mesg='Dice: you forgot something...'):
+    def log_mesg(self, mesg='you forgot something...'):
         """For log messages.
         
         Arguments:
         - `mesg`: The debug message.
         """
-        Logger.debug(mesg)
+        Logger.debug('DiceKV: ' + mesg)
 
 class DiceApp(App):
     """

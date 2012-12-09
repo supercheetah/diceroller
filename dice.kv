@@ -52,7 +52,7 @@
             id: dice_out_scroll
             size: root.dice_io_width, root.bottom_reserve - dice_eqn_input.height - roll_it_btn.height - 1
             pos: 0, roll_it_btn.y - self.height - 1
-            on_parent: root.log_mesg('Dice: dice output scroll size ' + repr(dice_out_scroll.size))
+            on_parent: root.log_mesg('dice output scroll size ' + repr(dice_out_scroll.size))
             
             TextInput:
                 id: dice_output
@@ -67,7 +67,7 @@
             size_hint: None, None
             size: root.width - 1, root.height - dice_out_scroll.height - dice_eqn_input.height - roll_it_btn.height - 1
             pos: 0, 0
-            on_parent: root.log_mesg('Dice: dice pics scroll view size ' + repr(self.size))
+            on_parent: root.log_mesg('dice pics scroll view size ' + repr(self.size))
 
             BoxLayout:
                 d4width: 0
@@ -75,11 +75,11 @@
                 pic_size_hint: None, 1
                 #this is to work around some weird kivy.clock.Clock.max_iteration bug
                 #on_parent: self.d4width, self.d100width = d4.width, d100.width
-                on_parent: root.log_mesg('Dice: init dice pics box size ' + repr(self.size))
+                on_parent: root.log_mesg('init dice pics box size ' + repr(self.size))
                 on_size: self.d4width, self.d100width = d4.width, d100.width
-                on_size: root.log_mesg('Dice: dice pics box size ' + repr(self.size))
-                on_size: root.log_mesg('Dice: d4.width=' + repr(d4.width) + ', d4width=' + repr(self.d4width))
-                on_size: root.log_mesg('Dice: d100.width=' + repr(d100.width) + ', d100width=' + repr(self.d100width))
+                on_size: root.log_mesg('dice pics box size ' + repr(self.size))
+                on_size: root.log_mesg('d4.width=' + repr(d4.width) + ', d4width=' + repr(self.d4width))
+                on_size: root.log_mesg('d100.width=' + repr(d100.width) + ', d100width=' + repr(self.d100width))
                 size_hint: (None, None)
                 size: d4.width*6+d100.width, self.parent.height
                 orientation: 'horizontal'
@@ -90,7 +90,7 @@
                     size_hint: self.parent.pic_size_hint
                     size: self.width, self.parent.height
                     allow_stretch: True
-                    on_parent: root.log_mesg('Dice: d4 image size ' + repr(self.size))
+                    on_parent: root.log_mesg('d4 image size ' + repr(self.size))
                     on_parent: root.set_bind(self, 'd4')
                     #on_touch_up: root.add_dice_input(self, touch, 'd4')
                     
@@ -145,7 +145,7 @@
                     size_hint: self.parent.pic_size_hint
                     size: self.width, self.parent.height
                     allow_stretch: True
-                    on_parent: root.log_mesg('Dice: d100 image size ' + repr(self.size))
+                    on_parent: root.log_mesg('d100 image size ' + repr(self.size))
                     on_parent: root.set_bind(self, 'd100')
                     #on_touch_up: root.add_dice_input(self, touch, 'd100')
                     #on_touch_down: self.parent.on_touch_down
