@@ -14,13 +14,6 @@
     dice_io_width: root.width-(root.width/2.5)
     bottom_reserve: root.height/1.4
     
-    # canvas:
-    #     Color:
-    #         rgb: 0, 0, 0
-    #     Rectangle:
-    #         pos: self.pos
-    #         size: self.size
-
     FloatLayout:
         canvas:
             Color:
@@ -73,8 +66,6 @@
                 d4width: 0
                 d100width: 0
                 pic_size_hint: None, 1
-                #this is to work around some weird kivy.clock.Clock.max_iteration bug
-                #on_parent: self.d4width, self.d100width = d4.width, d100.width
                 on_parent: root.log_mesg('init dice pics box size ' + repr(self.size))
                 on_size: self.d4width, self.d100width = d4.width, d100.width
                 on_size: root.log_mesg('dice pics box size ' + repr(self.size))
@@ -92,7 +83,6 @@
                     allow_stretch: True
                     on_parent: root.log_mesg('d4 image size ' + repr(self.size))
                     on_parent: root.set_bind(self, 'd4')
-                    #on_touch_up: root.add_dice_input(self, touch, 'd4')
                     
                 Image:
                     source: 'd6.png'
@@ -100,8 +90,6 @@
                     size: self.width, self.parent.height
                     allow_stretch: True
                     on_parent: root.set_bind(self, 'd6')
-                    #on_touch_up: root.add_dice_input(self, touch, 'd6')
-                    #on_touch_down: self.parent.on_touch_down
                     
                 Image:
                     source: 'd8.png'
@@ -109,8 +97,6 @@
                     size: self.width, self.parent.height
                     allow_stretch: True
                     on_parent: root.set_bind(self, 'd8')
-                    #on_touch_up: root.add_dice_input(self, touch, 'd8')
-                    #on_touch_down: self.parent.on_touch_down
                     
                 Image:
                     source: 'd10.png'
@@ -118,8 +104,6 @@
                     size: self.width, self.parent.height
                     allow_stretch: True
                     on_parent: root.set_bind(self, 'd10')
-                    #on_touch_up: root.add_dice_input(self, touch, 'd10')
-                    #on_touch_down: self.parent.on_touch_down
                     
                 Image:
                     source: 'd12.png'
@@ -127,8 +111,6 @@
                     size: self.width, self.parent.height
                     allow_stretch: True
                     on_parent: root.set_bind(self, 'd12')
-                    #on_touch_up: root.add_dice_input(self, touch, 'd12')
-                    #on_touch_down: self.parent.on_touch_down
                     
                 Image:
                     source: 'd20.png'
@@ -136,8 +118,6 @@
                     size: self.width, self.parent.height
                     allow_stretch: True
                     on_parent: root.set_bind(self, 'd20')
-                    #on_touch_up: root.add_dice_input(self, touch, 'd20')
-                    #on_touch_down: self.parent.on_touch_down
                     
                 Image:
                     id: d100
@@ -147,8 +127,6 @@
                     allow_stretch: True
                     on_parent: root.log_mesg('d100 image size ' + repr(self.size))
                     on_parent: root.set_bind(self, 'd100')
-                    #on_touch_up: root.add_dice_input(self, touch, 'd100')
-                    #on_touch_down: self.parent.on_touch_down
                     
         ScrollView:
             size_hint: None, None
