@@ -12,6 +12,7 @@ from kivy.factory import Factory
 from kivy.clock import Clock
 from kivy.core.window import Keyboard
 from kivy.interactive import InteractiveLauncher
+from kivy.logger import Logger
 import rollparse
 
 class DiceEqnInput(TextInput):
@@ -208,11 +209,21 @@ class DiceWidget(Widget):
         print "closing..."
         return super(DiceWidget, self).on_close(*args)
 
+    def log_mesg(self, mesg='Dice: you forgot something...'):
+        """For log messages.
+        
+        Arguments:
+        - `mesg`: The debug message.
+        """
+        Logger.debug(mesg)
+
 class DiceApp(App):
     """
     Dice rolling app.
     """
     def build(self):
+        #Clock.max_iteration *= 4
+        Logger.debug('Dice: Clock.max_iteration ' + repr(Clock.max_iteration))
         diceapp = DiceWidget()
         return diceapp
     

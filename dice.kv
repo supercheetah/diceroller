@@ -1,5 +1,4 @@
 #:kivy 1.4.1
-#:import copy copy.copy
 
 <DiceHistory>
     canvas:
@@ -13,6 +12,7 @@
     dice_history: dice_history
     roll_it_btn: roll_it_btn
     dice_io_width: root.width-(root.width/2.5)
+    bottom_reserve: root.height/1.4
     
     # canvas:
     #     Color:
@@ -31,7 +31,7 @@
 
         DiceEqnInput:
             id: dice_eqn_input
-            font_size: 14
+            #font_size: 14
             size_hint: None, None
             size: root.dice_io_width, self.line_height * 1.65
             multiline: False
@@ -48,17 +48,98 @@
             text: "Roll It!"
             on_press: root.roll_it()
 
-        TextInput:
-            id: dice_output
-            font_size: 14
-            readonly: True
-            size_hint: None, None
-            size: root.dice_io_width, root.height - dice_eqn_input.height - 1
+        ScrollView:
+            id: dice_out_scroll
+            size: root.dice_io_width, root.bottom_reserve - dice_eqn_input.height - roll_it_btn.height - 1
             pos: 0, roll_it_btn.y - self.height - 1
+            on_parent: root.log_mesg('Dice: dice output scroll size ' + repr(dice_out_scroll.size))
             
+            TextInput:
+                id: dice_output
+                #font_size: 14
+                readonly: True
+                size_hint: None, None
+                size: dice_out_scroll.width, max( (len(self._lines)+1) * (self.line_height + self._line_spacing), dice_out_scroll.height)
+                pos: 0, 0
+
+        ScrollView:
+            id: dice_pic_scroll
+            size_hint: None, None
+            size: root.width - 1, root.height - dice_out_scroll.height - dice_eqn_input.height - roll_it_btn.height - 1
+            pos: 0, 0
+            on_parent: root.log_mesg('Dice: dice pics scroll view size ' + repr(self.size))
+
+            BoxLayout:
+                d4width: 0
+                d100width: 0
+                pic_size_hint: None, 1
+                #this is to work around some weird kivy.clock.Clock.max_iteration bug
+                #on_parent: self.d4width, self.d100width = d4.width, d100.width
+                on_parent: root.log_mesg('Dice: init dice pics box size ' + repr(self.size))
+                on_size: self.d4width, self.d100width = d4.width, d100.width
+                on_size: root.log_mesg('Dice: dice pics box size ' + repr(self.size))
+                on_size: root.log_mesg('Dice: d4.width=' + repr(d4.width) + ', d4width=' + repr(self.d4width))
+                on_size: root.log_mesg('Dice: d100.width=' + repr(d100.width) + ', d100width=' + repr(self.d100width))
+                size_hint: (None, None)
+                size: d4.width*6+d100.width, self.parent.height
+                orientation: 'horizontal'
+
+                Image:
+                    id: d4
+                    source: 'd4.png'
+                    size_hint: self.parent.pic_size_hint
+                    size: self.width, self.parent.height
+                    allow_stretch: True
+                    on_parent: root.log_mesg('Dice: d4 image size ' + repr(self.size))
+                    #on_touch_down: self.parent.on_touch_down
+                    
+                Image:
+                    source: 'd6.png'
+                    size_hint: self.parent.pic_size_hint
+                    size: self.width, self.parent.height
+                    allow_stretch: True
+                    #on_touch_down: self.parent.on_touch_down
+                    
+                Image:
+                    source: 'd8.png'
+                    size_hint: self.parent.pic_size_hint
+                    size: self.width, self.parent.height
+                    allow_stretch: True
+                    #on_touch_down: self.parent.on_touch_down
+                    
+                Image:
+                    source: 'd10.png'
+                    size_hint: self.parent.pic_size_hint
+                    size: self.width, self.parent.height
+                    allow_stretch: True
+                    #on_touch_down: self.parent.on_touch_down
+                    
+                Image:
+                    source: 'd12.png'
+                    size_hint: self.parent.pic_size_hint
+                    size: self.width, self.parent.height
+                    allow_stretch: True
+                    #on_touch_down: self.parent.on_touch_down
+                    
+                Image:
+                    source: 'd20.png'
+                    size_hint: self.parent.pic_size_hint
+                    size: self.width, self.parent.height
+                    allow_stretch: True
+                    #on_touch_down: self.parent.on_touch_down
+                    
+                Image:
+                    id: d100
+                    source: 'd100.png'
+                    size_hint: self.parent.pic_size_hint
+                    size: self.width, self.parent.height
+                    allow_stretch: True
+                    on_parent: root.log_mesg('Dice: d100 image size ' + repr(self.size))
+                    #on_touch_down: self.parent.on_touch_down
+                    
         ScrollView:
             size_hint: None, None
-            size: root.width-(dice_output.width+1), root.height/2.0
+            size: root.width-(root.dice_io_width+1), root.bottom_reserve
             pos: dice_output.right+1, root.top - self.height
             
             AnchorLayout:
