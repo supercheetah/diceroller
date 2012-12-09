@@ -11,7 +11,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.factory import Factory
 from kivy.clock import Clock
 from kivy.core.window import Keyboard
-from kivy.interactive import InteractiveLauncher
+#from kivy.interactive import InteractiveLauncher
 from kivy.logger import Logger
 import rollparse
 
@@ -21,6 +21,15 @@ class DiceEqnInput(TextInput):
     history_stack_pos = -1
     true_parent = ObjectProperty(None)
     start_text = "Enter roll dice equation here."
+
+    def clear_start_text(self):
+        """When we need the start start text to be cleared. Will do
+        nothing if it's already been cleared.
+        
+        Arguments:
+        """
+        if self.text == self.start_text:
+            self.text = ""
     
     def __init__(self, **kwargs):
         """Here just in case I want to use it.
@@ -190,7 +199,7 @@ class DiceWidget(Widget):
     def on_touch_move(self, touch):
         """
         This is mostly being used for the purpose of laying things
-        out.
+        out, and getting a position.
         
         Arguments:
         - `touch`: mouse position
@@ -198,16 +207,34 @@ class DiceWidget(Widget):
         self.mouse_postion = str(touch.pos)
         return super(DiceWidget, self).on_touch_move(touch)
 
-    def on_close(self, *args):
-        """Called when this is being closed. Written mostly for
-        debugging purposes since I'm running into some strange
-        infinite loop I can't seem to track down.
+    def set_bind(self, image, dice_text):
+        """This will bind the image's on_touch_up event.
         
         Arguments:
-        - `*args`: not used
+        - `self`:
+        - `image`:
+        - `dice_text`:
         """
-        print "closing..."
-        return super(DiceWidget, self).on_close(*args)
+        Logger.debug('DiceWidget: setting bind for ' + dice_text)
+        image.bind(on_touch_up=lambda im, touch: self.add_dice_input(im, touch, dice_text))
+
+    def add_dice_input(self, image, touch, dice_text=None):
+        """This will add dice to dice_eqn_input.
+        
+        Arguments:
+        - `dice_text`: This should never be None.
+        """
+        assert dice_text!=None, ("Something very bad happened."
+                                 " Somehow I tried to add"
+                                 " non-existent dice. Please report this.")
+        self.dice_eqn_input.clear_start_text()
+        if not image.collide_point(touch.x, touch.y):
+            return
+        Logger.debug('DiceWidget: touch up for ' + dice_text)
+        if self.dice_eqn_input.text == '':
+            self.dice_eqn_input.text = dice_text
+        else:
+            self.dice_eqn_input.text += ' + ' + dice_text
 
     def log_mesg(self, mesg='Dice: you forgot something...'):
         """For log messages.
@@ -222,8 +249,6 @@ class DiceApp(App):
     Dice rolling app.
     """
     def build(self):
-        #Clock.max_iteration *= 4
-        Logger.debug('Dice: Clock.max_iteration ' + repr(Clock.max_iteration))
         diceapp = DiceWidget()
         return diceapp
     
@@ -231,3 +256,5 @@ Factory.register("DiceWidget", DiceWidget)
 Factory.register("DiceEqnInput", DiceEqnInput)
 if __name__ == '__main__':
     DiceApp().run()
+    #this seems to just crash unfortunately
+    #il = InteractiveLauncher(DiceApp()).run()

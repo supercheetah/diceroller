@@ -91,13 +91,16 @@
                     size: self.width, self.parent.height
                     allow_stretch: True
                     on_parent: root.log_mesg('Dice: d4 image size ' + repr(self.size))
-                    #on_touch_down: self.parent.on_touch_down
+                    on_parent: root.set_bind(self, 'd4')
+                    #on_touch_up: root.add_dice_input(self, touch, 'd4')
                     
                 Image:
                     source: 'd6.png'
                     size_hint: self.parent.pic_size_hint
                     size: self.width, self.parent.height
                     allow_stretch: True
+                    on_parent: root.set_bind(self, 'd6')
+                    #on_touch_up: root.add_dice_input(self, touch, 'd6')
                     #on_touch_down: self.parent.on_touch_down
                     
                 Image:
@@ -105,6 +108,8 @@
                     size_hint: self.parent.pic_size_hint
                     size: self.width, self.parent.height
                     allow_stretch: True
+                    on_parent: root.set_bind(self, 'd8')
+                    #on_touch_up: root.add_dice_input(self, touch, 'd8')
                     #on_touch_down: self.parent.on_touch_down
                     
                 Image:
@@ -112,6 +117,8 @@
                     size_hint: self.parent.pic_size_hint
                     size: self.width, self.parent.height
                     allow_stretch: True
+                    on_parent: root.set_bind(self, 'd10')
+                    #on_touch_up: root.add_dice_input(self, touch, 'd10')
                     #on_touch_down: self.parent.on_touch_down
                     
                 Image:
@@ -119,6 +126,8 @@
                     size_hint: self.parent.pic_size_hint
                     size: self.width, self.parent.height
                     allow_stretch: True
+                    on_parent: root.set_bind(self, 'd12')
+                    #on_touch_up: root.add_dice_input(self, touch, 'd12')
                     #on_touch_down: self.parent.on_touch_down
                     
                 Image:
@@ -126,6 +135,8 @@
                     size_hint: self.parent.pic_size_hint
                     size: self.width, self.parent.height
                     allow_stretch: True
+                    on_parent: root.set_bind(self, 'd20')
+                    #on_touch_up: root.add_dice_input(self, touch, 'd20')
                     #on_touch_down: self.parent.on_touch_down
                     
                 Image:
@@ -135,6 +146,8 @@
                     size: self.width, self.parent.height
                     allow_stretch: True
                     on_parent: root.log_mesg('Dice: d100 image size ' + repr(self.size))
+                    on_parent: root.set_bind(self, 'd100')
+                    #on_touch_up: root.add_dice_input(self, touch, 'd100')
                     #on_touch_down: self.parent.on_touch_down
                     
         ScrollView:
