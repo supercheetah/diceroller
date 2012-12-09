@@ -2,7 +2,9 @@ from simpleparse.common import numbers,strings,comments
 from simpleparse.parser import Parser
 #from simpleparse.error import ParserSyntaxError
 from dispexcept import VarNestedException, VarMultipleException
-#import logging
+#import sys
+#if 'kivy.logging' not in sys.modules.keys():
+#    import logging
 import lexer
 
 declaration = r''' #this defines the language, of course

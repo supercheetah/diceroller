@@ -1,10 +1,25 @@
-import logging
+import sys
+if 'kivy.logging' not in sys.modules.keys():
+    import logging
+else:
+    from kivy.logger import Logger
 from collections import deque
 from rollenum import *
 
 XOR = lambda x, y: (not x and y) or (not y and x)
 ADDER_PUSH = lambda adder, x: adder.insert(0, x)
 ISLAMBDA = lambda l: isinstance(l, type(lambda: None)) and l.__name__ == '<lambda>'
+
+def compile_log(mesg):
+    """Emit compile log messages.
+    
+    Arguments:
+    - `mesg`:
+    """
+    if 'kivy.logging' not in sys.modules.keys():
+        logging.debug(mesg)
+    else:
+        Logger.debug('Compiler: ' + mesg)
 
 def negate_adder( adder ):
     return multiply_adder( adder, -1 )
@@ -62,7 +77,7 @@ def generate_adder( bytecode ):
     # Resets negate back to false, may be used to reset other vars in
     # the future.
     reset = lambda: False
-    logdebug = lambda: logging.debug(eqn_str+'\n\tadder:\t'+str(adder)+'\n\tmult:\t'+str(multiplier))
+    logdebug = lambda: compile_log(eqn_str+'\n\tadder:\t'+str(adder)+'\n\tmult:\t'+str(multiplier))
     add_to_adder = lambda data: adder.append(data) if \
         isinstance(data, deque) else adder.appendleft(data)
     for instruction in bytecode:
@@ -175,5 +190,5 @@ def dice_compile( bytecode ):
         # var_groupings
         adder.append([0])
     answer, garbage = add_up(adder, 0)
-    logging.debug("answer: "+str(answer))
+    compile_log("answer: "+str(answer))
     return eqn_str, const_grp_strings, answer
