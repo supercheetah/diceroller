@@ -1,3 +1,4 @@
+#!/usr/bin/env 'python'
 import kivy
 kivy.require('1.4.1')
 from kivy.app import App
@@ -13,6 +14,7 @@ from kivy.clock import Clock
 from kivy.core.window import Keyboard
 from kivy.interactive import InteractiveLauncher
 from kivy.logger import Logger
+from kivy.config import Config
 import rollparse
 
 class DiceEqnInput(TextInput):
@@ -254,11 +256,13 @@ class DiceApp(App):
     """
     Dice rolling app.
     """
+    icon = "icon.ico"
+    title = "Roll It!"
     def build(self):
-        self.icon = "icon.ico"
         diceapp = DiceWidget()
         return diceapp
-    
+
+Config.set('kivy', 'log_level', 'info')
 Factory.register("DiceWidget", DiceWidget)
 Factory.register("DiceEqnInput", DiceEqnInput)
 if __name__ == '__main__':
