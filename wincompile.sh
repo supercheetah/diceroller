@@ -8,4 +8,4 @@ PYTHON="wine $PYDIR/python.exe"
 #$PYTHON Configure.py
 #$PYTHON Makespec.py ../diceroller.py
 #$PYTHON Build.py diceroller/diceroller.spec
-$PYTHON pyinstaller/pyinstaller.py diceroller.py
+$PYTHON pyinstaller/pyinstaller.py diceroller.spec
