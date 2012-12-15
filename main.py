@@ -255,6 +255,7 @@ class DiceApp(App):
     Dice rolling app.
     """
     def build(self):
+        self.icon = "icon.ico"
         diceapp = DiceWidget()
         return diceapp
     
