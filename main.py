@@ -1,4 +1,4 @@
-#!/usr/bin/env 'python'
+#!/usr/bin/env python
 import kivy
 kivy.require('1.4.1')
 from kivy.app import App
