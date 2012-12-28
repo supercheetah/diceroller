@@ -15,7 +15,9 @@ from kivy.core.window import Keyboard
 from kivy.interactive import InteractiveLauncher
 from kivy.logger import Logger
 from kivy.config import Config
+import re
 import rollparse
+from dicehelp import dice_help
 
 class DiceEqnInput(TextInput):
     """This is where the equation will be entered.
@@ -88,9 +90,10 @@ class DiceWidget(Widget):
     input_height = StringProperty("") #just used in debugging
     label_col_div = 6.5 # this is only used to position the debug
                         # labels
+    help_is_on = False
 
-    def store_print(self, output_str):
-        """This will store the strings to be printed until it's ready
+    def stash_print(self, output_str):
+        """This will stash the strings to be printed until it's ready
         to be printed.
         
         Arguments:
@@ -99,7 +102,7 @@ class DiceWidget(Widget):
         """
         self.output_collector += output_str + '\n'
 
-    def complete_store_print(self):
+    def complete_stash_print(self):
         """Once the collected print statements are ready to be
         printed, this should be called.
         
@@ -119,31 +122,55 @@ class DiceWidget(Widget):
         if eqn_text == '':
             Clock.schedule_once(self.set_eqn_focus)
             return
+
+        if re.match('help', eqn_text, re.IGNORECASE):
+            self.help_is_on = True
+            self.dh = dice_help()
+            self.stash_print(self.dh.next())
+            self.complete_stash_print()
+            self.dice_eqn_input.text=""
+            Clock.schedule_once(self.set_eqn_focus)
+            return
+
+        if re.match('done', eqn_text, re.IGNORECASE):
+            self.help_is_on = False
+            self.stash_print("Just type help again if you need it.")
+            self.complete_stash_print()
+            self.dice_eqn_input.text=""
+            Clock.schedule_once(self.set_eqn_focus)
+            return
+
         try:
+            if self.help_is_on:
+                try:
+                    self.stash_print(self.dh.next())
+                    self.complete_stash_print()
+                except StopIteration:
+                    self.help_is_on = False
             is_separated, const_strings, (ans_str, answers) = rollparse.solve_roll(eqn_text)
             self.add_to_history(eqn_text)
-            self.store_print(eqn_text)
+            self.stash_print(eqn_text)
             if 0 < len(const_strings) and not is_separated:
-                self.store_print("Calculated constants:")
+                self.stash_print("Calculated constants:")
                 i = 1
                 for c in const_strings:
-                    self.store_print("  {0}: {1}".format(i, c))
+                    self.stash_print("  {0}: {1}".format(i, c))
                     i += 1
 
             if is_separated:
-                self.store_print("Rolls:")
+                self.stash_print("Rolls:")
                 for i in range(0, len(ans_str)):
                     const_counter = 1
                     for c_str in const_strings[i]:
-                        self.store_print("    [{0}: {1}]".format(const_counter, const_str))
+                        self.stash_print("    [{0}: {1}]".format(const_counter, const_str))
                         const_counter += 1
-                    self.store_print("  {0}: {1} = {2}".format(i+1, ans_str[i], answers[i]))
+                    self.stash_print("  {0}: {1} = {2}".format(i+1, ans_str[i], answers[i]))
             else:
-                self.store_print("{0} = {1}".format(ans_str, answers))
+                self.stash_print("{0} = {1}".format(ans_str, answers))
         except Exception as e:
             print e
-            self.store_print(str(e))
-        self.complete_store_print()
+            self.stash_print(str(e))
+        self.complete_stash_print()
         self.dice_eqn_input.text=""
         Clock.schedule_once(self.set_eqn_focus)
 
