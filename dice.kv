@@ -1,0 +1,156 @@
+#:kivy 1.4.1
+
+<DiceHistory>
+    canvas:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        
+<DiceWidget>
+    dice_eqn_input: dice_eqn_input
+    dice_output: dice_output
+    dice_history: dice_history
+    roll_it_btn: roll_it_btn
+    dice_io_width: root.width-(root.width/2.5)
+    bottom_reserve: root.height/1.4
+    
+    FloatLayout:
+        canvas:
+            Color:
+                rgb: 0, 0, 0
+            Rectangle:
+                pos: root.pos
+                size: root.size
+
+        DiceEqnInput:
+            id: dice_eqn_input
+            #font_size: 14
+            size_hint: None, None
+            size: root.dice_io_width, self.line_height * 1.65
+            multiline: False
+            pos: 0, root.top - self.height - 1
+            text: self.start_text
+            on_focus: if self.text==self.start_text: self.text=""
+            on_text_validate: root.roll_it()
+            true_parent: root
+
+        Button:
+            id: roll_it_btn
+            size: root.dice_io_width, dice_eqn_input.height
+            pos: 0, dice_eqn_input.y - self.height - 1
+            text: "Roll It!"
+            on_press: root.roll_it()
+
+        ScrollView:
+            id: dice_out_scroll
+            size: root.dice_io_width, root.bottom_reserve - dice_eqn_input.height - roll_it_btn.height - 1
+            pos: 0, roll_it_btn.y - self.height - 1
+            on_parent: root.log_mesg('dice output scroll size ' + repr(dice_out_scroll.size))
+            
+            TextInput:
+                id: dice_output
+                #font_size: 14
+                readonly: True
+                size_hint: None, None
+                size: dice_out_scroll.width, max( (len(self._lines)+1) * (self.line_height + self._line_spacing), dice_out_scroll.height)
+                pos: 0, 0
+                text: "Don't know what's going on? Type \"help\" above, and click \"Roll It!\" or press enter."
+
+        ScrollView:
+            id: dice_pic_scroll
+            size_hint: None, None
+            size: root.width - 1, root.height - dice_out_scroll.height - dice_eqn_input.height - roll_it_btn.height - 1
+            pos: 0, 0
+            on_parent: root.log_mesg('dice pics scroll view size ' + repr(self.size))
+
+            BoxLayout:
+                pic_size_hint: None, 1
+                #on_parent: root.log_mesg('init dice pics box size ' + repr(self.size))
+                #on_size: root.log_mesg('dice pics box size ' + repr(self.size))
+                size_hint: (None, None)
+                size: d4.width*6+d100.width, self.parent.height
+                orientation: 'horizontal'
+
+                Image:
+                    id: d4
+                    source: 'd4.png'
+                    size_hint: self.parent.pic_size_hint
+                    height: self.parent.height
+                    width: self.height
+                    allow_stretch: True
+                    on_parent: root.log_mesg('d4 image size ' + repr(self.size))
+                    on_parent: root.dice_images.append(self)
+                    on_parent: root.set_bind(self, 'd4')
+                    
+                Image:
+                    source: 'd6.png'
+                    size_hint: self.parent.pic_size_hint
+                    height: d4.height
+                    width: d4.width
+                    allow_stretch: True
+                    on_parent: root.dice_images.append(self)
+                    on_parent: root.set_bind(self, 'd6')
+                    
+                Image:
+                    source: 'd8.png'
+                    size_hint: self.parent.pic_size_hint
+                    height: d4.height
+                    width: d4.width
+                    allow_stretch: True
+                    on_parent: root.dice_images.append(self)
+                    on_parent: root.set_bind(self, 'd8')
+                    
+                Image:
+                    source: 'd10.png'
+                    size_hint: self.parent.pic_size_hint
+                    height: d4.height
+                    width: d4.width
+                    allow_stretch: True
+                    on_parent: root.dice_images.append(self)
+                    on_parent: root.set_bind(self, 'd10')
+                    
+                Image:
+                    source: 'd12.png'
+                    size_hint: self.parent.pic_size_hint
+                    height: d4.height
+                    width: d4.width
+                    allow_stretch: True
+                    on_parent: root.dice_images.append(self)
+                    on_parent: root.set_bind(self, 'd12')
+                    
+                Image:
+                    source: 'd20.png'
+                    size_hint: self.parent.pic_size_hint
+                    height: d4.height
+                    width: d4.width
+                    allow_stretch: True
+                    on_parent: root.dice_images.append(self)
+                    on_parent: root.set_bind(self, 'd20')
+                    
+                Image:
+                    id: d100
+                    source: 'd100.png'
+                    size_hint: self.parent.pic_size_hint
+                    height: d4.height
+                    width: d4.width*1.4969
+                    allow_stretch: True
+                    on_parent: root.log_mesg('d100 image size ' + repr(self.size))
+                    on_parent: root.dice_images.append(self)
+                    on_parent: root.set_bind(self, 'd100')
+                    
+        ScrollView:
+            size_hint: None, None
+            size: root.width-(root.dice_io_width+1), root.bottom_reserve
+            pos: dice_output.right+1, root.top - self.height
+            
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'top'
+                size_hint_y: None
+                Bubble:
+                    id: dice_history
+                    size_hint: (None, None)
+                    width: self.parent.width*0.9
+                    on_parent: self.height=dice_eqn_input.height
+                    arrow_pos: 'left_mid'
+                    orientation: 'vertical'            

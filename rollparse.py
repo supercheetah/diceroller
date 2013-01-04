@@ -2,7 +2,9 @@ from simpleparse.common import numbers,strings,comments
 from simpleparse.parser import Parser
 #from simpleparse.error import ParserSyntaxError
 from dispexcept import VarNestedException, VarMultipleException
-import logging
+#import sys
+#if 'kivy.logging' not in sys.modules.keys():
+#    import logging
 import lexer
 
 declaration = r''' #this defines the language, of course
@@ -50,7 +52,7 @@ def solve_roll( roll_str ):
     try:
         success, children, nextchar = rollparser.parse( roll_str, processor=lexer.Lexer() )
         if not (success and len(roll_str)==nextchar):
-            raise Exception(roll_str+'\n'+space_carot(nextchar)+"\nI'm sorry, but I don't understand that.")
+            raise Exception(roll_str+'\n'+space_carot(nextchar+1)+"\nI'm sorry, but I don't understand that.")
     except SyntaxError, se:
         raise Exception(roll_str+'\n'+space_carot(se.position)+"\nThis doesn't look right.")
     except VarNestedException, nest_e:

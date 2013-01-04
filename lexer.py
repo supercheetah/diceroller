@@ -1,6 +1,10 @@
-import logging
+import sys
+if 'kivy.logging' not in sys.modules.keys():
+    import logging
+else:
+    from kivy.logger import Logger
 import random
-import compiler
+import dice_compiler
 from dispexcept import VarNestedException, VarMultipleException
 from rollenum import *
 from simpleparse.dispatchprocessor import *
@@ -22,6 +26,17 @@ def get_resolution():
 def is_separated():
     return Lexer.isSeparated
 
+def lex_log(mesg):
+    """Abstraction of the logging method being used.
+    
+    Arguments:
+    - `mesg`:
+    """
+    if 'kivy.logging' not in sys.modules.keys():
+        logging.debug(mesg)
+    else:
+        Logger.debug('Lexer: ' + mesg)
+
 class Lexer( DispatchProcessor ):
     _insideVarGroup = False
     _varGroupCount = 0
@@ -39,12 +54,13 @@ class Lexer( DispatchProcessor ):
     
     def roll( self, (tag,start,stop,subtags), buffer ):
         """The start of processing a 'roll.'  Forms the root of the tree."""
-        logging.debug("def:      roll")
-        logging.debug("tag:     "+str(tag))
-        logging.debug("start:   "+str(start))
-        logging.debug("stop:    "+str(stop))
-        logging.debug("subtags: "+str(subtags))
-        logging.debug("buffer:  "+str(buffer)+"\n")
+        self.init_var()
+        lex_log("def:      roll")
+        lex_log("tag:     "+str(tag))
+        lex_log("start:   "+str(start))
+        lex_log("stop:    "+str(stop))
+        lex_log("subtags: "+str(subtags))
+        lex_log("buffer:  "+str(buffer)+"\n")
         for tup in subtags:
             if "space" == tup[0]:
                 continue
@@ -52,7 +68,7 @@ class Lexer( DispatchProcessor ):
                 result = dispatch( self, tup, buffer)
             except SyntaxError, se:
                 raise se
-        logging.debug("result:  "+str(result)+'\n')
+        lex_log("result:  "+str(result)+'\n')
 
     def init_var( self ):
         self._insideVarGroup = False
@@ -63,15 +79,15 @@ class Lexer( DispatchProcessor ):
         Lexer.isSeparated = False
         
     def root_fn( self, (tag,start,stop,subtags), buffer ):
-        """This is where all the magic happens."""
-        self.init_var()
-        logging.debug("def:            root_fn")
+        """This is where all the magic happens, except not apparently.
+        This seems to be dead code?"""
+        lex_log("def:            root_fn")
         try:
             result = dispatch( self, subtags[0], buffer )
         except SyntaxError, se:
             raise se
-        logging.debug("root result:   "+str(result)+'\n')
-        final = compiler.compile( result )
+        lex_log("root result:   "+str(result)+'\n')
+        final = dice_compiler.dice_compile( result )
         Lexer.eqnString, Lexer.constGrpStrings, Lexer.resolution = final
         return final
 
@@ -80,31 +96,31 @@ class Lexer( DispatchProcessor ):
 
     def operations( self, (tag,start,stop,subtags), buffer ):
         """The start of a new roll equation"""
-        logging.debug("def:            operations")
-        logging.debug("tag:           "+str(tag))
-        logging.debug("start:         "+str(start))
-        logging.debug("stop:          "+str(stop))
-        logging.debug("subtags:       "+str(subtags))
-        logging.debug("buffer:        "+str(buffer))
-        logging.debug("subtags[0]:    "+str(subtags)[0]+"\n")
+        lex_log("def:            operations")
+        lex_log("tag:           "+str(tag))
+        lex_log("start:         "+str(start))
+        lex_log("stop:          "+str(stop))
+        lex_log("subtags:       "+str(subtags))
+        lex_log("buffer:        "+str(buffer))
+        lex_log("subtags[0]:    "+str(subtags)[0]+"\n")
         try:
             result = dispatch( self, subtags[0], buffer)
         except SyntaxError, se:
             raise se
-        logging.debug("operations result:")
-        logging.debug("\t"+str(result)+'\n')
+        lex_log("operations result:")
+        lex_log("\t"+str(result)+'\n')
         return result
 
 
     def function( self, (tag,start,stop,subtags), buffer ):
         """This contains the actual operations"""
-        logging.debug("def:         function")
-        logging.debug("tag:        "+str(tag))
-        logging.debug("start:      "+str(start))
-        logging.debug("stop:       "+str(stop))
-        logging.debug("subtags:    "+str(subtags))
-        logging.debug("buffer:     "+str(buffer))
-        logging.debug("subtags[0]: "+str(subtags[0])+'\n')
+        lex_log("def:         function")
+        lex_log("tag:        "+str(tag))
+        lex_log("start:      "+str(start))
+        lex_log("stop:       "+str(stop))
+        lex_log("subtags:    "+str(subtags))
+        lex_log("buffer:     "+str(buffer))
+        lex_log("subtags[0]: "+str(subtags[0])+'\n')
         bytecode = []
         for tup in subtags:
             if "space" == tup[0]: #We don't need to do anything for a space.
@@ -115,27 +131,27 @@ class Lexer( DispatchProcessor ):
                 raise se
             if "operations" == tup[0]:
                 bytecode.extend(result)
-                logging.debug('  opfn:'+str(bytecode)+'\n')
+                lex_log('  opfn:'+str(bytecode)+'\n')
             elif "grouping" == tup[0]:
                 bytecode.append(result)
-                logging.debug(' grpfn:'+str(bytecode)+'\n')
+                lex_log(' grpfn:'+str(bytecode)+'\n')
             else:
                 bytecode.append(RollInstruction(StrFn(tup[0]),result))
-                logging.debug('   '+str(tup[0])+':',result)
-                logging.debug('    bytecode:'+str(bytecode)+'\n')
-        logging.debug("")
+                lex_log('   '+str(tup[0])+':'+str(result))
+                lex_log('    bytecode:'+str(bytecode)+'\n')
+        lex_log("")
         return bytecode
 
 
     def constant( self, (tag,start,stop,subtags), buffer ):
         """Returns a number to the tree"""
-        logging.debug("def:         constant")
-        logging.debug("tag:        "+str(tag))
-        logging.debug("start:      "+str(start))
-        logging.debug("stop:       "+str(stop))
-        logging.debug("subtags:    "+str(subtags))
-        logging.debug("buffer:     "+str(buffer))
-        logging.debug("subtags[0]: "+str(subtags)+"\n")
+        lex_log("def:         constant")
+        lex_log("tag:        "+str(tag))
+        lex_log("start:      "+str(start))
+        lex_log("stop:       "+str(stop))
+        lex_log("subtags:    "+str(subtags))
+        lex_log("buffer:     "+str(buffer))
+        lex_log("subtags[0]: "+str(subtags)+"\n")
         try:
             return dispatch( self, subtags[0], buffer )
         except SyntaxError, se:
@@ -159,11 +175,11 @@ class Lexer( DispatchProcessor ):
         if self._varGroupCount > 0:
             #raise Exception("Cannot have more than one variable grouping")
             raise VarMultipleException( start )
-        logging.debug("def:        var_grouping")
-        logging.debug("tag:       "+str(tag))
-        logging.debug("start:     "+str(start))
-        logging.debug("stop:      "+str(stop))
-        logging.debug("subtags:   "+str(subtags))
+        lex_log("def:        var_grouping")
+        lex_log("tag:       "+str(tag))
+        lex_log("start:     "+str(start))
+        lex_log("stop:      "+str(stop))
+        lex_log("subtags:   "+str(subtags))
         result = None
         is_negative = False 
         self._insideVarGroup = True
@@ -206,9 +222,9 @@ class Lexer( DispatchProcessor ):
                 bytecode = dispatch ( self, tup, buffer )
             except SyntaxError, se:
                 raise se
-        solution = lambda x=bytecode: (compiler.compile( bytecode ), negation)
+        solution = lambda x=bytecode: (dice_compiler.dice_compile( bytecode ), negation)
         ## future thought for separated constants (a different grammar element):
-        ## solution = lambda x=bytecode: compiler.compile( bytecode )
+        ## solution = lambda x=bytecode: dice_compiler.dice_compile( bytecode )
         #if negation:
         #    solution = -solution
         #Lexer.constGrpStrings.append(eqn_str)
@@ -239,11 +255,11 @@ class Lexer( DispatchProcessor ):
                 bytecode.extend(result)
 
         bytecode.insert(0, RollInstruction( Fn.dice, rolls.rollIteration ))
-        logging.debug("sep_dice:")
+        lex_log("sep_dice:")
         for i in range(rolls.numRolls):
             self._insideVarGroup = False # These need to be reset for each roll
             self._varGroupCount = 0
-            eqn_str, const_grp_strings, answer = compiler.compile(bytecode)
+            eqn_str, const_grp_strings, answer = dice_compiler.dice_compile(bytecode)
             Lexer.sepGrpStrings.append(eqn_str)
             Lexer.sepGrpResults.append(answer)
             Lexer.sepConstGrpStrings.append(const_grp_strings)
@@ -271,9 +287,9 @@ class Lexer( DispatchProcessor ):
         if include_zero:
             die_type = "D"+str(dice_sides)
             start = 0
-        logging.debug("dice_sides:    "+str(dice_sides))
-        logging.debug("num_dice:      "+str(num_dice))
-        logging.debug("include_zero:  "+str(include_zero))
+        lex_log("dice_sides:    "+str(dice_sides))
+        lex_log("num_dice:      "+str(num_dice))
+        lex_log("include_zero:  "+str(include_zero))
         if include_zero:
             start = 0
         roll_fn = lambda x=0: random.randint(start, dice_sides)+x
@@ -285,25 +301,25 @@ class Lexer( DispatchProcessor ):
         # This started out with different logic from sep_dice. Things change though.
         # Originally this did the rolling of the dice, and their summation, but then
         # I realized it was better to do that only when it was needed.
-        logging.debug("def:            dice")
-        logging.debug("tag:           "+str(tag))
-        logging.debug("start:         "+str(start))
-        logging.debug("stop:          "+str(stop))
-        logging.debug("subtags:       "+str(subtags))
-        logging.debug("buffer:        "+str(buffer))
-        logging.debug("rolls:")
+        lex_log("def:            dice")
+        lex_log("tag:           "+str(tag))
+        lex_log("start:         "+str(start))
+        lex_log("stop:          "+str(stop))
+        lex_log("subtags:       "+str(subtags))
+        lex_log("buffer:        "+str(buffer))
+        lex_log("rolls:")
         return self.rollit( (tag,start,stop,subtags), buffer )
 
     def sep_dice( self, (tag,start,stop,subtags), buffer ):
         """This defines the actual dice being rolled, but not added together.
         Returns the die type, and a list of rolls."""
-        logging.debug("def:            sep_dice")
-        logging.debug("tag:           "+str(tag))
-        logging.debug("start:         "+str(start))
-        logging.debug("stop:          "+str(stop))
-        logging.debug("subtags:       "+str(subtags))
-        logging.debug("buffer:        "+str(buffer))
-        logging.debug("")
+        lex_log("def:            sep_dice")
+        lex_log("tag:           "+str(tag))
+        lex_log("start:         "+str(start))
+        lex_log("stop:          "+str(stop))
+        lex_log("subtags:       "+str(subtags))
+        lex_log("buffer:        "+str(buffer))
+        lex_log("")
         return self.rollit( (tag,start,stop,subtags), buffer )
 
     def xdice( self, (tag,start,stop,subtags), buffer ):
@@ -311,15 +327,15 @@ class Lexer( DispatchProcessor ):
         and returns it as a list.  sep_dice already does most of this work for us.
         For negated rolls, I consider '-6x3d6' and '6x-3d6' to be equivalent.
         Double negation makes it positive."""
-        logging.debug("def:            xdice")
-        logging.debug("tag:           "+str(tag))
-        logging.debug("start:         "+str(start))
-        logging.debug("stop:          "+str(stop))
-        logging.debug("subtags[0]:    "+str(subtags[0]))
-        logging.debug("subtags[1]:    "+str(subtags[1]))
-        logging.debug("buffer:        "+str(buffer))
+        lex_log("def:            xdice")
+        lex_log("tag:           "+str(tag))
+        lex_log("start:         "+str(start))
+        lex_log("stop:          "+str(stop))
+        lex_log("subtags[0]:    "+str(subtags[0]))
+        lex_log("subtags[1]:    "+str(subtags[1]))
+        lex_log("buffer:        "+str(buffer))
         num_rolls = dispatch( self, subtags[0], buffer ) #This will call number
-        logging.debug("num_rolls:     "+str(num_rolls))
+        lex_log("num_rolls:     "+str(num_rolls))
         try:
             rollset = dispatch( self, subtags[1], buffer) #This will call sep_dice
         except SyntaxError, se:
@@ -350,13 +366,13 @@ class Lexer( DispatchProcessor ):
 
     def op( self, (tag,start,stop,subtags), buffer ):
         """This defines the operations being used (at this time, plus and minus)"""
-        logging.debug("def:         op")
-        logging.debug("tag:        "+str(tag))
-        logging.debug("start:      "+str(start))
-        logging.debug("stop:       "+str(stop))
-        logging.debug("subtags:    "+str(subtags))
-        logging.debug("buffer:     "+str(buffer))
-        logging.debug("subtags[0]: "+str(subtags[0])+"\n")
+        lex_log("def:         op")
+        lex_log("tag:        "+str(tag))
+        lex_log("start:      "+str(start))
+        lex_log("stop:       "+str(stop))
+        lex_log("subtags:    "+str(subtags))
+        lex_log("buffer:     "+str(buffer))
+        lex_log("subtags[0]: "+str(subtags[0])+"\n")
         try:
             space_start, op_position = dispatch( self, subtags[0], buffer)
         except SyntaxError, se:

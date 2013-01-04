@@ -7,3 +7,6 @@ pyinstaller/logdict*
 pyinstaller/config.dat
 pyinstaller/diceroller
 pyinstaller/bincache*
+*.pid
+.eric4project/
+kivy/
