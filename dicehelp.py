@@ -14,7 +14,7 @@ _______________________""", "{3xd20} + 15"),
 ("""You'll notice that it will give you the results of each roll separately.
 
     You can have named rolls if there is a roll you use a lot.  They will show up on the right side.
-_______________________""", "attack={2x2d4} + d6"),
+_______________________""", "damage={2x2d4} + d6"),
 ("""This should get you going.  Have fun rolling!
 _______________________""", "") ]
 
