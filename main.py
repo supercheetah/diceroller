@@ -91,6 +91,9 @@ class DiceWidget(Widget):
     label_col_div = 6.5 # this is only used to position the debug
                         # labels
     help_is_on = False
+    var_match = re.compile('\s*(\w+)\s*=\s*(.*)')
+    help_match = re.compile('help', re.I)
+    help_done = re.compile('done', re.I)
 
     def stash_print(self, output_str):
         """This will stash the strings to be printed until it's ready
@@ -123,7 +126,7 @@ class DiceWidget(Widget):
             Clock.schedule_once(self.set_eqn_focus)
             return
 
-        if re.match('help', eqn_text, re.IGNORECASE):
+        if self.help_match.match(eqn_text):
             self.help_is_on = True
             self.dh = dice_help()
             self.stash_print(self.dh.next())
@@ -132,7 +135,7 @@ class DiceWidget(Widget):
             Clock.schedule_once(self.set_eqn_focus)
             return
 
-        if re.match('done', eqn_text, re.IGNORECASE):
+        if self.help_done.match(eqn_text):
             self.help_is_on = False
             self.stash_print("Just type help again if you need it.")
             self.complete_stash_print()
@@ -147,6 +150,14 @@ class DiceWidget(Widget):
                     self.complete_stash_print()
                 except StopIteration:
                     self.help_is_on = False
+            var_array = self.var_match.split(eqn_text)
+            var_name = None
+            if 1 < len(var_array):
+                if '' == var_array[0]:
+                    var_array.pop(0)
+                if '' == var_array[-1]:
+                    var_array.pop()
+                var_name, eqn_text = var_array
             is_separated, const_strings, (ans_str, answers) = rollparse.solve_roll(eqn_text)
             self.add_to_history(eqn_text)
             self.stash_print(eqn_text)
