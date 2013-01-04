@@ -129,9 +129,9 @@ class DiceWidget(Widget):
         if self.help_match.match(eqn_text):
             self.help_is_on = True
             self.dh = dice_help()
-            self.stash_print(self.dh.next())
+            help_str, self.dice_eqn_input.text = self.dh.next()
+            self.stash_print(help_str)
             self.complete_stash_print()
-            self.dice_eqn_input.text=""
             Clock.schedule_once(self.set_eqn_focus)
             return
 
@@ -139,6 +139,7 @@ class DiceWidget(Widget):
             self.help_is_on = False
             self.stash_print("Just type help again if you need it.")
             self.complete_stash_print()
+            del self.dh
             self.dice_eqn_input.text=""
             Clock.schedule_once(self.set_eqn_focus)
             return
@@ -146,7 +147,8 @@ class DiceWidget(Widget):
         try:
             if self.help_is_on:
                 try:
-                    self.stash_print(self.dh.next())
+                    help_str, self.dice_eqn_input.text = self.dh.next()
+                    self.stash_print(help_str)
                     self.complete_stash_print()
                 except StopIteration:
                     self.help_is_on = False
@@ -162,27 +164,28 @@ class DiceWidget(Widget):
             self.add_to_history(eqn_text)
             self.stash_print(eqn_text)
             if 0 < len(const_strings) and not is_separated:
-                self.stash_print("Calculated constants:")
+                self.stash_print("\tCalculated constants:")
                 i = 1
                 for c in const_strings:
-                    self.stash_print("  {0}: {1}".format(i, c))
+                    self.stash_print("\t  {0}: {1}".format(i, c))
                     i += 1
 
             if is_separated:
-                self.stash_print("Rolls:")
+                self.stash_print("\tRolls:")
                 for i in range(0, len(ans_str)):
                     const_counter = 1
                     for c_str in const_strings[i]:
-                        self.stash_print("    [{0}: {1}]".format(const_counter, const_str))
+                        self.stash_print("\t    [{0}: {1}]".format(const_counter, const_str))
                         const_counter += 1
-                    self.stash_print("  {0}: {1} = {2}".format(i+1, ans_str[i], answers[i]))
+                    self.stash_print("\t  {0}: {1} = {2}".format(i+1, ans_str[i], answers[i]))
             else:
-                self.stash_print("{0} = {1}".format(ans_str, answers))
+                self.stash_print("\t{0} = {1}".format(ans_str, answers))
         except Exception as e:
             print e
             self.stash_print(str(e))
         self.complete_stash_print()
-        self.dice_eqn_input.text=""
+        if not self.help_is_on:
+            self.dice_eqn_input.text=""
         Clock.schedule_once(self.set_eqn_focus)
 
     def set_eqn(self, eqn_text, history_stack_pos):
