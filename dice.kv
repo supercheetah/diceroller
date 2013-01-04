@@ -11,6 +11,7 @@
     dice_output: dice_output
     dice_history: dice_history
     roll_it_btn: roll_it_btn
+    var_list_bubble: var_list_bubble
     dice_io_width: root.width-(root.width/2.5)
     bottom_reserve: root.height/1.4
     
@@ -137,20 +138,37 @@
                     on_parent: root.log_mesg('d100 image size ' + repr(self.size))
                     on_parent: root.dice_images.append(self)
                     on_parent: root.set_bind(self, 'd100')
-                    
-        ScrollView:
+
+        BoxLayout:
+            orientation: 'vertical'
             size_hint: None, None
             size: root.width-(root.dice_io_width+1), root.bottom_reserve
             pos: dice_output.right+1, root.top - self.height
+                    
+            ScrollView:
+                #size_hint: None, None
             
-            AnchorLayout:
-                anchor_x: 'center'
-                anchor_y: 'top'
-                size_hint_y: None
-                Bubble:
-                    id: dice_history
-                    size_hint: (None, None)
-                    width: self.parent.width*0.9
-                    on_parent: self.height=dice_eqn_input.height
-                    arrow_pos: 'left_mid'
-                    orientation: 'vertical'            
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'top'
+                    size_hint_y: None
+                    Bubble:
+                        id: dice_history
+                        size_hint: (None, None)
+                        width: self.parent.width*0.9
+                        on_parent: self.height=dice_eqn_input.height
+                        arrow_pos: 'left_mid'
+                        orientation: 'vertical'
+
+            ScrollView:
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'top'
+                    size_hint_y: None
+                    Bubble:
+                        id: var_list_bubble
+                        size_hint: None, None
+                        width: self.parent.width*0.9
+                        on_parent: self.height=dice_eqn_input.height
+                        arrow_pos: 'left_mid'
+                        orientation: 'vertical'

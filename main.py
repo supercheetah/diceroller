@@ -94,6 +94,13 @@ class DiceWidget(Widget):
     var_match = re.compile('\s*(\w+)\s*=\s*(.*)')
     help_match = re.compile('help', re.I)
     help_done = re.compile('done', re.I)
+    var_list_bubble = ObjectProperty(None) #this is the variable list
+                                           #that will show on the
+                                           #screen
+    var_dict = {} #this is the dictionary that will be used for
+                  #storing the variables, and their lambdas to pull up
+                  #their equations
+    var_list_stack = [] #for workaround for Kivy 1.4.1
 
     def stash_print(self, output_str):
         """This will stash the strings to be printed until it's ready
@@ -160,6 +167,7 @@ class DiceWidget(Widget):
                 if '' == var_array[-1]:
                     var_array.pop()
                 var_name, eqn_text = var_array
+                self.add_var(var_name, eqn_text)
             is_separated, const_strings, (ans_str, answers) = rollparse.solve_roll(eqn_text)
             self.add_to_history(eqn_text)
             self.stash_print(eqn_text)
@@ -206,6 +214,40 @@ class DiceWidget(Widget):
         - `dt`: not used
         """
         self.dice_eqn_input.focus=True
+
+    def add_var(self, var_name, eqn_text):
+        """Add to the variables bubble list and dictionary.
+        
+        Arguments:
+        - `self`:
+        - `var_name`:
+        - `eqn_text`:
+        """
+        #This function was actually created and modeled after
+        #self.add_to_history.  Relevant comments can be found there.
+        new_btn=BubbleButton(text=var_name)
+        last_pos=len(self.var_dict)
+        eqn_fn = lambda *args: self.set_eqn(eqn_text, len(self.history_stack)+1)
+        self.var_dict[var_name] = eqn_fn
+        new_btn.bind(on_press=self.var_dict[var_name])
+        try:
+            kivy.require('1.4.2')
+            self.var_dict[var_name] = eqn_fn
+            self.var_list_bubble.content.add_widget(new_btn, last_pos+1)
+        except Exception:
+            self.var_list_bubble.content.clear_widgets()
+            self.var_list_bubble.content.add_widget(new_btn)
+            for dice_roll in reversed(self.var_list_stack):
+                dice_bubble=BubbleButton(text=dice_roll)
+                dice_bubble.bind(on_press=self.var_dict[dice_roll])
+                self.var_list_bubble.content.add_widget(dice_bubble)
+            self.var_list_stack.append(var_name)
+        self.dice_eqn_input.history_stack_pos = len(self.history_stack)
+        if not hasattr(self, 'bubble_height'):
+            self.bubble_height=self.dice_eqn_input.height
+        else:
+            self.var_list_bubble.height+=self.bubble_height
+            self.var_list_bubble.parent.height+=self.bubble_height
 
     def add_to_history(self, eqn_text):
         """Add to equations history
