@@ -243,11 +243,11 @@ class DiceWidget(Widget):
                 self.var_list_bubble.content.add_widget(dice_bubble)
             self.var_list_stack.append(var_name)
         self.dice_eqn_input.history_stack_pos = len(self.history_stack)
-        if not hasattr(self, 'bubble_height'):
-            self.bubble_height=self.dice_eqn_input.height
+        if not hasattr(self, 'bubble_height_var'):
+            self.bubble_height_var=self.dice_eqn_input.height
         else:
-            self.var_list_bubble.height+=self.bubble_height
-            self.var_list_bubble.parent.height+=self.bubble_height
+            self.var_list_bubble.height+=self.bubble_height_var
+            self.var_list_bubble.parent.height+=self.bubble_height_var
 
     def add_to_history(self, eqn_text):
         """Add to equations history
