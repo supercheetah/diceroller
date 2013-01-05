@@ -346,6 +346,7 @@ class DiceApp(App):
         return diceapp
 
 Config.set('kivy', 'log_level', 'info')
+Config.set('kivy', 'input', 'mouse=mouse,disable_multitouch')
 Factory.register("DiceWidget", DiceWidget)
 Factory.register("DiceEqnInput", DiceEqnInput)
 if __name__ == '__main__':
