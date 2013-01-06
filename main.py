@@ -15,6 +15,7 @@ from kivy.core.window import Keyboard
 from kivy.interactive import InteractiveLauncher
 from kivy.logger import Logger
 from kivy.config import Config
+Config.set('input', 'mouse', 'mouse,disable_multitouch')
 import re
 import rollparse
 from dicehelp import dice_help
@@ -91,7 +92,7 @@ class DiceWidget(Widget):
     label_col_div = 6.5 # this is only used to position the debug
                         # labels
     help_is_on = False
-    var_match = re.compile('\s*(\w+)\s*=\s*(.*)')
+    var_match = re.compile('\s*\w+\s*=\s*$')
     help_match = re.compile('help', re.I)
     help_done = re.compile('done', re.I)
     var_list_bubble = ObjectProperty(None) #this is the variable list
@@ -159,7 +160,8 @@ class DiceWidget(Widget):
                     self.complete_stash_print()
                 except StopIteration:
                     self.help_is_on = False
-            var_array = self.var_match.split(eqn_text)
+            #var_array = self.var_match.split(eqn_text)
+            var_array = [vars.strip() in vars in eqn_text.split('=', 2)]
             var_name = None
             if 1 < len(var_array):
                 if '' == var_array[0]:
@@ -322,7 +324,7 @@ class DiceWidget(Widget):
             return
         #Logger.debug('DiceWidget: touch up for ' + dice_text)
         self.dice_eqn_input.clear_start_text()
-        if self.dice_eqn_input.text == '':
+        if self.dice_eqn_input.text == '' or var_match.match(self.dice_eqn_input.text):
             self.dice_eqn_input.text = dice_text
         else:
             self.dice_eqn_input.text += ' + ' + dice_text
@@ -345,8 +347,7 @@ class DiceApp(App):
         diceapp = DiceWidget()
         return diceapp
 
-Config.set('kivy', 'log_level', 'info')
-Config.set('kivy', 'input', 'mouse=mouse,disable_multitouch')
+#Config.set('kivy', 'log_level', 'info')
 Factory.register("DiceWidget", DiceWidget)
 Factory.register("DiceEqnInput", DiceEqnInput)
 if __name__ == '__main__':
