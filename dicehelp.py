@@ -17,6 +17,10 @@ _______________________""", "{3xd20} + 15"),
 
     You can have named rolls if there is a roll you use a lot.  They will show up on the right side.
 _______________________""", "damage={2x2d4} + d6"),
+("""Want to do multiple equations at once?  Use the semicolon.
+_______________________""", "2d20 + 5; 3d8 + 10"),
+("""This will also work with named equations as well.
+_______________________""", "magicattack={2x2d20} + 3; d8*2; 4d4"),
 ("""This should get you going.  Have fun rolling!
 _______________________""", "") ]
 

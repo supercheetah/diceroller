@@ -93,6 +93,7 @@ class DiceWidget(Widget):
                         # labels
     help_is_on = False
     var_match = re.compile('\s*\w+\s*=\s*$')
+    mult_eqns_end = re.compile('[^;]*;\s*$')
     help_match = re.compile('help', re.I)
     help_done = re.compile('done', re.I)
     var_list_bubble = ObjectProperty(None) #this is the variable list
@@ -160,36 +161,33 @@ class DiceWidget(Widget):
                     self.complete_stash_print()
                 except StopIteration:
                     self.help_is_on = False
-            #var_array = self.var_match.split(eqn_text)
             var_array = [eqn.strip() for eqn in eqn_text.split('=', 2)]
             var_name = None
             if 1 < len(var_array):
-                if '' == var_array[0]:
-                    var_array.pop(0)
-                if '' == var_array[-1]:
-                    var_array.pop()
                 var_name, eqn_text = var_array
                 self.add_var(var_name, eqn_text)
-            is_separated, const_strings, (ans_str, answers) = rollparse.solve_roll(eqn_text)
             self.add_to_history(eqn_text)
-            self.stash_print(eqn_text)
-            if 0 < len(const_strings) and not is_separated:
-                self.stash_print("\tCalculated constants:")
-                i = 1
-                for c in const_strings:
-                    self.stash_print("\t  {0}: {1}".format(i, c))
-                    i += 1
+            eqns = [eqn.strip() for eqn in eqn_text.split(';')]
+            for eqn_text in eqns:
+                is_separated, const_strings, (ans_str, answers) = rollparse.solve_roll(eqn_text)
+                self.stash_print(eqn_text)
+                if 0 < len(const_strings) and not is_separated:
+                    self.stash_print("\tCalculated constants:")
+                    i = 1
+                    for c in const_strings:
+                        self.stash_print("\t  {0}: {1}".format(i, c))
+                        i += 1
 
-            if is_separated:
-                self.stash_print("\tRolls:")
-                for i in range(0, len(ans_str)):
-                    const_counter = 1
-                    for c_str in const_strings[i]:
-                        self.stash_print("\t    [{0}: {1}]".format(const_counter, const_str))
-                        const_counter += 1
-                    self.stash_print("\t  {0}: {1} = {2}".format(i+1, ans_str[i], answers[i]))
-            else:
-                self.stash_print("\t{0} = {1}".format(ans_str, answers))
+                if is_separated:
+                    self.stash_print("\tRolls:")
+                    for i in range(0, len(ans_str)):
+                        const_counter = 1
+                        for c_str in const_strings[i]:
+                            self.stash_print("\t    [{0}: {1}]".format(const_counter, const_str))
+                            const_counter += 1
+                            self.stash_print("\t  {0}: {1} = {2}".format(i+1, ans_str[i], answers[i]))
+                else:
+                    self.stash_print("\t{0} = {1}".format(ans_str, answers))
         except Exception as e:
             print e
             self.stash_print(str(e))
@@ -326,7 +324,7 @@ class DiceWidget(Widget):
         self.dice_eqn_input.clear_start_text()
         if self.dice_eqn_input.text == '':
             self.dice_eqn_input.text = dice_text
-        elif self.var_match.match(self.dice_eqn_input.text):
+        elif self.var_match.match(self.dice_eqn_input.text) or self.mult_eqns_end.search(self.dice_eqn_input.text):
             self.dice_eqn_input.text += dice_text
         else:
             self.dice_eqn_input.text += ' + ' + dice_text
@@ -349,7 +347,7 @@ class DiceApp(App):
         diceapp = DiceWidget()
         return diceapp
 
-#Config.set('kivy', 'log_level', 'info')
+Config.set('kivy', 'log_level', 'info')
 Factory.register("DiceWidget", DiceWidget)
 Factory.register("DiceEqnInput", DiceEqnInput)
 if __name__ == '__main__':
