@@ -1,1 +1,3 @@
-../varstore.py
+class VarStore:
+    Name = ""
+    Bytecode = None
