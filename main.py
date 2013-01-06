@@ -11,10 +11,11 @@ from kivy.uix.bubble import Bubble, BubbleButton
 from kivy.uix.scrollview import ScrollView
 from kivy.factory import Factory
 from kivy.clock import Clock
-from kivy.core.window import Keyboard
+#from kivy.core.window import Keyboard
 from kivy.interactive import InteractiveLauncher
 from kivy.logger import Logger
 from kivy.config import Config
+Config.set('kivy', 'window_icon', 'icon.png')
 Config.set('input', 'mouse', 'mouse,disable_multitouch')
 import re
 import rollparse
@@ -342,15 +343,15 @@ class DiceApp(App):
     Dice rolling app.
     """
     icon = "icon.ico"
-    title = "Roll It!"
+    title = "Roll it!"
     def build(self):
         diceapp = DiceWidget()
         return diceapp
 
-Config.set('kivy', 'log_level', 'info')
+#Config.set('kivy', 'log_level', 'info')
 Factory.register("DiceWidget", DiceWidget)
 Factory.register("DiceEqnInput", DiceEqnInput)
-if __name__ == '__main__':
+if __name__ in ('__android__', '__main__'):
     DiceApp().run()
     #this seems to just crash unfortunately
     #il = InteractiveLauncher(DiceApp()).run()
