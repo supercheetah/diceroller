@@ -162,7 +162,7 @@ class DiceWidget(Widget):
                     self.complete_stash_print()
                 except StopIteration:
                     self.help_is_on = False
-            var_array = [eqn.strip() for eqn in eqn_text.split('=', 2)]
+            var_array = [eqn.strip() for eqn in eqn_text.split(':', 2)]
             var_name = None
             if 1 < len(var_array):
                 var_name, eqn_text = var_array
