@@ -139,38 +139,38 @@
                     on_parent: root.dice_images.append(self)
                     on_parent: root.set_bind(self, 'd100')
 
-        BoxLayout:
+        Accordion:
             orientation: 'vertical'
             size_hint: None, None
             size: root.width-(root.dice_io_width+1), root.bottom_reserve
             pos: dice_output.right+1, root.top - self.height
-            spacing: 10
-            padding: 5
-                    
-            ScrollView:
-                #size_hint: None, None
-            
-                AnchorLayout:
-                    anchor_x: 'center'
-                    anchor_y: 'top'
-                    size_hint_y: None
-                    Bubble:
-                        id: dice_history
-                        size_hint: (None, None)
-                        width: self.parent.width*0.9
-                        on_parent: self.height=dice_eqn_input.height
-                        arrow_pos: 'left_mid'
-                        orientation: 'vertical'
 
-            ScrollView:
-                AnchorLayout:
-                    anchor_x: 'center'
-                    anchor_y: 'top'
-                    size_hint_y: None
-                    Bubble:
-                        id: var_list_bubble
-                        size_hint: None, None
-                        width: self.parent.width*0.9
-                        on_parent: self.height=dice_eqn_input.height
-                        arrow_pos: 'left_mid'
-                        orientation: 'vertical'
+            AccordionItem:
+                title: "History"
+                ScrollView:
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'top'
+                        size_hint_y: None
+                        Bubble:
+                            id: dice_history
+                            size_hint: (None, None)
+                            width: self.parent.width*0.9
+                            on_parent: self.height=dice_eqn_input.height
+                            arrow_pos: 'left_mid'
+                            orientation: 'vertical'
+
+            AccordionItem:
+                title: "Named Equations"
+                ScrollView:
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'top'
+                        size_hint_y: None
+                        Bubble:
+                            id: var_list_bubble
+                            size_hint: None, None
+                            width: self.parent.width*0.9
+                            on_parent: self.height=dice_eqn_input.height
+                            arrow_pos: 'left_mid'
+                            orientation: 'vertical'

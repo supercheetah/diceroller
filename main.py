@@ -11,6 +11,7 @@ from kivy.uix.bubble import Bubble, BubbleButton
 from kivy.uix.scrollview import ScrollView
 from kivy.factory import Factory
 from kivy.clock import Clock
+from kivy.uix.accordion import Accordion, AccordionItem
 #from kivy.core.window import Keyboard
 from kivy.interactive import InteractiveLauncher
 from kivy.logger import Logger
