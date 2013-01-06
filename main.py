@@ -324,7 +324,7 @@ class DiceWidget(Widget):
             return
         #Logger.debug('DiceWidget: touch up for ' + dice_text)
         self.dice_eqn_input.clear_start_text()
-        if self.dice_eqn_input.text == '' or var_match.match(self.dice_eqn_input.text):
+        if self.dice_eqn_input.text == '' or self.var_match.match(self.dice_eqn_input.text):
             self.dice_eqn_input.text = dice_text
         else:
             self.dice_eqn_input.text += ' + ' + dice_text
