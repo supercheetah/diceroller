@@ -89,7 +89,6 @@ class DiceWidget(Widget):
     dice_images = ListProperty([])
     output_collector = "" #used for when we're about to print
                           #something to the dice output box
-    mouse_postion = StringProperty("") #just used in debugging
     input_height = StringProperty("") #just used in debugging
     label_col_div = 6.5 # this is only used to position the debug
                         # labels
@@ -187,7 +186,7 @@ class DiceWidget(Widget):
                         for c_str in const_strings[i]:
                             self.stash_print("\t    [{0}: {1}]".format(const_counter, const_str))
                             const_counter += 1
-                            self.stash_print("\t  {0}: {1} = {2}".format(i+1, ans_str[i], answers[i]))
+                        self.stash_print("\t  {0}: {1} = {2}".format(i+1, ans_str[i], answers[i]))
                 else:
                     self.stash_print("\t{0} = {1}".format(ans_str, answers))
         except Exception as e:
@@ -287,17 +286,6 @@ class DiceWidget(Widget):
             #an anchor layout.
             self.dice_history.parent.height+=self.bubble_height
 
-    def on_touch_move(self, touch):
-        """
-        This is mostly being used for the purpose of laying things
-        out, and getting a position.
-        
-        Arguments:
-        - `touch`: mouse position
-        """
-        self.mouse_postion = str(touch.pos)
-        return super(DiceWidget, self).on_touch_move(touch)
-
     def set_bind(self, image, dice_text):
         """This will bind the image's on_touch_up event.
         
@@ -320,8 +308,9 @@ class DiceWidget(Widget):
         if not image.collide_point(touch.x, touch.y):
             return
         #Logger.debug('DiceWidget: touch.button=' + touch.button)
-        if touch.button != 'left':
-            return
+        if hasattr(touch, 'button'):
+            if touch.button != 'left':
+                return
         #Logger.debug('DiceWidget: touch up for ' + dice_text)
         self.dice_eqn_input.clear_start_text()
         if self.dice_eqn_input.text == '':
@@ -346,13 +335,14 @@ class DiceApp(App):
     icon = "icon.ico"
     title = "Roll it!"
     def build(self):
+        Logger.debug('DiceApp: 01062012 App start')
         diceapp = DiceWidget()
         return diceapp
 
 #Config.set('kivy', 'log_level', 'info')
 Factory.register("DiceWidget", DiceWidget)
 Factory.register("DiceEqnInput", DiceEqnInput)
-if __name__ in ('__android__', '__main__'):
+if __name__ == '__main__':
     DiceApp().run()
     #this seems to just crash unfortunately
     #il = InteractiveLauncher(DiceApp()).run()
