@@ -161,7 +161,7 @@ class DiceWidget(Widget):
                 except StopIteration:
                     self.help_is_on = False
             #var_array = self.var_match.split(eqn_text)
-            var_array = [vars.strip() in vars in eqn_text.split('=', 2)]
+            var_array = [eqn.strip() for eqn in eqn_text.split('=', 2)]
             var_name = None
             if 1 < len(var_array):
                 if '' == var_array[0]:
@@ -324,8 +324,10 @@ class DiceWidget(Widget):
             return
         #Logger.debug('DiceWidget: touch up for ' + dice_text)
         self.dice_eqn_input.clear_start_text()
-        if self.dice_eqn_input.text == '' or self.var_match.match(self.dice_eqn_input.text):
+        if self.dice_eqn_input.text == '':
             self.dice_eqn_input.text = dice_text
+        elif self.var_match.match(self.dice_eqn_input.text):
+            self.dice_eqn_input.text += dice_text
         else:
             self.dice_eqn_input.text += ' + ' + dice_text
 
