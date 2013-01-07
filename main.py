@@ -44,7 +44,7 @@ class DiceEqnInput(TextInput):
         Arguments:
         - `**kwargs`:
         """
-        super(DiceEqnInput, self).__init__(**kwargs)
+        return super(DiceEqnInput, self).__init__(**kwargs)
 
     def _keyboard_on_key_up(self, window, keycode, *args):
         """Handle up and down keys.
@@ -52,6 +52,7 @@ class DiceEqnInput(TextInput):
         Arguments:
         - `keycode`: the key that was just pressed
         """
+        Logger.debug("DiceEqnInput: {0}".format(str(keycode)))
         key, keycode_str = keycode
         #for Kivy before 1.4.2, invert the logic here since the
         #history stack is visually inverted
@@ -93,7 +94,7 @@ class DiceWidget(Widget):
     label_col_div = 6.5 # this is only used to position the debug
                         # labels
     help_is_on = False
-    var_match = re.compile('\s*\w+\s*=\s*$')
+    var_match = re.compile('\s*\w+\s*:\s*$')
     mult_eqns_end = re.compile('[^;]*;\s*$')
     help_match = re.compile('help', re.I)
     help_done = re.compile('done', re.I)
@@ -104,6 +105,7 @@ class DiceWidget(Widget):
                   #storing the variables, and their lambdas to pull up
                   #their equations
     var_list_stack = [] #for workaround for Kivy 1.4.1
+    mobile = kivy.utils.platform() in ('android', 'ios')
 
     def stash_print(self, output_str):
         """This will stash the strings to be printed until it's ready
@@ -133,7 +135,8 @@ class DiceWidget(Widget):
         self.dice_eqn_input.clear_start_text()
         eqn_text = self.dice_eqn_input.text
         if eqn_text == '':
-            Clock.schedule_once(self.set_eqn_focus)
+            if not self.mobile:
+                Clock.schedule_once(self.set_eqn_focus)
             return
 
         if self.help_match.match(eqn_text):
@@ -142,16 +145,18 @@ class DiceWidget(Widget):
             help_str, self.dice_eqn_input.text = self.dh.next()
             self.stash_print(help_str)
             self.complete_stash_print()
-            Clock.schedule_once(self.set_eqn_focus)
+            if not self.mobile:
+                Clock.schedule_once(self.set_eqn_focus)
             return
 
-        if self.help_done.match(eqn_text):
+        if self.help_done.search(eqn_text):
             self.help_is_on = False
             self.stash_print("Just type help again if you need it.")
             self.complete_stash_print()
             del self.dh
             self.dice_eqn_input.text=""
-            Clock.schedule_once(self.set_eqn_focus)
+            if not self.mobile:
+                Clock.schedule_once(self.set_eqn_focus)
             return
 
         try:
@@ -167,9 +172,9 @@ class DiceWidget(Widget):
             if 1 < len(var_array):
                 var_name, eqn_text = var_array
                 self.add_var(var_name, eqn_text)
-            self.add_to_history(eqn_text)
+            eqn_text_save = eqn_text
             eqns = [eqn.strip() for eqn in eqn_text.split(';')]
-            for eqn_text in eqns:
+            for eqn_text in reversed(eqns):
                 is_separated, const_strings, (ans_str, answers) = rollparse.solve_roll(eqn_text)
                 self.stash_print(eqn_text)
                 if 0 < len(const_strings) and not is_separated:
@@ -189,13 +194,15 @@ class DiceWidget(Widget):
                         self.stash_print("\t  {0}: {1} = {2}".format(i+1, ans_str[i], answers[i]))
                 else:
                     self.stash_print("\t{0} = {1}".format(ans_str, answers))
+            self.add_to_history(eqn_text_save)
         except Exception as e:
             print e
             self.stash_print(str(e))
         self.complete_stash_print()
         if not self.help_is_on:
             self.dice_eqn_input.text=""
-        Clock.schedule_once(self.set_eqn_focus)
+        if not self.mobile:
+            Clock.schedule_once(self.set_eqn_focus)
 
     def set_eqn(self, eqn_text, history_stack_pos):
         """Inserts the equation into the input box from the history.
@@ -339,7 +346,7 @@ class DiceApp(App):
         diceapp = DiceWidget()
         return diceapp
 
-#Config.set('kivy', 'log_level', 'info')
+Config.set('kivy', 'log_level', 'info')
 Factory.register("DiceWidget", DiceWidget)
 Factory.register("DiceEqnInput", DiceEqnInput)
 if __name__ == '__main__':
