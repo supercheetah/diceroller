@@ -46,6 +46,7 @@
             id: dice_out_scroll
             size: root.dice_io_width, root.bottom_reserve - dice_eqn_input.height - roll_it_btn.height - 1
             pos: 0, roll_it_btn.y - self.height - 1
+            scroll_timeout: 1000
             on_parent: root.log_mesg('dice output scroll size ' + repr(dice_out_scroll.size))
             
             TextInput:
@@ -61,6 +62,7 @@
             id: dice_pic_scroll
             size_hint: None, None
             size: root.width - 1, root.height - dice_out_scroll.height - dice_eqn_input.height - roll_it_btn.height - 1
+            scroll_timeout: 250
             pos: 0, 0
             on_parent: root.log_mesg('dice pics scroll view size ' + repr(self.size))
 
@@ -148,6 +150,8 @@
             AccordionItem:
                 title: "History"
                 ScrollView:
+                    scroll_timeout: 250
+                    do_scroll_x: False
                     AnchorLayout:
                         anchor_x: 'center'
                         anchor_y: 'top'
@@ -163,6 +167,8 @@
             AccordionItem:
                 title: "Named Equations"
                 ScrollView:
+                    scroll_timeout: 250
+                    do_scroll_x: False
                     AnchorLayout:
                         anchor_x: 'center'
                         anchor_y: 'top'
