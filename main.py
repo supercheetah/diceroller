@@ -236,26 +236,27 @@ class DiceWidget(Widget):
         new_btn=BubbleButton(text=var_name)
         last_pos=len(self.var_dict)
         eqn_fn = lambda *args: self.set_eqn(eqn_text, len(self.history_stack)+1)
+        var_exists = var_name in self.var_dict
         self.var_dict[var_name] = eqn_fn
         new_btn.bind(on_press=self.var_dict[var_name])
-        try:
-            kivy.require('1.4.2')
-            self.var_dict[var_name] = eqn_fn
-            self.var_list_bubble.content.add_widget(new_btn, last_pos+1)
-        except Exception:
-            self.var_list_bubble.content.clear_widgets()
-            self.var_list_bubble.content.add_widget(new_btn)
-            for dice_roll in reversed(self.var_list_stack):
-                dice_bubble=BubbleButton(text=dice_roll)
-                dice_bubble.bind(on_press=self.var_dict[dice_roll])
-                self.var_list_bubble.content.add_widget(dice_bubble)
-            self.var_list_stack.append(var_name)
-        self.dice_eqn_input.history_stack_pos = len(self.history_stack)
-        if not hasattr(self, 'bubble_height_var'):
-            self.bubble_height_var=self.dice_eqn_input.height
-        else:
-            self.var_list_bubble.height+=self.bubble_height_var
-            self.var_list_bubble.parent.height+=self.bubble_height_var
+        if not var_exists:
+            try:
+                kivy.require('1.4.2')
+                self.var_dict[var_name] = eqn_fn
+                self.var_list_bubble.content.add_widget(new_btn, last_pos+1)
+            except Exception:
+                self.var_list_bubble.content.clear_widgets()
+                self.var_list_bubble.content.add_widget(new_btn)
+                for dice_roll in reversed(self.var_list_stack):
+                    dice_bubble=BubbleButton(text=dice_roll)
+                    dice_bubble.bind(on_press=self.var_dict[dice_roll])
+                    self.var_list_bubble.content.add_widget(dice_bubble)
+                self.var_list_stack.append(var_name)
+            if not hasattr(self, 'bubble_height_var'):
+                self.bubble_height_var=self.dice_eqn_input.height
+            else:
+                self.var_list_bubble.height+=self.bubble_height_var
+                self.var_list_bubble.parent.height+=self.bubble_height_var
 
     def add_to_history(self, eqn_text):
         """Add to equations history
