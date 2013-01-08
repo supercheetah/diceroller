@@ -148,8 +148,43 @@
             pos: dice_output.right+1, root.top - self.height
 
             AccordionItem:
-                title: "History"
+                title: "Common Operations"
                 collapse: False
+                ScrollView:
+                    scroll_timeout: 250
+                    do_scroll_x: False
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'top'
+                        size_hint_y: None
+                        Bubble:
+                            size_hint: None, None
+                            width: self.parent.width*0.9
+                            height: dice_eqn_input.height * 6
+                            arrow_pos: 'left_mid'
+                            orientation: 'vertical'
+                            BubbleButton:
+                                text: "Separarated rolls {NxMdY}"
+                                on_press: root.sep_rolls_add()
+                            BubbleButton:
+                                text: "Another roll ;"
+                                on_press: dice_eqn_input.text += ';'
+                            BubbleButton:
+                                text: "Named roll:"
+                                on_press: root.named_roll_add()
+                            BubbleButton:
+                                text: "Add +"
+                                on_press: dice_eqn_input.text += '+'
+                            BubbleButton:
+                                text: "Subtract -"
+                                on_press: dice_eqn_input.text += '-'
+                            BubbleButton:
+                                text: "Multiply *"
+                                on_press: dice_eqn_input.text += '*'
+
+            AccordionItem:
+                title: "History"
+                collapse: True
                 ScrollView:
                     scroll_timeout: 250
                     do_scroll_x: False

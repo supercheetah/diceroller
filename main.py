@@ -96,6 +96,7 @@ class DiceWidget(Widget):
     help_is_on = False
     var_match = re.compile('\s*\w+\s*:\s*$')
     mult_eqns_end = re.compile('[^;]*;\s*$')
+    empty_space = re.compile('\s*\w+\s*:\s*$|[^;]*;\s*$|^\s*$')
     help_match = re.compile('help', re.I)
     help_done = re.compile('done', re.I)
     var_list_bubble = ObjectProperty(None) #this is the variable list
@@ -169,9 +170,10 @@ class DiceWidget(Widget):
                     self.help_is_on = False
             var_array = [eqn.strip() for eqn in eqn_text.split(':', 2)]
             var_name = None
+            is_var = False
             if 1 < len(var_array):
                 var_name, eqn_text = var_array
-                self.add_var(var_name, eqn_text)
+                is_var = True
             eqn_text_save = eqn_text
             eqns = [eqn.strip() for eqn in eqn_text.split(';')]
             for eqn_text in reversed(eqns):
@@ -195,6 +197,8 @@ class DiceWidget(Widget):
                 else:
                     self.stash_print("\t{0} = {1}".format(ans_str, answers))
             self.add_to_history(eqn_text_save)
+            if is_var:
+                self.add_var(var_name, eqn_text_save)
         except Exception as e:
             print e
             self.stash_print(str(e))
@@ -327,6 +331,30 @@ class DiceWidget(Widget):
             self.dice_eqn_input.text += dice_text
         else:
             self.dice_eqn_input.text += ' + ' + dice_text
+
+    def sep_rolls_add(self):
+        """Adds a separated roll into the dice input box.
+        
+        Arguments:
+        - `self`:
+        """
+        self.dice_eqn_input.clear_start_text()
+        if not self.empty_space.match(self.dice_eqn_input.text):
+            return
+        self.dice_eqn_input.text += '{xd}'
+        self.dice_eqn_input.cursor = (self.dice_eqn_input.cursor[0] - 3, 0)
+        Clock.schedule_once(self.set_eqn_focus)
+
+    def named_roll_add(self):
+        """Adds a named roll into the dice input box.
+        
+        Arguments:
+        - `self`:
+        """
+        self.dice_eqn_input.text = 'Named roll: '
+        self.dice_eqn_input.select_text(0, 10)
+        self.dice_eqn_input.cursor = (self.dice_eqn_input.cursor[0] - 2, 0)
+        Clock.schedule_once(self.set_eqn_focus)
 
     def log_mesg(self, mesg='you forgot something...'):
         """For log messages.
