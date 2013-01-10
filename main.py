@@ -21,6 +21,9 @@ Config.set('input', 'mouse', 'mouse,disable_multitouch')
 import re
 import rollparse
 from dicehelp import dice_help
+#import android; android.hide_keyboard()
+if 'android' == kivy.utils.platform():
+    import android
 
 class DiceEqnInput(TextInput):
     """This is where the equation will be entered.
@@ -96,7 +99,9 @@ class DiceWidget(Widget):
     help_is_on = False
     var_match = re.compile('\s*\w+\s*:\s*$')
     mult_eqns_end = re.compile('[^;]*;\s*$')
-    empty_space = re.compile('\s*\w+\s*:\s*$|[^;]*;\s*$|^\s*$')
+    end_is_blank = re.compile('\s*\w+\s*:\s*$|[^;]*;\s*$|^\s*$')
+    empty_space = re.compile('^\s*$')
+    has_op = re.compile('[-+*]\s*$')
     help_match = re.compile('help', re.I)
     help_done = re.compile('done', re.I)
     var_list_bubble = ObjectProperty(None) #this is the variable list
@@ -107,6 +112,7 @@ class DiceWidget(Widget):
                   #their equations
     var_list_stack = [] #for workaround for Kivy 1.4.1
     mobile = kivy.utils.platform() in ('android', 'ios')
+    is_android = ('android' == kivy.utils.platform())
 
     def stash_print(self, output_str):
         """This will stash the strings to be printed until it's ready
@@ -207,6 +213,9 @@ class DiceWidget(Widget):
             self.dice_eqn_input.text=""
         if not self.mobile:
             Clock.schedule_once(self.set_eqn_focus)
+        if self.mobile:
+            self.dice_eqn_input.focus=False
+        self.hide_vkbd()
 
     def set_eqn(self, eqn_text, history_stack_pos):
         """Inserts the equation into the input box from the history.
@@ -327,7 +336,9 @@ class DiceWidget(Widget):
         self.dice_eqn_input.clear_start_text()
         if self.dice_eqn_input.text == '':
             self.dice_eqn_input.text = dice_text
-        elif self.var_match.match(self.dice_eqn_input.text) or self.mult_eqns_end.search(self.dice_eqn_input.text):
+        elif self.var_match.match(self.dice_eqn_input.text) or \
+                self.mult_eqns_end.search(self.dice_eqn_input.text) or \
+                self.has_op.search(self.dice_eqn_input.text):
             self.dice_eqn_input.text += dice_text
         else:
             self.dice_eqn_input.text += ' + ' + dice_text
@@ -339,7 +350,7 @@ class DiceWidget(Widget):
         - `self`:
         """
         self.dice_eqn_input.clear_start_text()
-        if not self.empty_space.match(self.dice_eqn_input.text):
+        if not self.end_is_blank.match(self.dice_eqn_input.text):
             return
         self.dice_eqn_input.text += '{xd}'
         self.dice_eqn_input.cursor = (self.dice_eqn_input.cursor[0] - 3, 0)
@@ -351,10 +362,40 @@ class DiceWidget(Widget):
         Arguments:
         - `self`:
         """
-        self.dice_eqn_input.text = 'Named roll: '
-        self.dice_eqn_input.select_text(0, 10)
-        self.dice_eqn_input.cursor = (self.dice_eqn_input.cursor[0] - 2, 0)
-        Clock.schedule_once(self.set_eqn_focus)
+        if self.empty_space.match(self.dice_eqn_input):
+            self.dice_eqn_input.text = 'Named roll: '
+            self.dice_eqn_input.select_text(0, 10)
+            self.dice_eqn_input.cursor = (self.dice_eqn_input.cursor[0] - 2, 0)
+            Clock.schedule_once(self.set_eqn_focus)
+
+    def hide_vkbd(self, *args):
+        """Hide the virtual keyboard.
+        
+        Arguments:
+        - `self`:
+        """
+        Logger.debug("DiceWidget: hiding keyboard")
+        if self.is_android:
+            android.hide_keyboard()
+
+    def on_touch_up(self, touch):
+        """Receives touch events. Hides the keyboard on mobile devices
+        if the touch is anywhere except on dice_eqn_input.
+        
+        Arguments:
+        - `self`:
+        - `touch`:
+        """
+        dei = self.dice_eqn_input
+        Logger.debug("DiceWidget: touch.pos: " + str(touch.pos))
+        Logger.debug("DiceWidget: \tdice_eqn_input collision: "
+                     + str(self.dice_eqn_input.collide_point(*touch.pos)
+                           ))
+        if not self.dice_eqn_input.collide_point(*touch.pos):
+            self.hide_vkbd()
+            if self.mobile:
+                self.dice_eqn_input.focus=False
+        return super(DiceWidget, self).on_touch_up(touch)
 
     def log_mesg(self, mesg='you forgot something...'):
         """For log messages.

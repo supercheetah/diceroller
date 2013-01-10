@@ -40,6 +40,7 @@
             size: root.dice_io_width, dice_eqn_input.height
             pos: 0, dice_eqn_input.y - self.height - 1
             text: "Roll It!"
+            on_parent: root.log_mesg('mobile: ' + str(root.mobile))
             on_press: root.roll_it()
 
         ScrollView:
@@ -57,6 +58,7 @@
                 size: dice_out_scroll.width, max( (len(self._lines)+1) * (self.line_height + self._line_spacing), dice_out_scroll.height)
                 pos: 0, 0
                 text: "Don't know what's going on? Type \"help\" above, and click \"Roll It!\" or press enter."
+                on_parent: self.bind(focus=root.hide_vkbd)
 
         ScrollView:
             id: dice_pic_scroll
@@ -174,13 +176,13 @@
                                 on_press: root.named_roll_add()
                             BubbleButton:
                                 text: "Add +"
-                                on_press: dice_eqn_input.text += '+'
+                                on_press: dice_eqn_input.text += ' + '
                             BubbleButton:
                                 text: "Subtract -"
-                                on_press: dice_eqn_input.text += '-'
+                                on_press: dice_eqn_input.text += ' - '
                             BubbleButton:
                                 text: "Multiply *"
-                                on_press: dice_eqn_input.text += '*'
+                                on_press: dice_eqn_input.text += ' * '
 
             AccordionItem:
                 title: "History"
