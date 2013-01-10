@@ -289,7 +289,10 @@ class Lexer( DispatchProcessor ):
         lex_log("include_zero:  "+str(include_zero))
         if include_zero:
             start = 0
-        roll_fn = lambda x=0: random.randint(start, dice_sides)+x
+        if 0 == dice_sides:
+            roll_fn = lambda x=0: 0+x
+        else:
+            roll_fn = lambda x=0: random.randint(start, dice_sides)+x
         is_negative = num_dice<0 and True or False
         return DiceRoll(is_negative, die_type, roll_fn, abs(num_dice))
 
