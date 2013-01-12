@@ -416,6 +416,40 @@ class DiceApp(App):
         diceapp = DiceWidget()
         return diceapp
 
+    def on_pause(self):
+        """We just want to pause on the mobile app, not completely
+        shut down.
+        
+        Arguments:
+        - `self`:
+        """
+        return True
+
+    def on_resume(self):
+        """Things we need to do on resuming the app on a mobile
+        device.
+        
+        Arguments:
+        - `self`:
+        """
+        pass
+
+    def on_start(self):
+        """Things to do when first starting up.
+        
+        Arguments:
+        - `self`:
+        """
+        pass
+
+    def on_stop(self):
+        """Things to do when the app is shutting down.
+        
+        Arguments:
+        - `self`:
+        """
+        pass
+
 Config.set('kivy', 'log_level', 'info')
 Factory.register("DiceWidget", DiceWidget)
 Factory.register("DiceEqnInput", DiceEqnInput)
