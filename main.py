@@ -93,9 +93,6 @@ class DiceWidget(Widget):
     dice_images = ListProperty([])
     output_collector = "" #used for when we're about to print
                           #something to the dice output box
-    input_height = StringProperty("") #just used in debugging
-    label_col_div = 6.5 # this is only used to position the debug
-                        # labels
     help_is_on = False
     var_match = re.compile('\s*\w+\s*:\s*$')
     mult_eqns_end = re.compile('[^;]*;\s*$')
