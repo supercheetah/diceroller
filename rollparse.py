@@ -25,7 +25,7 @@ xdice         := number,'x',sep_dice # This will expand an expression, so '6x3d6
 incl_zero     := [dD]
 num_sides     := number
 num_dice      := number
-op            := space,[-+*],space
+op            := space,[-+*/],space
 space         := [ \t]*
 '''
 
@@ -56,7 +56,7 @@ def solve_roll( roll_str ):
     except VarNestedException, nest_e:
         raise Exception(roll_str+'\n'+space_carot(nest_e.position)+"\nCan't nest variable groupings.")
     except VarMultipleException, mult_e:
-        raise Exception(roll_str+'\n'+space_carot(mult_e.posotion)+"\nCan't have more than one variable grouping.")
+        raise Exception(roll_str+'\n'+space_carot(mult_e.position)+"\nCan't have more than one variable grouping.")
         
     is_separated = lexer.is_separated()
     if is_separated:

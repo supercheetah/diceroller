@@ -35,23 +35,33 @@ def multiply_adder( adder, multiplier ):
 
 def prod_deque( multiplier, coef ):
     new_mult = deque([])
-    for i in multiplier:
+    # This is a boolean.
+    divide = multiplier[1]
+    compile_log("prod_deque(): multiplier={0}, coef={1}".format(multiplier, coef))
+    for i in multiplier[0]:
+        m = 1/float(i) if divide else float(i)
         if isinstance(i, int):
-            new_mult.append(i*coef)
+            new_mult.append(coef*m)
         else:
-            new_mult.append(str(int(i)*coef))
+            new_mult.append(str(coef*m))
     return new_mult
 
 def product( multiplier ):
     if 1==len(multiplier):
         return multiplier.pop()
     assert 0<=len(multiplier), "This is a bad error. We shouldn't get here. Please report this: multiplier=%s" % (str(multiplier))
-    prod = 1
+    prod = 1.0
     is_const = True
+    compile_log("product(): multiplier=" + str(multiplier))
     for i in multiplier:
         if not isinstance(i[0], deque):
-            prod *= int(i)
-            if isinstance(i, int):
+            compile_log("\ti of multiplier={0}, is int={1}". \
+                            format(str(i), str(isinstance(i[0], int))))
+            # i[1] tells us if we need to divide or not.
+            m = 1/float(i[0]) if i[1] else float(i[0])
+            prod *= m
+            # It's a constant if it's given to us as a string.
+            if isinstance(i[0], int):
                 is_const = False
         else:
             return prod_deque(i, prod)
@@ -80,7 +90,8 @@ def generate_adder( bytecode ):
     # Resets negate back to false, may be used to reset other vars in
     # the future.
     reset = lambda: False
-    logdebug = lambda: compile_log(eqn_str+'\n\tadder:\t'+str(adder)+'\n\tmult:\t'+str(multiplier))
+    logdebug = lambda: compile_log(eqn_str + '\n\tadder:\t'+str(adder) + \
+                                       '\n\tmult:\t'+str(multiplier))
     add_to_adder = lambda data: adder.append(data) if \
         isinstance(data, deque) else adder.appendleft(data)
     for instruction in bytecode:
@@ -177,10 +188,10 @@ def add_up( num_array, addition ):
     const_adder = 0
     add_later = 0
     for i in num_array:
-        if isinstance( i, int ):
+        if isinstance( i, int ) or isinstance( i, float ):
             _sum += i + addition
         elif isinstance( i, str ):
-            const_adder += int(i)
+            const_adder += float(i)
         else:
             _sum += const_adder
             # add_later is the sum of the constants inside the
