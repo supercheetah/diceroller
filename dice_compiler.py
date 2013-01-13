@@ -48,9 +48,13 @@ def product( multiplier ):
     assert 0<=len(multiplier), "This is a bad error. We shouldn't get here. Please report this: multiplier=%s" % (str(multiplier))
     prod = 1
     is_const = True
+    compile_log("product(): multiplier=" + str(multiplier))
     for i in multiplier:
         if not isinstance(i, deque):
+            compile_log("\ti of multiplier={0}, is int={1}". \
+                            format(str(i), str(isinstance(i, int))))
             prod *= int(i)
+            # It's a constant if it's given to us as a string.
             if isinstance(i, int):
                 is_const = False
         else:
@@ -77,7 +81,8 @@ def generate_adder( bytecode ):
     # Resets negate back to false, may be used to reset other vars in
     # the future.
     reset = lambda: False
-    logdebug = lambda: compile_log(eqn_str+'\n\tadder:\t'+str(adder)+'\n\tmult:\t'+str(multiplier))
+    logdebug = lambda: compile_log(eqn_str + '\n\tadder:\t'+str(adder) + \
+                                       '\n\tmult:\t'+str(multiplier))
     add_to_adder = lambda data: adder.append(data) if \
         isinstance(data, deque) else adder.appendleft(data)
     for instruction in bytecode:
