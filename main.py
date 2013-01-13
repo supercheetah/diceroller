@@ -101,7 +101,7 @@ class DiceWidget(Widget):
     mult_eqns_end = re.compile('[^;]*;\s*$')
     end_is_blank = re.compile('\s*\w+\s*:\s*$|[^;]*;\s*$|^\s*$')
     empty_space = re.compile('^\s*$')
-    has_op = re.compile('[-+*]\s*$')
+    has_op = re.compile('[-+*/]\s*$')
     help_match = re.compile('help', re.I)
     help_done = re.compile('done', re.I)
     var_list_bubble = ObjectProperty(None) #this is the variable list
