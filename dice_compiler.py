@@ -49,7 +49,7 @@ def product( multiplier ):
     prod = 1
     is_const = True
     for i in multiplier:
-        if not isinstance(i, deque):
+        if not isinstance(i[0], deque):
             prod *= int(i)
             if isinstance(i, int):
                 is_const = False
@@ -62,6 +62,9 @@ def generate_adder( bytecode ):
     adder = deque([])
     # Just turn subtraction into addition to make our lives easier.
     negate = False
+    # Are we dividing by this number? Division is treated as
+    # multiplication where n/x == n*1/x.
+    divide = False
     # For any multiplication we encounter, we must solve right away.
     multiplier = deque([])
     # This is where we create the string to give back to the user.
@@ -89,7 +92,7 @@ def generate_adder( bytecode ):
         if instruction.opFn == Fn.constant:
             eqn_str += str(instruction.data)
             data = -instruction.data if negate else instruction.data
-            multiplier.appendleft(str(data))
+            multiplier.appendleft((str(data), divide))
             negate = reset()
             logdebug()
         elif instruction.opFn == Fn.const_grouping:
@@ -101,13 +104,13 @@ def generate_adder( bytecode ):
                 eqn_str += '-'
             eqn_str += '[({0}): {1}]'.format(const_counter, constant)
             data = -constant if XOR(negate, is_neg) else constant
-            multiplier.appendleft(str(data))
+            multiplier.appendleft((str(data), divide))
             negate = reset()
             logdebug()
         elif instruction.opFn == Fn.dice:
             dice_str, dice_sum = instruction.data.sum(negate)
             eqn_str += dice_str
-            multiplier.appendleft(dice_sum)
+            multiplier.appendleft((dice_sum, divide))
             negate = reset()
             logdebug()
         elif instruction.opFn == Fn.xdice:
@@ -123,7 +126,7 @@ def generate_adder( bytecode ):
             if 0!=len(expansion):
                 # If some weirdo decides to use 1xd?, this won't work
                 # since expansion will be empty.
-                multiplier.append(expansion.pop())
+                multiplier.append((expansion.pop(), divide))
             negate = reset()
             logdebug()
         elif instruction.opFn == Fn.var_grouping:
@@ -138,20 +141,24 @@ def generate_adder( bytecode ):
             else:
                 eqn_str += '('+var_str+')'
             instruction.data.append(is_neg)
-            multiplier.append(var_adder)
+            multiplier.append((var_adder, divide))
             negate = reset()
             logdebug()
         elif instruction.opFn == Fn.op:
             eqn_str += ' '+OpsRepr[instruction.data]+' '
             if instruction.data == Ops.sub:
                 negate = True
+            if instruction.data == Ops.div:
+                divide = True
             # As soon as we encounter any non-multiplication operator,
-            # clear out multiplier.
-            if instruction.data != Ops.mul:
+            # clear out multiplier. For our purposes, division is the
+            # same as multiplication.
+            if instruction.data in (Ops.sub, Ops.add):
                 data = product(multiplier)
                 # We're done multiplying, so we need an empty multiplier.
                 multiplier = deque([]) 
                 add_to_adder(data)
+                divide = False
             logdebug()
     # We need to clean up after ourselves, and clear out the
     # multiplier.
