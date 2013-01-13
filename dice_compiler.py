@@ -39,8 +39,8 @@ def prod_deque( multiplier, coef ):
     divide = multiplier[1]
     compile_log("prod_deque(): multiplier={0}, coef={1}".format(multiplier, coef))
     for i in multiplier[0]:
-        m = 1/float(i) if divide else float(i)
-        if isinstance(i, int):
+        m = 1/float(i[0]) if divide else float(i[0])
+        if isinstance(i[0], int):
             new_mult.append(coef*m)
         else:
             new_mult.append(str(coef*m))
