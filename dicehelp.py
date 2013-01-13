@@ -3,7 +3,7 @@ _HELP_STRINGS = [
 
     Let's start with a simple case.  You need to roll two d4, three d6, and add 5 it it all.
 _______________________""", "2d4 + 3d6 + 5"),
-("""I do understand subtraction, multiplication, and order of operations using parentheses.  Also, there is a history that is tracked that you can go through with the up and down arrows (or just tap them as you see them on the right side).
+("""I do understand subtraction, multiplication, division, and order of operations using parentheses.  Also, there is a history that is tracked that you can go through with the up and down arrows (or just tap them as you see them on the right side).
 _______________________""", "5d8 * (d4 + 10)"),
 ("""I can take an arbitrary number of sides, so a d9 is perfectly valid.
 
