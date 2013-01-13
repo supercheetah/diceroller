@@ -1,11 +1,15 @@
 #!/usr/bin/env python
+"""
+This is the main module for the RollIt! GUI to diceroller.
+"""
 import kivy
 kivy.require('1.4.1')
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
-from kivy.properties import ObjectProperty, StringProperty, NumericProperty, ListProperty
+from kivy.properties import ObjectProperty, StringProperty, NumericProperty, \
+    ListProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.bubble import Bubble, BubbleButton
 from kivy.uix.scrollview import ScrollView
@@ -17,10 +21,11 @@ from kivy.interactive import InteractiveLauncher
 from kivy.logger import Logger
 from kivy.config import Config
 Config.set('kivy', 'window_icon', 'icon.png')
-Config.set('input', 'mouse', 'mouse,disable_multitouch')
+Config.set('input', 'mouse', 'mouse, disable_multitouch')
 import re
 import rollparse
 from dicehelp import dice_help
+import anydbm
 #import android; android.hide_keyboard()
 if 'android' == kivy.utils.platform():
     import android
@@ -47,9 +52,9 @@ class DiceEqnInput(TextInput):
         Arguments:
         - `**kwargs`:
         """
-        return super(DiceEqnInput, self).__init__(**kwargs)
+        super(DiceEqnInput, self).__init__(**kwargs)
 
-    def _keyboard_on_key_up(self, window, keycode, *args):
+    def _keyboard_on_key_up(self, window, keycode):
         """Handle up and down keys.
         
         Arguments:
@@ -64,16 +69,23 @@ class DiceEqnInput(TextInput):
                 self.history_stack_pos -= 1
             #this shouldn't be necessary, but just to be on the safe
             #side
-            if (self.history_stack_pos >= 0) and (self.history_stack_pos < len(self.true_parent.history_stack)):
+            if (self.history_stack_pos >= 0) and \
+                    (self.history_stack_pos < \
+                         len(self.true_parent.history_stack)):
                 self.true_parent.history_stack[self.history_stack_pos]()
-        elif (keycode_str == 'up') and (self.history_stack_pos < len(self.true_parent.history_stack)):
-            if (self.history_stack_pos < len(self.true_parent.history_stack)-1):
+        elif (keycode_str == 'up') and \
+                (self.history_stack_pos < \
+                     len(self.true_parent.history_stack)):
+            if (self.history_stack_pos < \
+                    len(self.true_parent.history_stack)-1):
                 self.history_stack_pos += 1
             #this shouldn't be necessary, but just to be on the safe
             #side
-            if (self.history_stack_pos >= 0) and (self.history_stack_pos < len(self.true_parent.history_stack)):
+            if (self.history_stack_pos >= 0) and \
+                    (self.history_stack_pos < \
+                         len(self.true_parent.history_stack)):
                 self.true_parent.history_stack[self.history_stack_pos]()
-        return super(DiceEqnInput, self)._keyboard_on_key_up(window, keycode, *args)
+        return super(DiceEqnInput, self)._keyboard_on_key_up(window, keycode)
         
 class DiceWidget(Widget):
     dice_eqn_input = ObjectProperty(None) #text box where the equation
@@ -81,8 +93,11 @@ class DiceWidget(Widget):
     dice_output = ObjectProperty(None) #text box where the parsed
                                        #equation and its answer will
                                        #be outputted
-    dice_history = ObjectProperty(None) #history of equations that
-                                        #have been entered
+    dice_history = ObjectProperty(None) #BubbleButton history of
+                                        #equations that have been
+                                        #entered
+    dice_history_pickle = [] #array we'll be using to pickle the dice
+                             #history
     roll_it_btn = ObjectProperty(None) #the button to submit the rolls
                                        #(although enter is just fine
                                        #too)
@@ -128,8 +143,8 @@ class DiceWidget(Widget):
         Arguments:
         """
         self.dice_output.text = self.output_collector + self.dice_output.text
-        self.dice_output.cursor = (0,0)
-        self.output_collector=""
+        self.dice_output.cursor = (0, 0)
+        self.output_collector = ""
         
     def roll_it(self, *args):
         """This performs the actual roll.
@@ -158,7 +173,7 @@ class DiceWidget(Widget):
             self.stash_print("Just type help again if you need it.")
             self.complete_stash_print()
             del self.dh
-            self.dice_eqn_input.text=""
+            self.dice_eqn_input.text = ""
             if not self.mobile:
                 Clock.schedule_once(self.set_eqn_focus)
             return
@@ -180,7 +195,8 @@ class DiceWidget(Widget):
             eqn_text_save = eqn_text
             eqns = [eqn.strip() for eqn in eqn_text.split(';')]
             for eqn_text in reversed(eqns):
-                is_separated, const_strings, (ans_str, answers) = rollparse.solve_roll(eqn_text)
+                is_separated, const_strings, (ans_str, answers) = \
+                    rollparse.solve_roll(eqn_text)
                 self.stash_print(eqn_text)
                 if 0 < len(const_strings) and not is_separated:
                     self.stash_print("\tCalculated constants:")
@@ -194,9 +210,11 @@ class DiceWidget(Widget):
                     for i in range(0, len(ans_str)):
                         const_counter = 1
                         for c_str in const_strings[i]:
-                            self.stash_print("\t    [{0}: {1}]".format(const_counter, const_str))
+                            self.stash_print("\t    [{0}: {1}]".format( \
+                                    const_counter, c_str))
                             const_counter += 1
-                        self.stash_print("\t  {0}: {1} = {2}".format(i+1, ans_str[i], answers[i]))
+                        self.stash_print("\t  {0}: {1} = {2}".format( \
+                                i+1, ans_str[i], answers[i]))
                 else:
                     self.stash_print("\t{0} = {1}".format(ans_str, answers))
             self.add_to_history(eqn_text_save)
@@ -207,11 +225,11 @@ class DiceWidget(Widget):
             self.stash_print(str(e))
         self.complete_stash_print()
         if not self.help_is_on:
-            self.dice_eqn_input.text=""
+            self.dice_eqn_input.text = ""
         if not self.mobile:
             Clock.schedule_once(self.set_eqn_focus)
         if self.mobile:
-            self.dice_eqn_input.focus=False
+            self.dice_eqn_input.focus = False
         self.hide_vkbd()
 
     def set_eqn(self, eqn_text, history_stack_pos):
@@ -221,8 +239,8 @@ class DiceWidget(Widget):
         - `eqn_text`: the equation from history
         - `history_stack_pos`: position in the history stack
         """
-        self.dice_eqn_input.text=eqn_text
-        self.dice_eqn_input.history_stack_pos=history_stack_pos
+        self.dice_eqn_input.text = eqn_text
+        self.dice_eqn_input.history_stack_pos = history_stack_pos
         return eqn_text
 
     def set_eqn_focus(self, dt):
@@ -231,7 +249,7 @@ class DiceWidget(Widget):
         Arguments:
         - `dt`: not used
         """
-        self.dice_eqn_input.focus=True
+        self.dice_eqn_input.focus = True
 
     def add_var(self, var_name, eqn_text):
         """Add to the variables bubble list and dictionary.
@@ -243,12 +261,14 @@ class DiceWidget(Widget):
         """
         #This function was actually created and modeled after
         #self.add_to_history.  Relevant comments can be found there.
-        new_btn=BubbleButton(text=var_name)
-        last_pos=len(self.var_dict)
+        new_btn = BubbleButton(text = var_name)
+        last_pos = len(self.var_dict)
         eqn_fn = lambda *args: self.set_eqn(eqn_text, len(self.history_stack)+1)
         var_exists = var_name in self.var_dict
         self.var_dict[var_name] = eqn_fn
-        new_btn.bind(on_press=self.var_dict[var_name])
+        with anydbm.open("var_list", 'c') as vardb:
+            vardb[var_name] = eqn_fn
+        new_btn.bind(on_press = self.var_dict[var_name])
         if not var_exists:
             try:
                 kivy.require('1.4.2')
@@ -258,15 +278,15 @@ class DiceWidget(Widget):
                 self.var_list_bubble.content.clear_widgets()
                 self.var_list_bubble.content.add_widget(new_btn)
                 for dice_roll in reversed(self.var_list_stack):
-                    dice_bubble=BubbleButton(text=dice_roll)
-                    dice_bubble.bind(on_press=self.var_dict[dice_roll])
+                    dice_bubble = BubbleButton(text = dice_roll)
+                    dice_bubble.bind(on_press = self.var_dict[dice_roll])
                     self.var_list_bubble.content.add_widget(dice_bubble)
                 self.var_list_stack.append(var_name)
             if not hasattr(self, 'bubble_height_var'):
-                self.bubble_height_var=self.dice_eqn_input.height
+                self.bubble_height_var = self.dice_eqn_input.height
             else:
-                self.var_list_bubble.height+=self.bubble_height_var
-                self.var_list_bubble.parent.height+=self.bubble_height_var
+                self.var_list_bubble.height += self.bubble_height_var
+                self.var_list_bubble.parent.height += self.bubble_height_var
 
     def add_to_history(self, eqn_text):
         """Add to equations history
@@ -274,11 +294,13 @@ class DiceWidget(Widget):
         Arguments:
         """
         #new button to be added to the history list
-        new_btn=BubbleButton(text=eqn_text)
-        last_pos=len(self.history_stack) #last position in the history
+        new_btn = BubbleButton(text = eqn_text)
+        last_pos = len(self.history_stack) #last position in the history
                                          #stack
         eqn_fn = lambda *args: self.set_eqn(eqn_text, last_pos)
-        new_btn.bind(on_press=eqn_fn)
+        with open("dice_history.txt", 'a') as dh_file:
+            dh_file.write(eqn_text)
+        new_btn.bind(on_press = eqn_fn)
         try:
             #kivy 1.4.2 will respect the order bubble buttons are
             #added
@@ -291,18 +313,18 @@ class DiceWidget(Widget):
             self.dice_history.content.clear_widgets()
             self.dice_history.content.add_widget(new_btn)
             for dice_roll in reversed(self.history_stack):
-                dice_bubble=BubbleButton(text=dice_roll())
-                dice_bubble.bind(on_press=dice_roll)
+                dice_bubble = BubbleButton(text = dice_roll())
+                dice_bubble.bind(on_press = dice_roll)
                 self.dice_history.content.add_widget(dice_bubble)
             self.history_stack.append(eqn_fn)
         self.dice_eqn_input.history_stack_pos = last_pos+1
         if not hasattr(self, 'bubble_height'):
-            self.bubble_height=self.dice_eqn_input.height
+            self.bubble_height = self.dice_eqn_input.height
         else:
-            self.dice_history.height+=self.bubble_height
+            self.dice_history.height += self.bubble_height
             #Why change the following? Because the parent is actually
             #an anchor layout.
-            self.dice_history.parent.height+=self.bubble_height
+            self.dice_history.parent.height += self.bubble_height
 
     def set_bind(self, image, dice_text):
         """This will bind the image's on_touch_up event.
@@ -312,20 +334,21 @@ class DiceWidget(Widget):
         - `dice_text`: The dice text that's to be used.
         """
         Logger.debug('DiceWidget: setting bind for ' + dice_text)
-        image.bind(on_touch_up=lambda im, touch: self.add_dice_input(im, touch, dice_text))
+        image.bind(on_touch_up = lambda im, touch: \
+                       self.add_dice_input(im, touch, dice_text))
 
-    def add_dice_input(self, image, touch, dice_text=None):
+    def add_dice_input(self, image, touch, dice_text = None):
         """This will add dice to dice_eqn_input.
         
         Arguments:
         - `dice_text`: This should never be None.
         """
-        assert dice_text!=None, ("Something very bad happened."
-                                 " Somehow I tried to add"
-                                 " blank dice. Please report this.")
+        assert dice_text != None, ("Something very bad happened."
+                                   " Somehow I tried to add"
+                                   " blank dice. Please report this.")
         if not image.collide_point(touch.x, touch.y):
             return
-        #Logger.debug('DiceWidget: touch.button=' + touch.button)
+        #Logger.debug('DiceWidget: touch.button = ' + touch.button)
         if hasattr(touch, 'button'):
             if touch.button != 'left':
                 return
@@ -391,10 +414,10 @@ class DiceWidget(Widget):
         if not self.dice_eqn_input.collide_point(*touch.pos):
             self.hide_vkbd()
             if self.mobile:
-                self.dice_eqn_input.focus=False
+                self.dice_eqn_input.focus = False
         return super(DiceWidget, self).on_touch_up(touch)
 
-    def log_mesg(self, mesg='you forgot something...'):
+    def log_mesg(self, mesg = 'you forgot something...'):
         """For log messages.
         
         Arguments:
@@ -410,8 +433,8 @@ class DiceApp(App):
     title = "Roll it!"
     def build(self):
         Logger.debug('DiceApp: 01062012 App start')
-        diceapp = DiceWidget()
-        return diceapp
+        self.diceapp = DiceWidget()
+        return self.diceapp
 
     def on_pause(self):
         """We just want to pause on the mobile app, not completely
@@ -437,6 +460,7 @@ class DiceApp(App):
         Arguments:
         - `self`:
         """
+        #with anydbm.open(
         pass
 
     def on_stop(self):
@@ -447,7 +471,7 @@ class DiceApp(App):
         """
         pass
 
-Config.set('kivy', 'log_level', 'info')
+#Config.set('kivy', 'log_level', 'info')
 Factory.register("DiceWidget", DiceWidget)
 Factory.register("DiceEqnInput", DiceEqnInput)
 if __name__ == '__main__':
