@@ -25,7 +25,6 @@ Config.set('input', 'mouse', 'mouse,disable_multitouch')
 import re
 import rollparse
 from dicehelp import dice_help
-import anydbm
 #import android; android.hide_keyboard()
 if 'android' == kivy.utils.platform():
     import android
@@ -241,7 +240,7 @@ class DiceWidget(Widget):
         """
         self.dice_eqn_input.focus = True
 
-    def add_var(self, var_name, eqn_text):
+    def add_var(self, var_name, eqn_text, do_save=True):
         """Add to the variables bubble list and dictionary.
         
         Arguments:
@@ -256,8 +255,9 @@ class DiceWidget(Widget):
         eqn_fn = lambda *args: self.set_eqn(eqn_text, len(self.history_stack)+1)
         var_exists = var_name in self.var_dict
         self.var_dict[var_name] = eqn_fn
-        with anydbm.open("var_list", 'c') as vardb:
-            vardb[var_name] = eqn_fn
+        if do_save:
+            with open("var_list.txt", 'a') as var_file:
+                var_file.write("{0}:{1}\n".format(var_name, eqn_text))
         new_btn.bind(on_press = self.var_dict[var_name])
         if not var_exists:
             try:
@@ -461,7 +461,16 @@ class DiceApp(App):
                 for line in dh_file:
                     self.diceapp.add_to_history(line.strip(), False)
         except IOError as e:
-            Logger.debug("DiceApp: Can't read state file")
+            Logger.debug("DiceApp: Can't read history file")
+
+        try:
+            with open("var_list.txt", 'r') as var_file:
+                for line in var_file:
+                    var_name, eqn_text = [l.strip() for l in \
+                                              line.strip().split(':',2)]
+                    self.diceapp.add_var(var_name, eqn_text, False)
+        except IOError as e:
+            Logger.debug("DiceApp: Can't read variables file")
 
     
     def on_stop(self):
@@ -472,7 +481,7 @@ class DiceApp(App):
         """
         pass
 
-#Config.set('kivy', 'log_level', 'info')
+Config.set('kivy', 'log_level', 'info')
 Factory.register("DiceWidget", DiceWidget)
 Factory.register("DiceEqnInput", DiceEqnInput)
 if __name__ == '__main__':
