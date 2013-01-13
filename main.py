@@ -21,7 +21,7 @@ from kivy.interactive import InteractiveLauncher
 from kivy.logger import Logger
 from kivy.config import Config
 Config.set('kivy', 'window_icon', 'icon.png')
-Config.set('input', 'mouse', 'mouse, disable_multitouch')
+Config.set('input', 'mouse', 'mouse,disable_multitouch')
 import re
 import rollparse
 from dicehelp import dice_help
@@ -44,15 +44,7 @@ class DiceEqnInput(TextInput):
         Arguments:
         """
         if self.text == self.start_text:
-            self.text = ""
-    
-    def __init__(self, **kwargs):
-        """Here just in case I want to use it.
-        
-        Arguments:
-        - `**kwargs`:
-        """
-        super(DiceEqnInput, self).__init__(**kwargs)
+            self.text = ""    
 
     def _keyboard_on_key_up(self, window, keycode):
         """Handle up and down keys.
@@ -96,8 +88,6 @@ class DiceWidget(Widget):
     dice_history = ObjectProperty(None) #BubbleButton history of
                                         #equations that have been
                                         #entered
-    dice_history_pickle = [] #array we'll be using to pickle the dice
-                             #history
     roll_it_btn = ObjectProperty(None) #the button to submit the rolls
                                        #(although enter is just fine
                                        #too)
@@ -288,18 +278,24 @@ class DiceWidget(Widget):
                 self.var_list_bubble.height += self.bubble_height_var
                 self.var_list_bubble.parent.height += self.bubble_height_var
 
-    def add_to_history(self, eqn_text):
+    def add_to_history(self, eqn_text, do_save=True):
         """Add to equations history
         
         Arguments:
         """
         #new button to be added to the history list
         new_btn = BubbleButton(text = eqn_text)
-        last_pos = len(self.history_stack) #last position in the history
-                                         #stack
+        last_pos = len(self.history_stack) #last position in the
+                                           #history stack
         eqn_fn = lambda *args: self.set_eqn(eqn_text, last_pos)
-        with open("dice_history.txt", 'a') as dh_file:
-            dh_file.write(eqn_text)
+        if do_save:
+            append_overwrite = 'a' if last_pos < 40 else 'w'
+            with open("dice_history.txt", append_overwrite) as dh_file:
+                # We only care about the last 40
+                if last_pos >= 40:
+                    for eqn in self.history_stack[last_pos-40:last_pos]:
+                        dh_file.write(eqn + '\n')
+                dh_file.write(eqn_text + '\n')
         new_btn.bind(on_press = eqn_fn)
         try:
             #kivy 1.4.2 will respect the order bubble buttons are
@@ -460,9 +456,14 @@ class DiceApp(App):
         Arguments:
         - `self`:
         """
-        #with anydbm.open(
-        pass
+        try:
+            with open("dice_history.txt", 'r') as dh_file:
+                for line in dh_file:
+                    self.diceapp.add_to_history(line.strip(), False)
+        except IOError as e:
+            Logger.debug("DiceApp: Can't read state file")
 
+    
     def on_stop(self):
         """Things to do when the app is shutting down.
         
