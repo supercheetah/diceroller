@@ -2,6 +2,7 @@
 """
 This is the main module for the RollIt! GUI to diceroller.
 """
+import cli_args
 import kivy
 kivy.require('1.4.1')
 from kivy.app import App
@@ -482,10 +483,11 @@ class DiceApp(App):
         """
         pass
 
-Config.set('kivy', 'log_level', 'info')
 Factory.register("DiceWidget", DiceWidget)
 Factory.register("DiceEqnInput", DiceEqnInput)
 if __name__ == '__main__':
+    if not cli_args.dice_args.debug:
+        Config.set('kivy', 'log_level', 'info')
     DiceApp().run()
     #this seems to just crash unfortunately
     #il = InteractiveLauncher(DiceApp()).run()

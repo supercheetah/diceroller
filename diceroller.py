@@ -3,8 +3,10 @@ import traceback
 import sys
 import rollparse
 import os
+import logging
 if 'posix' == os.name:
     import readline
+import cli_args
 
 def main():
     if 'posix' == os.name:
@@ -31,7 +33,7 @@ def main():
             #print sys.exc_traceback.tb_lineno
             for frame in traceback.extract_tb(sys.exc_info()[2]):
                 fname,lineno,fn,text = frame
-                print "Error in %s on line %d" % (fname, lineno)
+                logging.debug("Error in %s on line %d" % (fname, lineno))
             continue
 
         if 0 < len(const_strings) and not is_separated:
@@ -55,4 +57,6 @@ def main():
     return 0
 
 if __name__ == "__main__":
+    if cli_args.dice_args.debug:
+        logging.basicConfig(level=logging.DEBUG)
     sys.exit(main())
