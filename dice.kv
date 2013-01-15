@@ -2,7 +2,7 @@
 
 <ScrollView>:
     bar_color: 0, .9, 0, .9
-    bar_width: '4dp'
+    bar_width: '6dp'
     canvas.after:
         Color:
             rgba: self.bar_color[:3] + [self.bar_color[3] * 1 if self.do_scroll_y else 0]
@@ -64,6 +64,7 @@
             size: root.dice_io_width, root.bottom_reserve - dice_eqn_input.height - roll_it_btn.height - 1
             pos: 0, roll_it_btn.y - self.height - 1
             scroll_timeout: 1000
+            do_scroll_x: False
             on_parent: root.log_mesg('dice output scroll size ' + repr(dice_out_scroll.size))
             
             TextInput:
@@ -82,6 +83,7 @@
             size: root.width - 1, root.height - dice_out_scroll.height - dice_eqn_input.height - roll_it_btn.height - 1
             scroll_timeout: 250
             pos: 0, 0
+            do_scroll_y: False
             on_parent: root.log_mesg('dice pics scroll view size ' + repr(self.size))
 
             BoxLayout:
