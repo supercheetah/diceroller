@@ -379,7 +379,7 @@ class DiceWidget(Widget):
         - `self`:
         """
         self.dice_eqn_input.clear_start_text()
-        if self.empty_space.match(self.dice_eqn_input):
+        if self.empty_space.match(self.dice_eqn_input.text):
             self.dice_eqn_input.text = 'Named roll: '
             self.dice_eqn_input.select_text(0, 10)
             self.dice_eqn_input.cursor = (self.dice_eqn_input.cursor[0] - 2, 0)
