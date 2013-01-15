@@ -36,6 +36,7 @@ class DiceEqnInput(TextInput):
     history_stack_pos = -1
     true_parent = ObjectProperty(None)
     start_text = "Enter roll dice equation here."
+    empty_space = re.compile('^\s*$')
 
     def clear_start_text(self):
         """When we need the start start text to be cleared. Will do
@@ -44,7 +45,16 @@ class DiceEqnInput(TextInput):
         Arguments:
         """
         if self.text == self.start_text:
-            self.text = ""    
+            self.text = ""
+
+    def is_empty(self):
+        """Clears the start text, and returns whether or not it's empty.
+        
+        Arguments:
+        - `self`:
+        """
+        self.clear_start_text()
+        return None != self.empty_space.match(self.text)
 
     def _keyboard_on_key_up(self, window, keycode):
         """Handle up and down keys.
@@ -102,7 +112,6 @@ class DiceWidget(Widget):
     var_match = re.compile('\s*\w+\s*:\s*$')
     mult_eqns_end = re.compile('[^;]*;\s*$')
     end_is_blank = re.compile('\s*\w+\s*:\s*$|[^;]*;\s*$|^\s*$')
-    empty_space = re.compile('^\s*$')
     has_op = re.compile('[-+*/]\s*$')
     help_match = re.compile('help', re.I)
     help_done = re.compile('done', re.I)
@@ -381,7 +390,7 @@ class DiceWidget(Widget):
         - `self`:
         """
         self.dice_eqn_input.clear_start_text()
-        if self.empty_space.match(self.dice_eqn_input.text):
+        if self.dice_eqn_input.is_empty():
             self.dice_eqn_input.text = 'Named roll: '
             self.dice_eqn_input.select_text(0, 10)
             self.dice_eqn_input.cursor = (self.dice_eqn_input.cursor[0] - 2, 0)

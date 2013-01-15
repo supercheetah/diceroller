@@ -1,5 +1,21 @@
 #:kivy 1.4.1
 
+<ScrollView>:
+    bar_color: 0, .9, 0, .9
+    bar_width: '4dp'
+    canvas.after:
+        Color:
+            rgba: self.bar_color[:3] + [self.bar_color[3] * 1 if self.do_scroll_y else 0]
+        Rectangle:
+            pos: self.right - self.bar_width - self.bar_margin, self.y + self.height * self.vbar[0]
+            size: self.bar_width, self.height * self.vbar[1]
+        Color:
+            rgba: self.bar_color[:3] + [self.bar_color[3] * 1 if self.do_scroll_x else 0]
+        Rectangle:
+            pos: self.x + self.width * self.hbar[0], self.y + self.bar_margin
+            size: self.width * self.hbar[1], self.bar_width
+
+
 <DiceHistory>
     canvas:
         Rectangle:
@@ -162,7 +178,7 @@
                         Bubble:
                             size_hint: None, None
                             width: self.parent.width*0.9
-                            height: dice_eqn_input.height * 7
+                            height: dice_eqn_input.height * 8
                             arrow_pos: 'left_mid'
                             orientation: 'vertical'
                             BubbleButton:
@@ -186,6 +202,9 @@
                             BubbleButton:
                                 text: "Division /"
                                 on_press: dice_eqn_input.text += ' / '
+                            BubbleButton:
+                                text: "Help"
+                                on_press: dice_eqn_input.text = 'help' if dice_eqn_input.is_empty() else dice_eqn_input.text
 
             AccordionItem:
                 title: "History"
