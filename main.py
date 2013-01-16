@@ -260,17 +260,16 @@ class DiceWidget(FloatLayout):
         """
         #This function was actually created and modeled after
         #self.add_to_history.  Relevant comments can be found there.
-        new_btn = BubbleButton(text = var_name)
-        last_pos = len(self.var_dict)
-        eqn_fn = lambda *args: self.set_eqn(eqn_text, len(self.history_stack)+1)
         var_exists = var_name in self.var_dict
-        self.var_dict[var_name] = eqn_fn
+        self.var_dict[var_name] = eqn_text
         if do_save:
             vardb = anydbm.open("vardb.dbm", 'c')
             vardb[var_name.encode('ascii', 'ignore')] = eqn_text.encode('ascii', 'ignore')
             vardb.close()
-        new_btn.bind(on_press = self.var_dict[var_name])
         if not var_exists:
+            new_btn = BubbleButton(text = var_name)
+            last_pos = len(self.var_dict)
+            new_btn.bind(on_press = lambda *args: self.set_eqn(self.var_dict[var_name], len(self.history_stack)+1))
             try:
                 kivy.require('1.4.2')
                 self.var_dict[var_name] = eqn_fn
