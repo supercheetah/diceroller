@@ -61,8 +61,6 @@ class DiceEqnInput(TextInput):
         """
         Logger.debug("DiceEqnInput: {0}".format(str(keycode)))
         key, keycode_str = keycode
-        #for Kivy before 1.4.2, invert the logic here since the
-        #history stack is visually inverted
         if (keycode_str == 'down') and (self.history_stack_pos > 0):
             if (self.history_stack_pos != 0):
                 self.history_stack_pos -= 1
