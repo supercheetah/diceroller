@@ -47,11 +47,11 @@ class DiceRoll:
         if 1<self.numRolls:
             for i in range(1, self.numRolls):
                 dval = self.roll()
-                self.diceSum += -dval if self.isNegative else dval # I found out too late that this syntax is available
+                self.diceSum += dval
                 self.eqnStr += ' + {0}'.format(dval)
         self.eqnStr += '>'
 
-        if negate:
+        if negate or self.isNegative:
             self.diceSum = -self.diceSum
 
         self.diceSum*=multipier

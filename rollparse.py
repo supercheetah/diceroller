@@ -6,6 +6,7 @@ from dispexcept import VarNestedException, VarMultipleException
 #if 'kivy.logging' not in sys.modules.keys():
 #    import logging
 import lexer
+import re
 
 declaration = r''' #this defines the language, of course
 root          := roll
@@ -17,10 +18,10 @@ constant      := number
 grouping      := var_grouping/const_grouping
 var_grouping  := negation?,'(',space,operations,space,')'
 const_grouping:= negation?,'[',space,operations,space,']'
-negation      := '-'
+negation      := '-',space
 sep_grouping  := '{',space,xdice,space,'}',(op,operations)?
 sep_dice      := num_dice?,incl_zero,num_sides
-dice          := num_dice?,incl_zero,num_sides
+dice          := (num_dice?,incl_zero,num_sides)/(negation?,incl_zero,num_sides)
 xdice         := number,'x',sep_dice # This will expand an expression, so '6x3d6' becomes '3d6+3d6+3d6', and returns it as a list
 incl_zero     := [dD]
 num_sides     := number
@@ -47,6 +48,8 @@ def space_carot( num_spaces ):
 
 def solve_roll( roll_str ):
     resolution = None
+    find_neg_space_num = re.compile(r'-\s+(\d+)')
+    roll_str = find_neg_space_num.sub(r'-\1', roll_str)
     try:
         success, children, nextchar = rollparser.parse( roll_str, processor=lexer.Lexer() )
         if not (success and len(roll_str)==nextchar):

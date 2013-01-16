@@ -270,11 +270,14 @@ class Lexer( DispatchProcessor ):
         include_zero = False
         for tup in subtags:
             try:
-                result = dispatch(self, tup, buffer)
+                if tup[0] != "negation":
+                    result = dispatch(self, tup, buffer)
             except SyntaxError, se:
                 raise se
             if tup[0] == "num_dice":
                 num_dice = result
+            elif tup[0] == "negation":
+                num_dice = -1
             elif tup[0] == "incl_zero":
                 include_zero = result
             else:
