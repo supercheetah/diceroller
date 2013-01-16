@@ -28,8 +28,8 @@
     dice_history: dice_history
     roll_it_btn: roll_it_btn
     var_list_bubble: var_list_bubble
-    dice_io_width: root.width-(root.width/2.5)
-    bottom_reserve: root.height/1.4
+    dice_io_width: .6
+    bottom_reserve: .25
     
     canvas:
         Color:
@@ -39,7 +39,7 @@
             size: root.size
 
     BoxLayout:
-        size_hint: .60, .75
+        size_hint: root.dice_io_width, 1.0 - root.bottom_reserve
         orientation: 'vertical'
         pos_hint: {'top':1}
 
@@ -92,8 +92,7 @@
 
     ScrollView:
         id: dice_pic_scroll
-        size_hint: 1, .25
-        size: root.width - 1, root.height - dice_out_scroll.height - dice_eqn_input.height - roll_it_btn.height - 1
+        size_hint: 1, root.bottom_reserve
         scroll_timeout: 250
         pos: 0, 0
         do_scroll_y: False
@@ -176,7 +175,7 @@
 
     Accordion:
         orientation: 'vertical'
-        size_hint: .40, .75
+        size_hint: 1.0 - root.dice_io_width, 1.0 - root.bottom_reserve
         size: root.width-(root.dice_io_width+1), root.bottom_reserve
         pos_hint: {'x':.60, 'top':1}
 
