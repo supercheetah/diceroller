@@ -90,88 +90,6 @@
                 on_parent: root.log_mesg('created dice output')
                 #on_parent: text="Don't know what's going on? Type \"help\" above, and click \"Roll It!\" or press enter."
 
-    ScrollView:
-        id: dice_pic_scroll
-        size_hint: 1, root.bottom_reserve
-        scroll_timeout: 250
-        pos: 0, 0
-        do_scroll_y: False
-        on_parent: root.log_mesg('dice pics scroll view size ' + repr(self.size))
-
-        BoxLayout:
-            pic_size_hint: None, 1
-            #on_parent: root.log_mesg('init dice pics box size ' + repr(self.size))
-            #on_size: root.log_mesg('dice pics box size ' + repr(self.size))
-            size_hint: (None, None)
-            size: d4.width*6+d100.width, self.parent.height
-            orientation: 'horizontal'
-
-            Image:
-                id: d4
-                source: 'd4.png'
-                size_hint: self.parent.pic_size_hint
-                height: self.parent.height
-                width: self.height
-                allow_stretch: True
-                on_parent: root.log_mesg('d4 image size ' + repr(self.size))
-                on_parent: root.dice_images.append(self)
-                on_parent: root.set_bind(self, 'd4')
-                    
-            Image:
-                source: 'd6.png'
-                size_hint: self.parent.pic_size_hint
-                height: d4.height
-                width: d4.width
-                allow_stretch: True
-                on_parent: root.dice_images.append(self)
-                on_parent: root.set_bind(self, 'd6')
-                
-            Image:
-                source: 'd8.png'
-                size_hint: self.parent.pic_size_hint
-                height: d4.height
-                width: d4.width
-                allow_stretch: True
-                on_parent: root.dice_images.append(self)
-                on_parent: root.set_bind(self, 'd8')
-                    
-            Image:
-                source: 'd10.png'
-                size_hint: self.parent.pic_size_hint
-                height: d4.height
-                width: d4.width
-                allow_stretch: True
-                on_parent: root.dice_images.append(self)
-                on_parent: root.set_bind(self, 'd10')
-                    
-            Image:
-                source: 'd12.png'
-                size_hint: self.parent.pic_size_hint
-                height: d4.height
-                width: d4.width
-                allow_stretch: True
-                on_parent: root.dice_images.append(self)
-                on_parent: root.set_bind(self, 'd12')
-                    
-            Image:
-                source: 'd20.png'
-                size_hint: self.parent.pic_size_hint
-                height: d4.height
-                width: d4.width
-                allow_stretch: True
-                on_parent: root.dice_images.append(self)
-                on_parent: root.set_bind(self, 'd20')
-                    
-            Image:
-                id: d100
-                source: 'd100.png'
-                size_hint: self.parent.pic_size_hint
-                height: d4.height
-                width: d4.width*1.4969
-                allow_stretch: True
-                on_parent: root.log_mesg('d100 image size ' + repr(self.size))
-                on_parent: root.dice_images.append(self)
-                on_parent: root.set_bind(self, 'd100')
 
     Accordion:
         orientation: 'vertical'
@@ -255,3 +173,86 @@
                         on_parent: self.height=dice_eqn_input.height
                         arrow_pos: 'left_mid'
                         orientation: 'vertical'
+
+    ScrollView:
+        id: dice_pic_scroll
+        size_hint: 1, root.bottom_reserve
+        scroll_timeout: 250
+        pos: 0, 0
+        do_scroll_y: False
+        on_parent: root.log_mesg('dice pics scroll view size ' + repr(self.size))
+
+        BoxLayout:
+            pic_size_hint: None, 1
+            #on_parent: root.log_mesg('init dice pics box size ' + repr(self.size))
+            #on_size: root.log_mesg('dice pics box size ' + repr(self.size))
+            size_hint: (None, None)
+            size: d4.width*6+d100.width, self.parent.height
+            orientation: 'horizontal'
+
+            Image:
+                id: d4
+                source: 'd4.png'
+                size_hint: self.parent.pic_size_hint
+                height: self.parent.height
+                width: self.height
+                allow_stretch: True
+                on_parent: root.log_mesg('d4 image size ' + repr(self.size))
+                on_parent: root.dice_images.append(self)
+                on_parent: root.set_bind(self, 'd4')
+                    
+            Image:
+                source: 'd6.png'
+                size_hint: self.parent.pic_size_hint
+                height: d4.height
+                width: d4.width
+                allow_stretch: True
+                on_parent: root.dice_images.append(self)
+                on_parent: root.set_bind(self, 'd6')
+                
+            Image:
+                source: 'd8.png'
+                size_hint: self.parent.pic_size_hint
+                height: d4.height
+                width: d4.width
+                allow_stretch: True
+                on_parent: root.dice_images.append(self)
+                on_parent: root.set_bind(self, 'd8')
+                    
+            Image:
+                source: 'd10.png'
+                size_hint: self.parent.pic_size_hint
+                height: d4.height
+                width: d4.width
+                allow_stretch: True
+                on_parent: root.dice_images.append(self)
+                on_parent: root.set_bind(self, 'd10')
+                    
+            Image:
+                source: 'd12.png'
+                size_hint: self.parent.pic_size_hint
+                height: d4.height
+                width: d4.width
+                allow_stretch: True
+                on_parent: root.dice_images.append(self)
+                on_parent: root.set_bind(self, 'd12')
+                    
+            Image:
+                source: 'd20.png'
+                size_hint: self.parent.pic_size_hint
+                height: d4.height
+                width: d4.width
+                allow_stretch: True
+                on_parent: root.dice_images.append(self)
+                on_parent: root.set_bind(self, 'd20')
+                    
+            Image:
+                id: d100
+                source: 'd100.png'
+                size_hint: self.parent.pic_size_hint
+                height: d4.height
+                width: d4.width*1.4969
+                allow_stretch: True
+                on_parent: root.log_mesg('d100 image size ' + repr(self.size))
+                on_parent: root.dice_images.append(self)
+                on_parent: root.set_bind(self, 'd100')
