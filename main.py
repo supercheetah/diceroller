@@ -6,18 +6,15 @@ import cli_args
 import kivy
 kivy.require('1.4.1')
 from kivy.app import App
-from kivy.uix.widget import Widget
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
-from kivy.properties import ObjectProperty, StringProperty, NumericProperty, \
-    ListProperty
+from kivy.properties import ObjectProperty, ListProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.bubble import Bubble, BubbleButton
 from kivy.uix.scrollview import ScrollView
 from kivy.factory import Factory
 from kivy.clock import Clock
 from kivy.uix.accordion import Accordion, AccordionItem
-#from kivy.core.window import Keyboard
 from kivy.interactive import InteractiveLauncher
 from kivy.logger import Logger
 from kivy.config import Config
@@ -274,7 +271,6 @@ class DiceWidget(FloatLayout):
                     self.var_dict[var_name], len(self.history_stack)+1))
             try:
                 kivy.require('1.4.2')
-                self.var_dict[var_name] = eqn_fn
                 self.var_list_bubble.content.add_widget(new_btn, last_pos+1)
             except Exception:
                 self.var_list_bubble.content.clear_widgets()
@@ -297,8 +293,7 @@ class DiceWidget(FloatLayout):
         """
         #new button to be added to the history list
         new_btn = BubbleButton(text = eqn_text)
-        last_pos = len(self.history_stack) #last position in the
-                                           #history stack
+        last_pos = len(self.history_stack) 
         eqn_fn = lambda *args: self.set_eqn(eqn_text, last_pos)
         if do_save:
             append_overwrite = 'a' if last_pos < 40 else 'w'
@@ -313,7 +308,7 @@ class DiceWidget(FloatLayout):
             #kivy 1.4.2 will respect the order bubble buttons are
             #added
             kivy.require('1.4.2') #this will throw an exception if
-                                  #it's not 1.4.2
+                                  #it's not 1.4.2 or later
             self.history_stack.append(eqn_fn)
             self.dice_history.content.add_widget(new_btn, last_pos+1)
         except Exception:
@@ -356,11 +351,9 @@ class DiceWidget(FloatLayout):
                                    " blank dice. Please report this.")
         if not image.collide_point(touch.x, touch.y):
             return
-        #Logger.debug('DiceWidget: touch.button = ' + touch.button)
         if hasattr(touch, 'button'):
             if touch.button != 'left':
                 return
-        #Logger.debug('DiceWidget: touch up for ' + dice_text)
         self.dice_eqn_input.clear_start_text()
         if self.dice_eqn_input.text == '':
             self.dice_eqn_input.text = dice_text
