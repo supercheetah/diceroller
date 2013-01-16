@@ -264,12 +264,14 @@ class DiceWidget(FloatLayout):
         self.var_dict[var_name] = eqn_text
         if do_save:
             vardb = anydbm.open("vardb.dbm", 'c')
-            vardb[var_name.encode('ascii', 'ignore')] = eqn_text.encode('ascii', 'ignore')
+            vardb[var_name.encode('ascii', 'ignore')] = eqn_text.encode( \
+                'ascii', 'ignore')
             vardb.close()
         if not var_exists:
             new_btn = BubbleButton(text = var_name)
             last_pos = len(self.var_dict)
-            new_btn.bind(on_press = lambda *args: self.set_eqn(self.var_dict[var_name], len(self.history_stack)+1))
+            new_btn.bind(on_press = lambda *args: self.set_eqn( \
+                    self.var_dict[var_name], len(self.history_stack)+1))
             try:
                 kivy.require('1.4.2')
                 self.var_dict[var_name] = eqn_fn
