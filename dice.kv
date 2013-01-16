@@ -31,38 +31,49 @@
     dice_io_width: root.width-(root.width/2.5)
     bottom_reserve: root.height/1.4
     
-    FloatLayout:
-        canvas:
-            Color:
-                rgb: 0, 0, 0
-            Rectangle:
-                pos: root.pos
-                size: root.size
+    canvas:
+        Color:
+            rgb: 0, 0, 0
+        Rectangle:
+            pos: root.pos
+            size: root.size
 
-        DiceEqnInput:
-            id: dice_eqn_input
-            #font_size: 14
-            size_hint: None, None
-            size: root.dice_io_width, self.line_height * 1.65
-            multiline: False
-            pos: 0, root.top - self.height - 1
-            text: self.start_text
-            on_focus: if self.text==self.start_text: self.text=""
-            on_text_validate: root.roll_it()
-            true_parent: root
+    BoxLayout:
+        size_hint: .60, .75
+        orientation: 'vertical'
+        pos_hint: {'top':1}
+
+        BoxLayout:
+            orientation: 'horizontal'
+            DiceEqnInput:
+                id: dice_eqn_input
+                #font_size: 14
+                size_hint: .85, None
+                height: self.line_height * 1.65
+                multiline: False
+                text: self.start_text
+                on_focus: if self.text==self.start_text: self.text=""
+                on_text_validate: root.roll_it()
+                true_parent: root
+
+            Button:
+                text: "Clear"
+                size_hint: .15, None
+                height: dice_eqn_input.height
+                on_press: dice_eqn_input.text = ''
 
         Button:
             id: roll_it_btn
-            size: root.dice_io_width, dice_eqn_input.height
-            pos: 0, dice_eqn_input.y - self.height - 1
+            size_hint: 1, None
+            height: dice_eqn_input.height
             text: "Roll It!"
             on_parent: root.log_mesg('mobile: ' + str(root.mobile))
             on_press: root.roll_it()
 
         ScrollView:
             id: dice_out_scroll
-            size: root.dice_io_width, root.bottom_reserve - dice_eqn_input.height - roll_it_btn.height - 1
-            pos: 0, roll_it_btn.y - self.height - 1
+            size_hint: 1, None
+            height: self.parent.height - dice_eqn_input.height - roll_it_btn.height
             scroll_timeout: 1000
             do_scroll_x: False
             on_parent: root.log_mesg('dice output scroll size ' + repr(dice_out_scroll.size))
@@ -76,170 +87,172 @@
                 pos: 0, 0
                 text: "Don't know what's going on? Type \"help\" above, and click \"Roll It!\" or press enter."
                 on_parent: self.bind(focus=root.hide_vkbd)
+                on_parent: root.log_mesg('created dice output')
+                #on_parent: text="Don't know what's going on? Type \"help\" above, and click \"Roll It!\" or press enter."
 
-        ScrollView:
-            id: dice_pic_scroll
-            size_hint: None, None
-            size: root.width - 1, root.height - dice_out_scroll.height - dice_eqn_input.height - roll_it_btn.height - 1
-            scroll_timeout: 250
-            pos: 0, 0
-            do_scroll_y: False
-            on_parent: root.log_mesg('dice pics scroll view size ' + repr(self.size))
+    ScrollView:
+        id: dice_pic_scroll
+        size_hint: 1, .25
+        size: root.width - 1, root.height - dice_out_scroll.height - dice_eqn_input.height - roll_it_btn.height - 1
+        scroll_timeout: 250
+        pos: 0, 0
+        do_scroll_y: False
+        on_parent: root.log_mesg('dice pics scroll view size ' + repr(self.size))
 
-            BoxLayout:
-                pic_size_hint: None, 1
-                #on_parent: root.log_mesg('init dice pics box size ' + repr(self.size))
-                #on_size: root.log_mesg('dice pics box size ' + repr(self.size))
-                size_hint: (None, None)
-                size: d4.width*6+d100.width, self.parent.height
-                orientation: 'horizontal'
+        BoxLayout:
+            pic_size_hint: None, 1
+            #on_parent: root.log_mesg('init dice pics box size ' + repr(self.size))
+            #on_size: root.log_mesg('dice pics box size ' + repr(self.size))
+            size_hint: (None, None)
+            size: d4.width*6+d100.width, self.parent.height
+            orientation: 'horizontal'
 
-                Image:
-                    id: d4
-                    source: 'd4.png'
-                    size_hint: self.parent.pic_size_hint
-                    height: self.parent.height
-                    width: self.height
-                    allow_stretch: True
-                    on_parent: root.log_mesg('d4 image size ' + repr(self.size))
-                    on_parent: root.dice_images.append(self)
-                    on_parent: root.set_bind(self, 'd4')
+            Image:
+                id: d4
+                source: 'd4.png'
+                size_hint: self.parent.pic_size_hint
+                height: self.parent.height
+                width: self.height
+                allow_stretch: True
+                on_parent: root.log_mesg('d4 image size ' + repr(self.size))
+                on_parent: root.dice_images.append(self)
+                on_parent: root.set_bind(self, 'd4')
                     
-                Image:
-                    source: 'd6.png'
-                    size_hint: self.parent.pic_size_hint
-                    height: d4.height
-                    width: d4.width
-                    allow_stretch: True
-                    on_parent: root.dice_images.append(self)
-                    on_parent: root.set_bind(self, 'd6')
+            Image:
+                source: 'd6.png'
+                size_hint: self.parent.pic_size_hint
+                height: d4.height
+                width: d4.width
+                allow_stretch: True
+                on_parent: root.dice_images.append(self)
+                on_parent: root.set_bind(self, 'd6')
+                
+            Image:
+                source: 'd8.png'
+                size_hint: self.parent.pic_size_hint
+                height: d4.height
+                width: d4.width
+                allow_stretch: True
+                on_parent: root.dice_images.append(self)
+                on_parent: root.set_bind(self, 'd8')
                     
-                Image:
-                    source: 'd8.png'
-                    size_hint: self.parent.pic_size_hint
-                    height: d4.height
-                    width: d4.width
-                    allow_stretch: True
-                    on_parent: root.dice_images.append(self)
-                    on_parent: root.set_bind(self, 'd8')
+            Image:
+                source: 'd10.png'
+                size_hint: self.parent.pic_size_hint
+                height: d4.height
+                width: d4.width
+                allow_stretch: True
+                on_parent: root.dice_images.append(self)
+                on_parent: root.set_bind(self, 'd10')
                     
-                Image:
-                    source: 'd10.png'
-                    size_hint: self.parent.pic_size_hint
-                    height: d4.height
-                    width: d4.width
-                    allow_stretch: True
-                    on_parent: root.dice_images.append(self)
-                    on_parent: root.set_bind(self, 'd10')
+            Image:
+                source: 'd12.png'
+                size_hint: self.parent.pic_size_hint
+                height: d4.height
+                width: d4.width
+                allow_stretch: True
+                on_parent: root.dice_images.append(self)
+                on_parent: root.set_bind(self, 'd12')
                     
-                Image:
-                    source: 'd12.png'
-                    size_hint: self.parent.pic_size_hint
-                    height: d4.height
-                    width: d4.width
-                    allow_stretch: True
-                    on_parent: root.dice_images.append(self)
-                    on_parent: root.set_bind(self, 'd12')
+            Image:
+                source: 'd20.png'
+                size_hint: self.parent.pic_size_hint
+                height: d4.height
+                width: d4.width
+                allow_stretch: True
+                on_parent: root.dice_images.append(self)
+                on_parent: root.set_bind(self, 'd20')
                     
-                Image:
-                    source: 'd20.png'
-                    size_hint: self.parent.pic_size_hint
-                    height: d4.height
-                    width: d4.width
-                    allow_stretch: True
-                    on_parent: root.dice_images.append(self)
-                    on_parent: root.set_bind(self, 'd20')
-                    
-                Image:
-                    id: d100
-                    source: 'd100.png'
-                    size_hint: self.parent.pic_size_hint
-                    height: d4.height
-                    width: d4.width*1.4969
-                    allow_stretch: True
-                    on_parent: root.log_mesg('d100 image size ' + repr(self.size))
-                    on_parent: root.dice_images.append(self)
-                    on_parent: root.set_bind(self, 'd100')
+            Image:
+                id: d100
+                source: 'd100.png'
+                size_hint: self.parent.pic_size_hint
+                height: d4.height
+                width: d4.width*1.4969
+                allow_stretch: True
+                on_parent: root.log_mesg('d100 image size ' + repr(self.size))
+                on_parent: root.dice_images.append(self)
+                on_parent: root.set_bind(self, 'd100')
 
-        Accordion:
-            orientation: 'vertical'
-            size_hint: None, None
-            size: root.width-(root.dice_io_width+1), root.bottom_reserve
-            pos: dice_output.right+1, root.top - self.height
+    Accordion:
+        orientation: 'vertical'
+        size_hint: .40, .75
+        size: root.width-(root.dice_io_width+1), root.bottom_reserve
+        pos_hint: {'x':.60, 'top':1}
 
-            AccordionItem:
-                title: "Common Operations"
-                collapse: False
-                ScrollView:
-                    scroll_timeout: 250
-                    do_scroll_x: False
-                    AnchorLayout:
-                        anchor_x: 'center'
-                        anchor_y: 'top'
-                        size_hint_y: None
-                        Bubble:
-                            size_hint: None, None
-                            width: self.parent.width*0.9
-                            height: dice_eqn_input.height * 8
-                            arrow_pos: 'left_mid'
-                            orientation: 'vertical'
-                            BubbleButton:
-                                text: "Separarated rolls {NxMdY}"
-                                on_press: root.sep_rolls_add()
-                            BubbleButton:
-                                text: "Another roll ;"
-                                on_press: dice_eqn_input.text += ';'
-                            BubbleButton:
-                                text: "Named roll:"
-                                on_press: root.named_roll_add()
-                            BubbleButton:
-                                text: "Add +"
-                                on_press: dice_eqn_input.text += ' + '
-                            BubbleButton:
-                                text: "Subtract -"
-                                on_press: dice_eqn_input.text += ' - '
-                            BubbleButton:
-                                text: "Multiply *"
-                                on_press: dice_eqn_input.text += ' * '
-                            BubbleButton:
-                                text: "Division /"
-                                on_press: dice_eqn_input.text += ' / '
-                            BubbleButton:
-                                text: "Help"
-                                on_press: dice_eqn_input.text = 'help' if dice_eqn_input.is_empty() else dice_eqn_input.text
+        AccordionItem:
+            title: "Common Operations"
+            collapse: False
+            ScrollView:
+                scroll_timeout: 250
+                do_scroll_x: False
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'top'
+                    size_hint_y: None
+                    Bubble:
+                        size_hint: None, None
+                        width: self.parent.width*0.9
+                        height: dice_eqn_input.height * 8
+                        arrow_pos: 'left_mid'
+                        orientation: 'vertical'
+                        BubbleButton:
+                            text: "Separarated rolls {NxMdY}"
+                            on_press: root.sep_rolls_add()
+                        BubbleButton:
+                            text: "Another roll ;"
+                            on_press: dice_eqn_input.text += ';'
+                        BubbleButton:
+                            text: "Named roll:"
+                            on_press: root.named_roll_add()
+                        BubbleButton:
+                            text: "Add +"
+                            on_press: dice_eqn_input.text += ' + '
+                        BubbleButton:
+                            text: "Subtract -"
+                            on_press: dice_eqn_input.text += ' - '
+                        BubbleButton:
+                            text: "Multiply *"
+                            on_press: dice_eqn_input.text += ' * '
+                        BubbleButton:
+                            text: "Division /"
+                            on_press: dice_eqn_input.text += ' / '
+                        BubbleButton:
+                            text: "Help"
+                            on_press: dice_eqn_input.text = 'help' if dice_eqn_input.is_empty() else dice_eqn_input.text
 
-            AccordionItem:
-                title: "History"
-                collapse: True
-                ScrollView:
-                    scroll_timeout: 250
-                    do_scroll_x: False
-                    AnchorLayout:
-                        anchor_x: 'center'
-                        anchor_y: 'top'
-                        size_hint_y: None
-                        Bubble:
-                            id: dice_history
-                            size_hint: (None, None)
-                            width: self.parent.width*0.9
-                            on_parent: self.height=dice_eqn_input.height
-                            arrow_pos: 'left_mid'
-                            orientation: 'vertical'
+        AccordionItem:
+            title: "History"
+            collapse: True
+            ScrollView:
+                scroll_timeout: 250
+                do_scroll_x: False
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'top'
+                    size_hint_y: None
+                    Bubble:
+                        id: dice_history
+                        size_hint: (None, None)
+                        width: self.parent.width*0.9
+                        on_parent: self.height=dice_eqn_input.height
+                        arrow_pos: 'left_mid'
+                        orientation: 'vertical'
 
-            AccordionItem:
-                title: "Named Equations"
-                collapse: True
-                ScrollView:
-                    scroll_timeout: 250
-                    do_scroll_x: False
-                    AnchorLayout:
-                        anchor_x: 'center'
-                        anchor_y: 'top'
-                        size_hint_y: None
-                        Bubble:
-                            id: var_list_bubble
-                            size_hint: None, None
-                            width: self.parent.width*0.9
-                            on_parent: self.height=dice_eqn_input.height
-                            arrow_pos: 'left_mid'
-                            orientation: 'vertical'
+        AccordionItem:
+            title: "Named Equations"
+            collapse: True
+            ScrollView:
+                scroll_timeout: 250
+                do_scroll_x: False
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'top'
+                    size_hint_y: None
+                    Bubble:
+                        id: var_list_bubble
+                        size_hint: None, None
+                        width: self.parent.width*0.9
+                        on_parent: self.height=dice_eqn_input.height
+                        arrow_pos: 'left_mid'
+                        orientation: 'vertical'

@@ -89,7 +89,7 @@ class DiceEqnInput(TextInput):
                 self.true_parent.history_stack[self.history_stack_pos]()
         return super(DiceEqnInput, self)._keyboard_on_key_up(window, keycode)
         
-class DiceWidget(Widget):
+class DiceWidget(FloatLayout):
     dice_eqn_input = ObjectProperty(None) #text box where the equation
                                           #will be entered by the user
     dice_output = ObjectProperty(None) #text box where the parsed
