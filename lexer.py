@@ -166,12 +166,12 @@ class Lexer( DispatchProcessor ):
         """Operations outside of this group apply to each inside (except constants),
         which is then added up to the whole.  There can be only one var_grouping per
         roll equation, and nesting is not allowed."""
-        if self._insideVarGroup:
-            #raise Exception("Cannot nest variable groupings")
-            raise VarNestedException( start )
-        if self._varGroupCount > 0:
-            #raise Exception("Cannot have more than one variable grouping")
-            raise VarMultipleException( start )
+        # if self._insideVarGroup:
+        #     #raise Exception("Cannot nest variable groupings")
+        #     raise VarNestedException( start )
+        # if self._varGroupCount > 0:
+        #     #raise Exception("Cannot have more than one variable grouping")
+        #     raise VarMultipleException( start )
         lex_log("def:        var_grouping")
         lex_log("tag:       "+str(tag))
         lex_log("start:     "+str(start))
@@ -179,7 +179,7 @@ class Lexer( DispatchProcessor ):
         lex_log("subtags:   "+str(subtags))
         result = None
         is_negative = False 
-        self._insideVarGroup = True
+        # self._insideVarGroup = True
         for tup in subtags:
             if "space" == tup[0]:
                 continue # Why waste processing power on spaces?
@@ -193,8 +193,8 @@ class Lexer( DispatchProcessor ):
             except SyntaxError, se:
                 raise se
         result.append(is_negative)
-        self._insideVarGroup = False
-        self._varGroupCount += 1
+        # self._insideVarGroup = False
+        # self._varGroupCount += 1
             
         return RollInstruction(Fn.var_grouping, result)
 

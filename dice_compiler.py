@@ -39,8 +39,8 @@ def prod_deque( multiplier, coef ):
     divide = multiplier[1]
     compile_log("prod_deque(): multiplier={0}, coef={1}".format(multiplier, coef))
     for i in multiplier[0]:
-        m = 1/float(i[0]) if divide else float(i[0])
-        if isinstance(i[0], int):
+        m = 1/float(i) if divide else float(i)
+        if isinstance(i, int):
             new_mult.append(coef*m)
         else:
             new_mult.append(str(coef*m))
@@ -48,7 +48,7 @@ def prod_deque( multiplier, coef ):
 
 def product( multiplier ):
     if 1==len(multiplier):
-        return multiplier.pop()
+        return multiplier.pop()[0]
     assert 0<=len(multiplier), "This is a bad error. We shouldn't get here. Please report this: multiplier=%s" % (str(multiplier))
     prod = 1.0
     is_const = True
@@ -92,8 +92,8 @@ def generate_adder( bytecode ):
     reset = lambda: False
     logdebug = lambda: compile_log(eqn_str + '\n\tadder:\t'+str(adder) + \
                                        '\n\tmult:\t'+str(multiplier))
-    add_to_adder = lambda data: adder.append((data[0], False)) if \
-        isinstance(data[0], deque) else adder.appendleft((data[0], False))
+    add_to_adder = lambda data: adder.append(data) if \
+        isinstance(data, deque) else adder.appendleft(data)
     for instruction in bytecode:
         # This is such an ugly function.  I'm just not sure there is a
         # way to break it up into more functions.  That's not
@@ -101,12 +101,14 @@ def generate_adder( bytecode ):
         # I can't see it, at least not in a way that would be clean or
         # elegant.
         if instruction.opFn == Fn.constant:
+            compile_log('constant')
             eqn_str += str(instruction.data)
             data = -instruction.data if negate else instruction.data
             multiplier.appendleft((str(data), divide))
             negate = reset()
             logdebug()
         elif instruction.opFn == Fn.const_grouping:
+            compile_log('const_grouping')
             ((const_str, subconst_str, constant), is_neg) = instruction.data()
             for sub_str in subconst_str:
                 const_counter = const_add_string(sub_str)
@@ -118,20 +120,23 @@ def generate_adder( bytecode ):
             multiplier.appendleft((str(data), divide))
             negate = reset()
             logdebug()
+            compile_log('const_grouping end')
         elif instruction.opFn == Fn.dice:
+            compile_log('dice')
             dice_str, dice_sum = instruction.data.sum(negate)
             eqn_str += dice_str
             multiplier.appendleft((dice_sum, divide))
             negate = reset()
             logdebug()
         elif instruction.opFn == Fn.xdice:
+            compile_log('xdice')
             x_str, expansion = instruction.data.expand(negate)
             eqn_str += x_str
             multiplier.appendleft(expansion.popleft())
             data = product(multiplier)
             # We're done multiplying, so we need an empty multiplier
             multiplier = deque([])
-            add_to_adder(data)
+            add_to_adder(data[0])
             while 1<len(expansion):
                 adder.appendleft(expansion.popleft())
             if 0!=len(expansion):
@@ -140,7 +145,9 @@ def generate_adder( bytecode ):
                 multiplier.append((expansion.pop(), divide))
             negate = reset()
             logdebug()
+            compile_log('xdice end')
         elif instruction.opFn == Fn.var_grouping:
+            compile_log('var_grouping')
             is_neg = instruction.data.pop()
             var_str, var_const_grp_str, var_adder = generate_adder(instruction.data)
             if var_const_grp_str:
@@ -152,10 +159,13 @@ def generate_adder( bytecode ):
             else:
                 eqn_str += '('+var_str+')'
             instruction.data.append(is_neg)
-            multiplier.append((var_adder, divide))
+            var_sum = add_up_deque(var_adder, 0)
+            multiplier.append((var_sum, divide))
             negate = reset()
             logdebug()
+            compile_log('var_grouping end')
         elif instruction.opFn == Fn.op:
+            compile_log('op')
             eqn_str += ' '+OpsRepr[instruction.data]+' '
             if instruction.data == Ops.sub:
                 negate = True
@@ -174,14 +184,24 @@ def generate_adder( bytecode ):
     # We need to clean up after ourselves, and clear out the
     # multiplier.
     logdebug()
+    compile_log('generate_adder clean up')
     if 0<len(multiplier):
         data = product(multiplier)
     if isinstance(data, deque):
-        adder.append((data, False))
+        adder.append(data)
     else:
-        adder.appendleft((data, False))
+        adder.appendleft(data)
     logdebug()
     return eqn_str, const_grp_strings, adder
+
+def add_up_deque(adder, addition=0):
+    last = adder[len(adder)-1]
+    if not isinstance(last, deque):
+        # This takes care of the corner case where there are no
+        # var_groupings
+        adder.append([0])
+    answer, garbage = add_up(adder, 0)
+    return answer
 
 def add_up( num_array, addition ):
     _sum = 0
@@ -202,11 +222,6 @@ def add_up( num_array, addition ):
 
 def dice_compile( bytecode ):
     eqn_str, const_grp_strings, adder = generate_adder(bytecode)
-    last = adder[len(adder)-1]
-    if not isinstance(last, deque):
-        # This takes care of the corner case where there are no
-        # var_groupings
-        adder.append([0])
-    answer, garbage = add_up(adder, 0)
+    answer = add_up_deque(adder, 0)
     compile_log("answer: "+str(answer))
     return eqn_str, const_grp_strings, answer
