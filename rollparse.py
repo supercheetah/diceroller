@@ -49,7 +49,11 @@ def space_carot( num_spaces ):
 def solve_roll( roll_str ):
     resolution = None
     find_neg_space_num = re.compile(r'-\s+(\d+)')
+    find_implied_mult_pre = re.compile(r'(\d+)\s*([\[(])')
+    find_implied_mult_post = re.compile(r'([\])])\s*(\d|[dD])')
     roll_str = find_neg_space_num.sub(r'-\1', roll_str)
+    roll_str = find_implied_mult_pre.sub(r'\1*\2', roll_str)
+    roll_str = find_implied_mult_post.sub(r'\1*\2', roll_str)
     try:
         success, children, nextchar = rollparser.parse( roll_str, processor=lexer.Lexer() )
         if not (success and len(roll_str)==nextchar):
