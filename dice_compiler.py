@@ -92,8 +92,8 @@ def generate_adder( bytecode ):
     reset = lambda: False
     logdebug = lambda: compile_log(eqn_str + '\n\tadder:\t'+str(adder) + \
                                        '\n\tmult:\t'+str(multiplier))
-    add_to_adder = lambda data: adder.append(data[0]) if \
-        isinstance(data[0], deque) else adder.appendleft(data[0])
+    add_to_adder = lambda data: adder.append((data[0], False)) if \
+        isinstance(data[0], deque) else adder.appendleft((data[0], False))
     for instruction in bytecode:
         # This is such an ugly function.  I'm just not sure there is a
         # way to break it up into more functions.  That's not
@@ -177,9 +177,9 @@ def generate_adder( bytecode ):
     if 0<len(multiplier):
         data = product(multiplier)
     if isinstance(data, deque):
-        adder.append(data)
+        adder.append((data, False))
     else:
-        adder.appendleft(data)
+        adder.appendleft((data, False))
     logdebug()
     return eqn_str, const_grp_strings, adder
 
