@@ -15,6 +15,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.factory import Factory
 from kivy.clock import Clock
 from kivy.uix.accordion import Accordion, AccordionItem
+from kivy.uix.spinner import Spinner
 from kivy.interactive import InteractiveLauncher
 from kivy.logger import Logger
 from kivy.config import Config
@@ -52,6 +53,41 @@ class DiceEqnInput(TextInput):
         """
         self.clear_start_text()
         return None != self.empty_space.match(self.text)
+
+    def cursor_forward(self):
+        """Moves the cursor up one.
+        
+        Arguments:
+        - `self`:
+        """
+        if len(self.text) > self.cursor_col:
+            self.cursor = ( self.cursor_col + 1, 0 )
+
+    def cursor_back(self):
+        """Moves the cursor back one.
+        
+        Arguments:
+        - `self`:
+        """
+        if 0 < self.cursor_col:
+            self.cursor = ( self.cursor_col - 1, 0 )
+
+    def add_at_cursor(self, spinner, is_open):
+        """This is called when ever the num_spinner is opened or closed.
+        
+        Arguments:
+        - `self`:
+        - `spinner`:
+        - `is_open`:
+        """
+        if not is_open:
+            self.clear_start_text()
+            Logger.debug("DiceEqnInput: num_spinner opened, text=" + str(spinner.text))
+            _col = self.cursor_col
+            pre_cur_txt = self.text[0:_col]
+            post_cur_txt = self.text[_col:len(self.text)]
+            self.text = pre_cur_txt + spinner.text + post_cur_txt
+            self.cursor = ( _col + len(spinner.text), 0 )
 
     def _keyboard_on_key_up(self, window, keycode):
         """Handle up and down keys.
@@ -96,6 +132,9 @@ class DiceWidget(FloatLayout):
     roll_it_btn = ObjectProperty(None) #the button to submit the rolls
                                        #(although enter is just fine
                                        #too)
+    num_spinner = ObjectProperty(None)
+    cur_fwd_btn = ObjectProperty(None)
+    cur_bk_btn = ObjectProperty(None)
     history_stack = [] #all the lambdas for the equations that have
                        #been used before--history of equations, they
                        #set the dice_eqn_input text, return the text
@@ -411,7 +450,11 @@ class DiceWidget(FloatLayout):
         Logger.debug("DiceWidget: \tdice_eqn_input collision: "
                      + str(self.dice_eqn_input.collide_point(*touch.pos)
                            ))
-        if not self.dice_eqn_input.collide_point(*touch.pos):
+        rel_layout = self.num_spinner.parent
+        if not self.dice_eqn_input.collide_point(*touch.pos) and \
+                not self.cur_bk_btn.collide_point(*touch.pos) and \
+                not self.cur_fwd_btn.collide_point(*touch.pos) and \
+                not self.num_spinner.collide_point(*rel_layout.to_widget(*touch.pos)):
             self.hide_vkbd()
             if self.mobile:
                 self.dice_eqn_input.focus = False

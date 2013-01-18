@@ -28,6 +28,9 @@
     dice_history: dice_history
     roll_it_btn: roll_it_btn
     var_list_bubble: var_list_bubble
+    num_spinner: num_spinner
+    cur_fwd_btn: cur_fwd_btn
+    cur_bk_btn: cur_bk_btn
     dice_io_width: .6
     bottom_reserve: .25
     
@@ -48,7 +51,7 @@
             DiceEqnInput:
                 id: dice_eqn_input
                 #font_size: 14
-                size_hint: .85, None
+                size_hint: .80, None
                 height: self.line_height * 1.65
                 multiline: False
                 text: self.start_text
@@ -57,39 +60,74 @@
                 true_parent: root
 
             Button:
+                id: cur_bk_btn
+                text: "<"
+                size_hint: .1, None
+                height: dice_eqn_input.height
+                on_press: dice_eqn_input.cursor_back()
+
+            Button:
+                id: cur_fwd_btn
+                text: ">"
+                size_hint: .1, None
+                height: dice_eqn_input.height
+                on_press: dice_eqn_input.cursor_forward()
+
+        BoxLayout:
+            orientation: 'horizontal'
+            
+            Button:
+                id: roll_it_btn
+                size_hint: .85, None
+                height: dice_eqn_input.height
+                text: "Roll It!"
+                on_parent: root.log_mesg('mobile: ' + str(root.mobile))
+                on_press: root.roll_it()
+
+            Button:
                 text: "Clear"
                 size_hint: .15, None
                 height: dice_eqn_input.height
                 on_press: dice_eqn_input.text = ''
 
-        Button:
-            id: roll_it_btn
-            size_hint: 1, None
-            height: dice_eqn_input.height
-            text: "Roll It!"
-            on_parent: root.log_mesg('mobile: ' + str(root.mobile))
-            on_press: root.roll_it()
-
-        ScrollView:
-            id: dice_out_scroll
+        RelativeLayout:
             size_hint: 1, None
             height: self.parent.height - dice_eqn_input.height - roll_it_btn.height
-            scroll_timeout: 1000
-            do_scroll_x: False
-            on_parent: root.log_mesg('dice output scroll size ' + repr(dice_out_scroll.size))
+            on_parent: root.log_mesg('output/spinner floatlayout pos: ' + str(self.pos))
+            on_parent: root.log_mesg('output/spinner floatlayout size: ' + str(self.size))
             
-            TextInput:
-                id: dice_output
-                #font_size: 14
-                readonly: True
-                size_hint: None, None
-                size: dice_out_scroll.width, max( (len(self._lines)+1) * (self.line_height + self._line_spacing), dice_out_scroll.height)
-                pos: 0, 0
-                text: "Don't know what's going on? Type \"help\" above, and click \"Roll It!\" or press enter."
-                on_parent: self.bind(focus=root.hide_vkbd)
-                on_parent: root.log_mesg('created dice output')
-                #on_parent: text="Don't know what's going on? Type \"help\" above, and click \"Roll It!\" or press enter."
+            ScrollView:
+                id: dice_out_scroll
+                size_hint: 1, 1
+                scroll_timeout: 1000
+                do_scroll_x: False
+                on_parent: root.log_mesg('dice output scroll size ' + repr(dice_out_scroll.size))
+            
+                TextInput:
+                    id: dice_output
+                    #font_size: 14
+                    readonly: True
+                    size_hint: None, None
+                    size: dice_out_scroll.width, max( (len(self._lines)+1) * (self.line_height + self._line_spacing), dice_out_scroll.height)
+                    pos: 0, 0
+                    text: "Don't know what's going on?\nType \"help\" above, and click \"Roll It!\" or press enter."
+                    on_parent: self.bind(focus=root.hide_vkbd)
+                    on_parent: root.log_mesg('created dice output')
 
+            AnchorLayout:
+                pos: dice_out_scroll.pos
+                size: dice_out_scroll.size
+                anchor_x: 'right'
+                anchor_y: 'top'
+
+                Spinner:
+                    id: num_spinner
+                    text: '1'
+                    values: [str(val) for val in range(0, 100)]
+                    size_hint: .15, None
+                    height: dice_eqn_input.height
+                    on_parent: self.dropdown_cls.scroll_timeout = 250
+                    on_parent: self.bind(is_open=dice_eqn_input.add_at_cursor)
 
     Accordion:
         orientation: 'vertical'
