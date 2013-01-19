@@ -52,9 +52,9 @@
                 id: dice_eqn_input
                 #font_size: 14
                 size_hint: .80, None
-                height: self.line_height * 1.65
                 multiline: False
                 text: self.start_text
+                on_parent: self.height = self.line_height * 1.65
                 on_focus: if self.text==self.start_text: self.text=""
                 on_text_validate: root.roll_it()
                 true_parent: root
