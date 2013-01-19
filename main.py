@@ -24,7 +24,9 @@ Config.set('input', 'mouse', 'mouse,disable_multitouch')
 import re
 import rollparse
 from dicehelp import dice_help
-import anydbm
+import pickle
+import traceback
+import sys
 if 'android' == kivy.utils.platform():
     import android
 
@@ -35,6 +37,7 @@ class DiceEqnInput(TextInput):
     true_parent = ObjectProperty(None)
     start_text = "Enter roll dice equation here."
     empty_space = re.compile('^\s*$')
+    had_focus = False
 
     def clear_start_text(self):
         """When we need the start start text to be cleared. Will do
@@ -88,6 +91,10 @@ class DiceEqnInput(TextInput):
             post_cur_txt = self.text[_col:len(self.text)]
             self.text = pre_cur_txt + spinner.text + post_cur_txt
             self.cursor = ( _col + len(spinner.text), 0 )
+            if self.had_focus:
+                Logger.debug("DiceEqnInput: had focus, refocusing")
+                if self.true_parent.mobile:
+                    self.focus = True
 
     def _keyboard_on_key_up(self, window, keycode):
         """Handle up and down keys.
@@ -297,10 +304,8 @@ class DiceWidget(FloatLayout):
         var_exists = var_name in self.var_dict
         self.var_dict[var_name] = eqn_text
         if do_save:
-            vardb = anydbm.open("vardb.dbm", 'c')
-            vardb[var_name.encode('ascii', 'ignore')] = eqn_text.encode( \
-                'ascii', 'ignore')
-            vardb.close()
+            with open('vardb.pickle', 'wb') as var_file:
+                pickle.dump( self.var_dict, var_file )
         if not var_exists:
             new_btn = BubbleButton(text = var_name)
             last_pos = len(self.var_dict)
@@ -453,11 +458,19 @@ class DiceWidget(FloatLayout):
         rel_layout = self.num_spinner.parent
         if not self.dice_eqn_input.collide_point(*touch.pos) and \
                 not self.cur_bk_btn.collide_point(*touch.pos) and \
-                not self.cur_fwd_btn.collide_point(*touch.pos) and \
-                not self.num_spinner.collide_point(*rel_layout.to_widget(*touch.pos)):
+                not self.cur_fwd_btn.collide_point(*touch.pos):
             self.hide_vkbd()
             if self.mobile:
                 self.dice_eqn_input.focus = False
+
+        if self.num_spinner.collide_point(*rel_layout.to_widget(*touch.pos)) \
+                and self.dice_eqn_input.focus:
+            self.dice_eqn_input.had_focus = True
+            self.hide_vkbd()
+            Logger.debug("DiceWidget: dice_eqn_input had focus, hiding kbd")
+            if self.mobile:
+                self.dice_eqn_input.focus = False
+
         return super(DiceWidget, self).on_touch_up(touch)
 
     def log_mesg(self, mesg = 'you forgot something...'):
@@ -511,12 +524,16 @@ class DiceApp(App):
             Logger.debug("DiceApp: Can't read history file")
 
         try:
-            vardb = anydbm.open("vardb.dbm", 'r')
+            vardb = None
+            with open('vardb.pickle', 'rb') as var_file:
+                vardb = pickle.load(var_file)
             for var_name, eqn_text in vardb.iteritems():
                 self.diceapp.add_var(var_name, eqn_text, False)
-            vardb.close()
-        except anydbm.error as e:
+        except Exception as e:
             Logger.debug("DiceApp: Can't read variables file")
+            for frame in traceback.extract_tb(sys.exc_info()[2]):
+                fname, lineno, fn, text = frame
+                Logger.debug("Error in %s on line %d" % (fname, lineno))
 
     
     def on_stop(self):
