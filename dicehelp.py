@@ -1,5 +1,6 @@
 _HELP_STRINGS = [
-("""You can quit this help at any time by just typing in "done" above.
+("""You can quit this help at any time by
+just typing in "done" above.
 
     Let's start with a simple case.  You need to roll two d4, three d6, and add 5 it it all.
 _______________________""", "2d4 + 3d6 + 5"),
