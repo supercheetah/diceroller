@@ -460,6 +460,7 @@ class DiceWidget(FloatLayout):
                 not self.cur_bk_btn.collide_point(*touch.pos) and \
                 not self.cur_fwd_btn.collide_point(*touch.pos):
             self.hide_vkbd()
+            self.dice_eqn_input.had_focus = False
             if self.mobile:
                 self.dice_eqn_input.focus = False
 
