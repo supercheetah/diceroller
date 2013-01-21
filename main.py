@@ -27,8 +27,21 @@ from dicehelp import dice_help
 import pickle
 import traceback
 import sys
-if 'android' == kivy.utils.platform():
+
+MOBILE = kivy.utils.platform() in ('android', 'ios')
+IS_ANDROID = ('android' == kivy.utils.platform())
+
+DICE_HISTORY_FILE = "dice_history.txt"
+VARDB_FILE = "vardb.pickle"
+
+if IS_ANDROID:
     import android
+else:
+    import os
+    import errno
+    ROLLIT_DIR = os.path.expanduser("~{0}rollit{0}".format(os.sep))
+    DICE_HISTORY_FILE = (ROLLIT_DIR + "{0}").format(DICE_HISTORY_FILE)
+    VARDB_FILE = (ROLLIT_DIR + "{0}").format(VARDB_FILE)
 
 class DiceEqnInput(TextInput):
     """This is where the equation will be entered.
@@ -163,8 +176,8 @@ class DiceWidget(FloatLayout):
                   #storing the variables, and their lambdas to pull up
                   #their equations
     var_list_stack = [] #for workaround for Kivy 1.4.1
-    mobile = kivy.utils.platform() in ('android', 'ios')
-    is_android = ('android' == kivy.utils.platform())
+    mobile = MOBILE
+    is_android = IS_ANDROID
 
     def stash_print(self, output_str):
         """This will stash the strings to be printed until it's ready
@@ -194,7 +207,7 @@ class DiceWidget(FloatLayout):
         self.dice_eqn_input.clear_start_text()
         eqn_text = self.dice_eqn_input.text
         if eqn_text == '':
-            if not self.mobile:
+            if not MOBILE:
                 Clock.schedule_once(self.set_eqn_focus)
             return
 
@@ -204,7 +217,7 @@ class DiceWidget(FloatLayout):
             help_str, self.dice_eqn_input.text = self.dh.next()
             self.stash_print(help_str)
             self.complete_stash_print()
-            if not self.mobile:
+            if not MOBILE:
                 Clock.schedule_once(self.set_eqn_focus)
             return
 
@@ -214,7 +227,7 @@ class DiceWidget(FloatLayout):
             self.complete_stash_print()
             del self.dh
             self.dice_eqn_input.text = ""
-            if not self.mobile:
+            if not MOBILE:
                 Clock.schedule_once(self.set_eqn_focus)
             return
 
@@ -266,9 +279,9 @@ class DiceWidget(FloatLayout):
         self.complete_stash_print()
         if not self.help_is_on:
             self.dice_eqn_input.text = ""
-        if not self.mobile:
+        if not MOBILE:
             Clock.schedule_once(self.set_eqn_focus)
-        if self.mobile:
+        if MOBILE:
             self.dice_eqn_input.focus = False
         self.hide_vkbd()
 
@@ -304,7 +317,7 @@ class DiceWidget(FloatLayout):
         var_exists = var_name in self.var_dict
         self.var_dict[var_name] = eqn_text
         if do_save:
-            with open('vardb.pickle', 'wb') as var_file:
+            with open(VARDB_FILE, 'wb') as var_file:
                 pickle.dump( self.var_dict, var_file )
         if not var_exists:
             new_btn = BubbleButton(text = var_name)
@@ -339,7 +352,7 @@ class DiceWidget(FloatLayout):
         eqn_fn = lambda *args: self.set_eqn(eqn_text, last_pos)
         if do_save:
             append_overwrite = 'a' if last_pos < 40 else 'w'
-            with open("dice_history.txt", append_overwrite) as dh_file:
+            with open(DICE_HISTORY_FILE, append_overwrite) as dh_file:
                 # We only care about the last 40
                 if last_pos >= 40:
                     for eqn in self.history_stack[last_pos-40:last_pos]:
@@ -439,7 +452,7 @@ class DiceWidget(FloatLayout):
         - `self`:
         """
         Logger.debug("DiceWidget: hiding keyboard")
-        if self.is_android:
+        if IS_ANDROID:
             android.hide_keyboard()
 
     def on_touch_up(self, touch):
@@ -461,7 +474,7 @@ class DiceWidget(FloatLayout):
                 not self.cur_fwd_btn.collide_point(*touch.pos):
             self.hide_vkbd()
             self.dice_eqn_input.had_focus = False
-            if self.mobile:
+            if MOBILE:
                 self.dice_eqn_input.focus = False
 
         if self.num_spinner.collide_point(*rel_layout.to_widget(*touch.pos)) \
@@ -469,7 +482,7 @@ class DiceWidget(FloatLayout):
             self.dice_eqn_input.had_focus = True
             self.hide_vkbd()
             Logger.debug("DiceWidget: dice_eqn_input had focus, hiding kbd")
-            if self.mobile:
+            if MOBILE:
                 self.dice_eqn_input.focus = False
 
         return super(DiceWidget, self).on_touch_up(touch)
@@ -518,7 +531,7 @@ class DiceApp(App):
         - `self`:
         """
         try:
-            with open("dice_history.txt", 'r') as dh_file:
+            with open(DICE_HISTORY_FILE, 'r') as dh_file:
                 for line in dh_file:
                     self.diceapp.add_to_history(line.strip(), False)
         except IOError as e:
@@ -526,7 +539,7 @@ class DiceApp(App):
 
         try:
             vardb = None
-            with open('vardb.pickle', 'rb') as var_file:
+            with open(VARDB_FILE, 'rb') as var_file:
                 vardb = pickle.load(var_file)
             for var_name, eqn_text in vardb.iteritems():
                 self.diceapp.add_var(var_name, eqn_text, False)
@@ -550,6 +563,14 @@ Factory.register("DiceEqnInput", DiceEqnInput)
 if __name__ == '__main__':
     if not cli_args.dice_args.debug:
         Config.set('kivy', 'log_level', 'info')
+    if not MOBILE:
+        try:
+            Logger.debug("main: making dir " + ROLLIT_DIR)
+            os.makedirs(ROLLIT_DIR)
+        except OSError as exception:
+            if exception.errno != errno.EEXIST:
+                Logger.debug("main: cannot make {} due to error: {}".format(ROLLIT_DIR, exception))
+                raise
     DiceApp().run()
     #this seems to just crash unfortunately
     #il = InteractiveLauncher(DiceApp()).run()
