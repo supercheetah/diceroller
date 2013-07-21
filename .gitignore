@@ -10,3 +10,11 @@ pyinstaller/bincache*
 *.pid
 .eric4project/
 kivy/
+\#*
+build
+installjammer*
+logdict*
+pyinstaller*
+screenshots*
+template
+webface
