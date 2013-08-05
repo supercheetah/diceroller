@@ -19,3 +19,6 @@ screenshots*
 template
 webface
 *.pyo
+android_essentials
+deb_pkg
+dist
